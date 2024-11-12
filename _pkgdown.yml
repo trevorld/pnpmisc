@@ -1,0 +1,11 @@
+destination: "../../websites/R/pnpmisc/"
+url: "https://trevorldavis.com/R/pnpmisc"
+development:
+    mode: auto
+template:
+  bootstrap: 5
+reference:
+    - title: "Print-and-play utilities"
+      desc: 'Miscellaneous print-and-play utilities'
+      contents:
+          - pdf_pad
