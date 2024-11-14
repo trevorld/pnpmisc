@@ -51,6 +51,8 @@ pdf_clean <- function(input, output = NULL, ...) {
 #' @export
 ls_temp_pdfs <- function(exclude = character()) {
     temp_pdfs <- list.files(tempdir(), pattern = "\\.pdf$", full.names = TRUE)
+    temp_pdfs <- normalizePath(temp_pdfs, mustWork = TRUE)
+    exclude <- normalizePath(exclude, mustWork = TRUE)
     setdiff(temp_pdfs, exclude)
 }
 
