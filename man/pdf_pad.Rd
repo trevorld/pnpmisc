@@ -6,7 +6,7 @@
 \usage{
 pdf_pad(
   input,
-  output = "output.pdf",
+  output = NULL,
   ...,
   bg = "white",
   dpi = 300,
@@ -16,7 +16,7 @@ pdf_pad(
 \arguments{
 \item{input}{Input pdf filename.}
 
-\item{output}{Output pdf filename.}
+\item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
 \item{...}{Ignored.}
 
@@ -45,6 +45,18 @@ grDevices::pdf(input, width = 8.3, height = 11, bg = "blue")
 grid::grid.text("")
 invisible(grDevices::dev.off())
 
-pdf_pad(input, output_letter)
-pdf_pad(input, output_a4, paper_size = "A4")
+pdf_width(input)
+pdf_height(input)
+
+output <- pdf_pad(input)
+pdf_width(output)
+pdf_height(output)
+unlink(output)
+
+output_a4 <- pdf_pad(input, paper_size = "A4")
+pdf_width(output_a4)
+pdf_height(output_a4)
+unlink(output_a4)
+
+unlink(input)
 }

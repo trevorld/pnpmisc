@@ -9,9 +9,6 @@
 * [Overview](#overview)
 * [Installation](#installation)
 * [Examples](#examples)
-
-  + [`pdf_pad()`](#pdf-pad)
-
 * [Related links](#related)
 
 ## <a name="overview">Overview</a>
@@ -24,6 +21,13 @@ bit easier for me to physically manufacture using my preferred techniques and to
 * I prefer to print cards duplex.  To forgive a bit of front-back printing drift there should be enough bleed around the cards and any cross hairs should just be on one side.
 * I prefer when folding to know where I should line up the (trimmed) paper edge.
 
+The pdf editing functions in this package have the following conventions which allow them to be chained:
+
+* The input filename is the first positional argument.
+* The output filename is the second positional argument and if unspecified defaults to `tempfile(fileext=".pdf")`.
+* All other arguments must be named.
+* Returns the output filename invisibly.
+
 ## <a name="installation">Installation</a>
 
 
@@ -33,13 +37,34 @@ remotes::install_github("trevorld/pnpmisc")
 
 ## <a name="examples">Examples</a>
 
-### <a name="pdf-pad">`pdf_pad()`</a>
+### `pdf_add_origami()`
 
-Since "letter" sized paper is shorter but wider than "A4" sized paper some print-and-play files have
+Sometimes when folding paper with a tool like a bone folder it is easier to fold if you 
+know where to precisely place a trimmed paper edge.
+`pdf_add_origami()` adds some origami symbols to
+[Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
+
+
+``` r
+library("pnpmisc")
+# Download Boardgame Barrio Small Box Game Jackets from 
+# <https://sites.google.com/view/boardgamebarrio/home>
+input <- "SBG_Jacket_-_Animal_Upon_Animal.pdf"
+output <- "sbgj_animal_upon_animal.pdf"
+input |> pdf_gs() |> 
+    pdf_subset(pages = 1L) |> 
+    pdf_add_origami() |> 
+    pdf_clean(output)
+```
+
+### `pdf_pad()`
+
+Since "letter" sized paper is shorter but wider than "A4" sized paper some print-and-play files have a
 weird shared page size that is a bit smaller than both "letter" and "A4" paper sizes. `pdf_pad()` pads the size of such files to reach the full letter or A4 paper size without scaling the original component images and making sure the original images stay centered in the page (e.g. for "duplex" printing).
 
 
 ``` r
+library("pnpmisc")
 # Download Birdscaping from <https://www.pnparcade.com/products/birdscaping>
 input <- "Birdscaping 1.8 - Front-Back Layout.pdf"
 output <- "birdscaping_letter.pdf"
@@ -50,6 +75,15 @@ pdf_pad(input, output)
 
 ### R packages
 
-* [papersize](https://github.com/elipousson/papersize) has some functionality to print-and-play playing cards.
-* [pdftools](https://github.com/ropensci/pdftools) imports pdf file pages as bitmap images.
-* [piecepackr](https://github.com/piecepackr/piecepackr) has some graphical functionality for print-and-play files like crop marks.
+* [papersize](https://github.com/elipousson/papersize) has some functionality to create print-and-play playing card layouts.
+* [pdftools](https://github.com/ropensci/pdftools), [qpdf](https://github.com/ropensci/qpdf), [staplr](https://github.com/pridiltal/staplr), and [xmpdf](https://github.com/trevorld/r-xmpdf) are some pdf manipulation packages.
+* [piecepackr](https://github.com/piecepackr/piecepackr) has some graphical functionality for creating print-and-play layouts.
+
+### Some print-and-play links
+
+* [Boardgame Barrio](https://sites.google.com/view/boardgamebarrio)'s Small Box Game Jackets
+* [Button Shy Games](https://buttonshygames.com/)
+* [Decktet](https://www.decktet.com/) Card Game System
+* [Martin's Print and Play Hideaway](https://www.facebook.com/groups/pnphideaway/)
+* [One Card Maze](https://onecardmaze.com/)
+* [Piecepack](https://ludism.org/ppwiki/Downloadable_Piecepack_Sets) Board Game System

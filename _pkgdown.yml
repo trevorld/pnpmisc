@@ -5,7 +5,16 @@ development:
 template:
   bootstrap: 5
 reference:
-    - title: "Print-and-play utilities"
-      desc: 'Miscellaneous print-and-play utilities'
+    - title: "pdf editing utilities"
+      desc: 'The first positional argument is always the input pdf and the second posiitional argument is the output pdf (which always defaults to `tempfile(fileext=".pdf")`).'
       contents:
+          - pdf_add_origami
+          - pdf_clean
+          - pdf_compress
+          - pdf_gs
           - pdf_pad
+    - title: "other utilities"
+      desc: ''
+      contents:
+          - ls_temp_pdfs
+          - pdf_width

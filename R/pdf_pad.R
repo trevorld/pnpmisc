@@ -3,7 +3,7 @@
 #' `pdf_pad()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
 #' The original images are **not** rescaled.
 #' @param input Input pdf filename.
-#' @param output Output pdf filename.
+#' @param output Output pdf filename.  `NULL` defaults to `tempfile(fileext = ".pdf")`.
 #' @param ... Ignored.
 #' @param bg `output` pdf background color.  Passed to [grDevices::pdf()].
 #' @param dpi Dots per inch.  Passed to [pdftools::pdf_render_page()].
@@ -20,20 +20,33 @@
 #' grDevices::pdf(input, width = 8.3, height = 11, bg = "blue")
 #' grid::grid.text("")
 #' invisible(grDevices::dev.off())
+#' 
+#' pdf_width(input)
+#' pdf_height(input)
 #'
-#' pdf_pad(input, output_letter)
-#' pdf_pad(input, output_a4, paper_size = "A4")
+#' output <- pdf_pad(input)
+#' pdf_width(output)
+#' pdf_height(output)
+#' unlink(output)
+#'
+#' output_a4 <- pdf_pad(input, paper_size = "A4")
+#' pdf_width(output_a4)
+#' pdf_height(output_a4)
+#' unlink(output_a4)
+#'
+#' unlink(input)
 #' @export
-pdf_pad <- function(input, output = "output.pdf", ...,
+pdf_pad <- function(input, output = NULL, ...,
                     bg = "white", dpi = 300,
                     paper_size = c("letter", "A4")) {
     paper_size <- match.arg(paper_size)
+    output <- normalize_output(output, input)
 
     df_size_orig <- pdftools::pdf_pagesize(input)
     stopifnot(nrow(df_size_orig) > 0L)
 
     current_dev <- dev.cur()
-    if (current_dev > 1) on.exit(dev.set(current_dev))
+    if (current_dev > 1) on.exit(dev.set(current_dev), add = TRUE)
 
     if (df_size_orig$width[1L] > df_size_orig$height[1L]) { # landscape
         switch(paper_size,
@@ -47,9 +60,9 @@ pdf_pad <- function(input, output = "output.pdf", ...,
         )
     }
     for (i in seq_len(nrow(df_size_orig))) {
-        width <- df_size_orig$width[i]
-        height <- df_size_orig$height[i]
-        vp <- viewport(width = unit(width, "points"), height = unit(height, "points"))
+        width <- unit(df_size_orig$width[i], "bigpts")
+        height <- unit(df_size_orig$height[i], "bigpts")
+        vp <- viewport(width = width, height = height)
         grid.newpage()
         bitmap <- pdftools::pdf_render_page(input, page = i, dpi = dpi, numeric = TRUE)
         pushViewport(vp)
