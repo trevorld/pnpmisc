@@ -13,7 +13,7 @@
 
 ## <a name="overview">Overview</a>
 
-`{pnpmisc}` is an R package to edit pdf files.  
+`{pnpmisc}` is an R package to edit pdf files.
 While some of the pdf editing functions are of general use the motivating goal of this package
 is to help me tweak existing print-and-play files to a format a little
 bit easier for me to physically manufacture using my preferred techniques and tools.
@@ -43,7 +43,7 @@ remotes::install_github("trevorld/pnpmisc")
 
 ### `pdf_add_origami()`
 
-* Sometimes when folding paper with a tool like a bone folder it is easier to fold if you 
+* Sometimes when folding paper with a tool like a bone folder it is easier to fold if you
 know where to precisely place a trimmed paper edge.
 * `pdf_add_origami()` adds some origami symbols to
 [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
@@ -51,13 +51,13 @@ know where to precisely place a trimmed paper edge.
 
 ``` r
 library("pnpmisc")
-# Download Boardgame Barrio Small Box Game Jackets from 
+# Download Boardgame Barrio Small Box Game Jackets from
 # <https://sites.google.com/view/boardgamebarrio/home>
 input <- "SBG_Jacket_-_Animal_Upon_Animal.pdf"
-output <- "sbgj_animal_upon_animal.pdf"
-input |> pdf_gs() |> 
-    pdf_subset(pages = 1L) |> 
-    pdf_add_origami() |> 
+output <- "animal_upon_animal_jacket.pdf"
+input |> pdf_gs() |>
+    pdf_subset(pages = 1L) |>
+    pdf_add_origami() |>
     pdf_clean(output)
 ```
 
@@ -72,7 +72,7 @@ weird shared page size that is a bit smaller than both "letter" and "A4" paper s
 library("pnpmisc")
 # Download Birdscaping from <https://www.pnparcade.com/products/birdscaping>
 input <- "Birdscaping 1.8 - Front-Back Layout.pdf"
-output <- "birdscaping_letter.pdf"
+output <- "birdscaping_cards.pdf"
 pdf_pad_pagesize(input, output)
 ```
 
@@ -88,7 +88,7 @@ pdf_pad_pagesize(input, output)
 library("pnpmisc")
 # Download Galdor's Grip from <https://greggjewell.itch.io/galdors-grip>
 input <- "GaldorsGrip_PnP_Cards_TGCBundle_EN_USL_v1.pdf"
-output <- "galdors_grid.pdf"
+output <- "galdors_grip_cards.pdf"
 pdf_rm_crosshairs(input, output, pages = "odd")
 ```
 
