@@ -1,7 +1,7 @@
 #' Wrappers around qpdf functions
 #'
 #' These functions wrap around the utilities in the qpdf package
-#' but alters the arguments to match this package's conventions: 
+#' but alters the arguments to match this package's conventions:
 #' the first two arguments must be `input` and `output`,
 #' by default `output = tempfile(fileext = ".pdf")`, and all other
 #' arguments must be named.
@@ -15,7 +15,7 @@
 #' pdf(f1, width = 6, height = 4)
 #' grid::grid.text("")
 #' invisible(dev.off())
-#' 
+#'
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' f4 <- pdf_rotate_pages(f3, angle = 90)
@@ -28,18 +28,24 @@
 pdf_compress <- function(input, output = NULL, ...) {
     output <- normalize_output(output, input)
     qpdf::pdf_compress(input, output = output, ...)
+    invisible(output)
+}
+
+#' @inheritParams pdf_pages
+#' @rdname qpdf_wrappers
+#' @export
+pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
+    output <- normalize_output(output, input)
+    pages <- pdf_pages(input, pages = pages)
+    qpdf::pdf_rotate_pages(input, output = output, ..., pages = pages)
+    invisible(output)
 }
 
 #' @rdname qpdf_wrappers
 #' @export
-pdf_rotate_pages <- function(input, output = NULL, ...) {
+pdf_subset <- function(input, output = NULL, ..., pages = 1L) {
     output <- normalize_output(output, input)
-    qpdf::pdf_rotate_pages(input, output = output, ...)
-}
-
-#' @rdname qpdf_wrappers
-#' @export
-pdf_subset <- function(input, output = NULL, ...) {
-    output <- normalize_output(output, input)
-    qpdf::pdf_subset(input, output = output, ...)
+    pages <- pdf_pages(input, pages = pages)
+    qpdf::pdf_subset(input, output = output, ..., pages = pages)
+    invisible(output)
 }

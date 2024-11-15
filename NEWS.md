@@ -15,9 +15,13 @@ New features
   + `pdf_gs()` processes a pdf file with ghostscript.
   + `pdf_pad()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
     The original images are **not** rescaled (#5).
+  + `pdf_rm_crosshairs()` removes crosshairs from a pdf file.
+    Currently only supports removing crosshairs from
+    [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP v1, letter) (#7).
 
 Other utility functions:
 
   + `ls_temp_pdfs()` lists temporary pdfs while `rm_temp_pdfs()` removes temporary pdfs.
+  + `pdf_pages()` calculates an integer vector of subset of pdf pages (#9).
   + `pdf_width()` and `pdf_height()` get pdf page dimensions.
 
