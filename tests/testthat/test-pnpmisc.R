@@ -2,12 +2,12 @@ test_that("miscellaneous functions", {
     on.exit(rm_temp_pdfs(), add = TRUE)
 
     skip_if(tools::find_gs_cmd()[[1L]] == "")
-    
+
     f1 <- tempfile(fileext = ".pdf")
     grDevices::pdf(f1, width = 8.5, height = 11)
     grid::grid.text("")
     invisible(grDevices::dev.off())
-    
+
     f2 <- pdf_gs(f1)
 
     expect_equal(qpdf::pdf_length(f2), 1L)
@@ -29,4 +29,23 @@ test_that("miscellaneous functions", {
     expect_equal(qpdf::pdf_length(f7), 1L)
     expect_equal(pdf_height(f7, numeric = TRUE), 8.5)
     expect_equal(pdf_width(f7, numeric = TRUE), 11)
+})
+
+test_that("`pdf_pages()`", {
+    on.exit(rm_temp_pdfs(), add = TRUE)
+
+    # Create an 8-page document
+    f <- tempfile(fileext = ".pdf")
+    grDevices::pdf(f)
+    for (page in seq.int(8L)) {
+      grid::grid.newpage()
+      grid::grid.text(paste("Page", page))
+    }
+    invisible(grDevices::dev.off())
+
+    expect_equal(pdf_pages(f, pages = 1:4), 1:4)
+    expect_equal(pdf_pages(f, pages = -(1:4)), 5:8)
+    expect_equal(pdf_pages(f, pages = "all"), 1:8)
+    expect_equal(pdf_pages(f, pages = "even"), seq.int(2, 8, 2))
+    expect_equal(pdf_pages(f, pages = "odd"), seq.int(1, 7, 2))
 })

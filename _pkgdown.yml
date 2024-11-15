@@ -13,8 +13,10 @@ reference:
           - pdf_compress
           - pdf_gs
           - pdf_pad
+          - pdf_rm_crosshairs
     - title: "other utilities"
       desc: ''
       contents:
           - ls_temp_pdfs
+          - pdf_pages
           - pdf_width

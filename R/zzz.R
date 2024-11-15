@@ -12,3 +12,6 @@ normalize_output <- function(output, input) {
     stopifnot(input != output)
     output
 }
+
+is_odd <- function(x) (x %% 2L) > 0L
+is_even <- function(x) (x %% 2L) == 0L

@@ -8,9 +8,9 @@
 \usage{
 pdf_compress(input, output = NULL, ...)
 
-pdf_rotate_pages(input, output = NULL, ...)
+pdf_rotate_pages(input, output = NULL, ..., pages = "all")
 
-pdf_subset(input, output = NULL, ...)
+pdf_subset(input, output = NULL, ..., pages = 1L)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -18,6 +18,11 @@ pdf_subset(input, output = NULL, ...)
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
 \item{...}{Passed to the underlying qpdf functions.}
+
+\item{pages}{A positive numeric vector of pages to include,
+a negative numeric vector of pages to exclude,
+or "all", "even", or "odd" to include all pages, just the even pages,
+or just the odd pages.}
 }
 \value{
 \code{output} filename of new pdf file invisibly.
