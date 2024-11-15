@@ -35,11 +35,7 @@ by default \code{output = tempfile(fileext = ".pdf")}, and all other
 arguments must be named.
 }
 \examples{
-f1 <- tempfile(fileext = ".pdf")
-pdf(f1, width = 6, height = 4)
-grid::grid.text("")
-invisible(dev.off())
-
+f1 <- pdf_blank(width = 6, height = 4)
 f2 <- pdf_compress(f1)
 f3 <- pdf_subset(f2, pages = 1L)
 f4 <- pdf_rotate_pages(f3, angle = 90)

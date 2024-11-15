@@ -12,11 +12,13 @@ reference:
           - pdf_clean
           - pdf_compress
           - pdf_gs
-          - pdf_pad
+          - pdf_pad_pagesize
+          - pdf_pad_length
           - pdf_rm_crosshairs
     - title: "other utilities"
       desc: ''
       contents:
           - ls_temp_pdfs
+          - pdf_blank
           - pdf_pages
           - pdf_width

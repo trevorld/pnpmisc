@@ -2,18 +2,14 @@
 #'
 #' `pdf_gs()` processes the pdf file with ghostscript.
 #' This may prevent issues with other pdf processing functions like [pdftools::pdf_pagesize()].
-#' @inheritParams pdf_pad
-#' @param args Arguments to pass to ghostscript.  
+#' @inheritParams pdf_pad_pagesize
+#' @param args Arguments to pass to ghostscript.
 #'             Automatically adds `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
 #' @examples
 #' if (tools::find_gs_cmd()[[1L]] != "") {
-#'   f1 <- tempfile(fileext = ".pdf")
-#'   grDevices::pdf(f1)
-#'   grid::grid.text("")
-#'   invisible(grDevices::dev.off())
-#'   
+#'   f1 <- pdf_blank()
 #'   f2 <- pdf_gs(f1)
-#' 
+#'
 #'   unlink(f1)
 #'   unlink(f2)
 #' }

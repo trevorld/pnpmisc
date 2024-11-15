@@ -4,12 +4,14 @@
 #' @importFrom grid convertWidth convertHeight gpar unit
 NULL
 
-normalize_output <- function(output, input) {
+normalize_output <- function(output, input = NULL) {
     if (is.null(output))
         output <- tempfile(fileext = ".pdf")
-    input <- normalizePath(input, mustWork = TRUE)
     output <- normalizePath(output, mustWork = FALSE)
-    stopifnot(input != output)
+    if (!is.null(input)) {
+        input <- normalizePath(input, mustWork = TRUE)
+        stopifnot(input != output)
+    }
     output
 }
 

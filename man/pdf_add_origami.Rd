@@ -25,12 +25,7 @@ Currently only supports adding origami symbols to
 \href{https://sites.google.com/view/boardgamebarrio/home}{Boardgame Barrio's Small Board Game Jackets}.
 }
 \examples{
-f1 <- tempfile(fileext = ".pdf")
-grDevices::pdf(f1, width = 11, height = 8.5)
-grid::grid.text("")
-pnpmisc:::grid.mock_sbgj()
-invisible(grDevices::dev.off())
-
+f1 <- pnpmisc:::pdf_mock_sbgj()
 f2 <- pdf_add_origami(f1)
 
 unlink(f1)

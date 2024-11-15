@@ -3,16 +3,11 @@
 #' `pdf_add_origami()` adds origami symbols to the pdf.
 #' Currently only supports adding origami symbols to
 #' [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
-#' @inheritParams pdf_pad
+#' @inheritParams pdf_pad_pagesize
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added origami symbols.
 #' @examples
-#' f1 <- tempfile(fileext = ".pdf")
-#' grDevices::pdf(f1, width = 11, height = 8.5)
-#' grid::grid.text("")
-#' pnpmisc:::grid.mock_sbgj()
-#' invisible(grDevices::dev.off())
-#'
+#' f1 <- pnpmisc:::pdf_mock_sbgj()
 #' f2 <- pdf_add_origami(f1)
 #'
 #' unlink(f1)
@@ -29,8 +24,8 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
     height <- unit(df_size_orig$height[1L], "bigpts")
     width_in <- convertWidth(width, "inches", valueOnly = TRUE)
     height_in <- convertHeight(height, "inches", valueOnly = TRUE)
-    
-    if (current_dev > 1) 
+
+    if (current_dev > 1)
         on.exit(dev.set(current_dev), add = TRUE)
     else
         invisible(dev.off()) # `convertWidth()` opened device
@@ -53,7 +48,14 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
     invisible(output)
 }
 
-grid.mock_sbgj <- function() {
+pdf_mock_sbgj <- function(output = NULL) {
+    output <- normalize_output(output)
+    current_dev <- dev.cur()
+    if (current_dev > 1)
+        on.exit(dev.set(current_dev), add = TRUE)
+
+    pdf(output, width = 11, height = 8.5)
+
     width_fb <- unit(4.139, "inches")
     width_s  <- unit(1.052, "inches")
     height   <- unit(6.141, "inches")
@@ -67,13 +69,16 @@ grid.mock_sbgj <- function() {
     yo_dotdash <- yo_edge + unit(2.0, "cm")
     yo_circle <- yo_edge + unit(2.0, "mm")
 
-    grid.rect(x = xc, y = yc, 
+    grid.rect(x = xc, y = yc,
         width = 2 * width_fb + width_s, height = height,
         gp = gpar(col = NA, fill = "grey"))
-    grid.rect(x = xc, y = yc, 
+    grid.rect(x = xc, y = yc,
         width = width_s, height = height,
         gp = gpar(col = NA, fill = "black"))
 
+    invisible(dev.off())
+
+    invisible(output)
 }
 
 pdf_add_origami_sbgj <- function() {
@@ -85,7 +90,7 @@ pdf_add_origami_sbgj <- function() {
     yc <- unit(0.5, "npc") - unit(1.45, "mm")
 
     # Line up our calculated crop/fold marks with their crop/fold marks
-    # piecepackr::grid.cropmark(x = xc, y = yc, 
+    # piecepackr::grid.cropmark(x = xc, y = yc,
     #     width = 2 * width_fb + width_s, height = height,
     #     bleed = TRUE)
     xo_edge <- width_fb + 0.5 * width_s
@@ -104,9 +109,9 @@ pdf_add_origami_sbgj <- function() {
                     gp = gpar(col = NA, fill = "white"))
 
     # Put-the-points-together dots and line
-    grid.circle(x = xc - xo_edge, y = yc + yo_circle, r = unit(1, "mm"), 
+    grid.circle(x = xc - xo_edge, y = yc + yo_circle, r = unit(1, "mm"),
         gp = gpar(col = NA, fill = "black"))
-    grid.circle(x = xc + xo_target, y = yc + yo_circle, r = unit(1, "mm"), 
+    grid.circle(x = xc + xo_target, y = yc + yo_circle, r = unit(1, "mm"),
         gp = gpar(col = NA, fill = "black"))
     grid.segments(x0 = xc - xo_edge + unit(3, "mm"), x1 = xc + xo_target - unit(3, "mm"),
                   y0 = yc + yo_circle, y1 = yc + yo_circle, gp = gpar(lwd = 2))

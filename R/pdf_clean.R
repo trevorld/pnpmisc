@@ -1,16 +1,12 @@
 #' Copies pdf file while removing temporary pdf files
 #'
 #' `pdf_clean()` copies `input` pdf file to `output` and removes temporary pdf files with `rm_temp_pdfs(exclude = output)`.
-#' @inheritParams pdf_pad
+#' @inheritParams pdf_pad_pagesize
 #' @return `output` pdf file name invisibly.
 #'         As a side effect copies `input` to `output` and removes temporary pdf files.
 #' @examples
 #' \dontrun{# May delete user files in `tempdir()`
-#' f1 <- tempfile(fileext = ".pdf")
-#' pdf(f1)
-#' grid::grid.text("")
-#' invisible(grDevices::dev.off())
-#' 
+#' f1 <- pdf_blank()
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' ls_temp_pdfs()
@@ -32,16 +28,12 @@ pdf_clean <- function(input, output = NULL, ...) {
 #' files cluttering your [tempdir()].
 #' `ls_temp_pdfs()` lists them while `rm_temp_pdfs()` removes them.
 #' @param exclude A character vector of filenames to exclude.
-#' @return `ls_temp_pdfs()` returns a character vector.  
+#' @return `ls_temp_pdfs()` returns a character vector.
 #'         `rm_temp_pdfs()` returns `invisible(NULL)`.
 #' @rdname rm_temp_pdfs
 #' @examples
 #' \dontrun{# May delete user pdf files in `tempdir()`
-#' f1 <- tempfile(fileext = ".pdf")
-#' pdf(f1)
-#' grid::grid.text("")
-#' invisible(grDevices::dev.off())
-#' 
+#' f1 <- pdf_blank()
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' ls_temp_pdfs()

@@ -3,10 +3,17 @@
 #' `pdf_rm_crosshairs()` removes unwanted crosshairs.
 #' Currently only supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
 #'
-#' @inheritParams pdf_pad
+#' @inheritParams pdf_pad_pagesize
 #' @inheritParams pdf_pages
 #' @return `output` pdf file name invisibly.
 #'         As a side effect removes from crosshairs from a pdf.
+#' @examples
+#' \donttest{# Make take more than 5s
+#' input <- pdf_blank(length = 2L, width = 11, height = 8.5)
+#' output <- pdf_rm_crosshairs(input, pages = "odd")
+#' unlink(input)
+#' unlink(output)
+#' }
 #' @export
 pdf_rm_crosshairs <- function(input, output = NULL, ..., pages = "odd") {
     stopifnot(requireNamespace("bittermelon", quietly = TRUE))

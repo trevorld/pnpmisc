@@ -59,18 +59,18 @@ input |> pdf_gs() |>
     pdf_clean(output)
 ```
 
-### `pdf_pad()`
+### `pdf_pad_pagesize()`
 
 * Since "letter" sized paper is shorter but wider than "A4" sized paper some print-and-play files have a
 weird shared page size that is a bit smaller than both "letter" and "A4" paper sizes.
-* `pdf_pad()` pads the size of such files to reach the full letter or A4 paper size without scaling the original component images and making sure the original images stay centered in the page (e.g. for "duplex" printing).
+* `pdf_pad_pagesize()` pads the size of such files to reach the full letter or A4 paper size without scaling the original component images and making sure the original images stay centered in the page (e.g. for "duplex" printing).
 
 ```{r eval=FALSE}
 library("pnpmisc")
 # Download Birdscaping from <https://www.pnparcade.com/products/birdscaping>
 input <- "Birdscaping 1.8 - Front-Back Layout.pdf"
 output <- "birdscaping_letter.pdf"
-pdf_pad(input, output)
+pdf_pad_pagesize(input, output)
 ```
 
 ### `pdf_rm_crosshairs()`
@@ -84,7 +84,7 @@ pdf_pad(input, output)
 library("pnpmisc")
 # Download Galdor's Grip from <https://greggjewell.itch.io/galdors-grip>
 input <- "GaldorsGrip_PnP_Cards_TGCBundle_EN_USL_v1.pdf"
-output <- "galdors_grid.pdf"
+output <- "galdors_grip.pdf"
 pdf_rm_crosshairs(input, output, pages = "odd")
 ```
 

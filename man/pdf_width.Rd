@@ -25,11 +25,7 @@ If \code{numeric = TRUE} a numeric vector else a \code{\link[grid:unit]{grid::un
 \code{\link[=pdf_width]{pdf_width()}} and \code{\link[=pdf_height]{pdf_height()}} get the dimensions of the pdf file pages.
 }
 \examples{
-f <- tempfile(fileext = ".pdf")
-grDevices::pdf(f)
-grid::grid.text("")
-invisible(grDevices::dev.off())
-
+f <- pdf_blank(width = 8.5, height = 11)
 pdf_width(f)
 pdf_height(f, units = "cm")
 pdf_height(f, units = "mm", numeric = TRUE)

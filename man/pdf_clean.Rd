@@ -22,11 +22,7 @@ As a side effect copies \code{input} to \code{output} and removes temporary pdf 
 }
 \examples{
 \dontrun{# May delete user files in `tempdir()`
-f1 <- tempfile(fileext = ".pdf")
-pdf(f1)
-grid::grid.text("")
-invisible(grDevices::dev.off())
-
+f1 <- pdf_blank()
 f2 <- pdf_compress(f1)
 f3 <- pdf_subset(f2, pages = 1L)
 ls_temp_pdfs()

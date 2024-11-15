@@ -26,3 +26,11 @@ As a side effect removes from crosshairs from a pdf.
 \code{pdf_rm_crosshairs()} removes unwanted crosshairs.
 Currently only supports \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip} (PnP letter size v1).
 }
+\examples{
+\donttest{# Make take more than 5s
+input <- pdf_blank(length = 2L, width = 11, height = 8.5)
+output <- pdf_rm_crosshairs(input, pages = "odd")
+unlink(input)
+unlink(output)
+}
+}

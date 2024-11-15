@@ -1,11 +1,7 @@
 test_that("`pdf_add_origami()`", {
     on.exit(rm_temp_pdfs(), add = TRUE)
 
-    f1 <- tempfile(fileext = ".pdf")
-    grDevices::pdf(f1, width = 11, height = 8.5)
-    pnpmisc:::grid.mock_sbgj()
-    invisible(grDevices::dev.off())
-
+    f1 <- pnpmisc:::pdf_mock_sbgj()
     f2 <- pdf_add_origami(f1)
 
     expect_equal(qpdf::pdf_length(f2), 1L)

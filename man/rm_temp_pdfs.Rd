@@ -23,11 +23,7 @@ files cluttering your \code{\link[=tempdir]{tempdir()}}.
 }
 \examples{
 \dontrun{# May delete user pdf files in `tempdir()`
-f1 <- tempfile(fileext = ".pdf")
-pdf(f1)
-grid::grid.text("")
-invisible(grDevices::dev.off())
-
+f1 <- pdf_blank()
 f2 <- pdf_compress(f1)
 f3 <- pdf_subset(f2, pages = 1L)
 ls_temp_pdfs()

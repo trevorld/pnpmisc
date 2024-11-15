@@ -1,6 +1,6 @@
 #' Pad pdf file (to a larger size)
 #'
-#' `pdf_pad()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
+#' `pdf_pad_pagesize()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
 #' The original images are **not** rescaled.
 #' @param input Input pdf filename.
 #' @param output Output pdf filename.  `NULL` defaults to `tempfile(fileext = ".pdf")`.
@@ -20,23 +20,23 @@
 #' grDevices::pdf(input, width = 8.3, height = 11, bg = "blue")
 #' grid::grid.text("")
 #' invisible(grDevices::dev.off())
-#' 
+#'
 #' pdf_width(input)
 #' pdf_height(input)
 #'
-#' output <- pdf_pad(input)
+#' output <- pdf_pad_pagesize(input)
 #' pdf_width(output)
 #' pdf_height(output)
 #' unlink(output)
 #'
-#' output_a4 <- pdf_pad(input, paper_size = "A4")
+#' output_a4 <- pdf_pad_pagesize(input, paper_size = "A4")
 #' pdf_width(output_a4)
 #' pdf_height(output_a4)
 #' unlink(output_a4)
 #'
 #' unlink(input)
 #' @export
-pdf_pad <- function(input, output = NULL, ...,
+pdf_pad_pagesize <- function(input, output = NULL, ...,
                     bg = "white", dpi = 300,
                     paper_size = c("letter", "A4")) {
     paper_size <- match.arg(paper_size)
