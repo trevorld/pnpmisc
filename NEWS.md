@@ -6,6 +6,9 @@ New features
 
 * The following pdf modification functions:
 
+  + `pdf_add_bookmarks()`, `pdf_add_docinfo()`, and `pdf_add_xmp()` wrap around
+    `{xmpdf}` functions to edit pdf metadata but follow the conventions of this package
+    (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named) (#8).
   + `pdf_add_origami()` adds origami symbols to the pdf.
     Currently only supports adding some origami symbols to
     [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home) (#1).
