@@ -5,17 +5,13 @@
 #' the first two arguments must be `input` and `output`,
 #' by default `output = tempfile(fileext = ".pdf")`, and all other
 #' arguments must be named.
-#' @inheritParams pdf_pad
+#' @inheritParams pdf_pad_pagesize
 #' @param ... Passed to the underlying qpdf functions.
 #' @rdname qpdf_wrappers
 #' @return `output` filename of new pdf file invisibly.
 #' @seealso [qpdf::pdf_compress()], [qpdf::pdf_rotate_pages()], [qpdf::pdf_subset()]
 #' @examples
-#' f1 <- tempfile(fileext = ".pdf")
-#' pdf(f1, width = 6, height = 4)
-#' grid::grid.text("")
-#' invisible(dev.off())
-#'
+#' f1 <- pdf_blank(width = 6, height = 4)
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' f4 <- pdf_rotate_pages(f3, angle = 90)

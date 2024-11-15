@@ -23,15 +23,7 @@ An integer vector.
 \code{pdf_pages()} calculates an integer vector of subset of pdf pages.
 }
 \examples{
-# Create an 8-page document
-f <- tempfile(fileext = ".pdf")
-grDevices::pdf(f)
-for (page in seq.int(8L)) {
-  grid::grid.newpage()
-  grid::grid.text(paste("Page", page))
-}
-invisible(grDevices::dev.off())
-
+f <- pdf_blank(length = 8L)
 pdf_pages(f, pages = 1:4)
 pdf_pages(f, pages = -(1:4))
 pdf_pages(f, pages = "all")
