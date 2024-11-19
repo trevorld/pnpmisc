@@ -27,6 +27,7 @@ Other utility functions:
 
   + `ls_temp_pdfs()` lists temporary pdfs while `rm_temp_pdfs()` removes temporary pdfs.
   + `pdf_create_blank()` creates blank pdf files.
+  + `pdf_orientation()` tells whether a pdf is in portrait or landscape mode.
   + `pdf_pages()` calculates an integer vector of subset of pdf pages (#9).
   + `pdf_width()` and `pdf_height()` get pdf page dimensions.
 

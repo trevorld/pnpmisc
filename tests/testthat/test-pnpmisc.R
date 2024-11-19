@@ -9,6 +9,7 @@ test_that("miscellaneous functions", {
     expect_equal(qpdf::pdf_length(f2), 1L)
     expect_equal(pdf_height(f2, numeric = TRUE), 11)
     expect_equal(pdf_width(f2, numeric = TRUE), 8.5)
+    expect_equal(pdf_orientation(f2), "portrait")
 
     expect_equal(pdf_height(f2, units = "bigpts", numeric = TRUE), 11 * 72)
     expect_equal(pdf_width(f2, units = "bigpts", numeric = TRUE), 8.5 * 72)
@@ -36,4 +37,10 @@ test_that("`pdf_pages()`", {
     expect_equal(pdf_pages(f, pages = "all"), 1:8)
     expect_equal(pdf_pages(f, pages = "even"), seq.int(2, 8, 2))
     expect_equal(pdf_pages(f, pages = "odd"), seq.int(1, 7, 2))
+})
+
+test_that("`pdf_orientation()`", {
+    on.exit(rm_temp_pdfs(), add = TRUE)
+    f2 <- pdf_create_blank(width = 11, height = 8.5)
+    expect_equal(pdf_orientation(f2), "landscape")
 })
