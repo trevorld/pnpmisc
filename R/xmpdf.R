@@ -10,7 +10,7 @@
 #' @return `output` filename of new pdf file invisibly.
 #' @seealso [xmpdf::set_bookmarks()], [xmpdf::set_docinfo()], [xmpdf::set_xmp()]
 #' @examples
-#' f1 <- pdf_blank(length = 2L)
+#' f1 <- pdf_create_blank(length = 2L)
 #'
 #' if (requireNamespace("xmpdf", quietly = TRUE) &&
 #'     xmpdf::supports_set_bookmarks()) {

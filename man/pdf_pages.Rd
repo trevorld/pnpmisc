@@ -23,7 +23,7 @@ An integer vector.
 \code{pdf_pages()} calculates an integer vector of subset of pdf pages.
 }
 \examples{
-f <- pdf_blank(length = 8L)
+f <- pdf_create_blank(length = 8L)
 pdf_pages(f, pages = 1:4)
 pdf_pages(f, pages = -(1:4))
 pdf_pages(f, pages = "all")

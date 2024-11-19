@@ -1,6 +1,6 @@
 #' Create blank pdf pages
 #'
-#' `pdf_blank()` creates blank pdf pages.
+#' `pdf_create_blank()` creates blank pdf pages.
 #'
 #' @inheritParams pdf_pad_pagesize
 #' @param length Number of pages to create.
@@ -8,10 +8,10 @@
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a blank pdf file.
 #' @examples
-#' f <- pdf_blank(length = 4L)
+#' f <- pdf_create_blank(length = 4L)
 #' unlink(f) # clean up
 #' @export
-pdf_blank <- function(output = NULL, ..., length = 1L, width = 8.5, height = 11, bg = "white") {
+pdf_create_blank <- function(output = NULL, ..., length = 1L, width = 8.5, height = 11, bg = "white") {
     output <- normalize_output(output)
 
     current_dev <- dev.cur()

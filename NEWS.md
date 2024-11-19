@@ -26,7 +26,7 @@ New features
 Other utility functions:
 
   + `ls_temp_pdfs()` lists temporary pdfs while `rm_temp_pdfs()` removes temporary pdfs.
-  + `pdf_blank()` creates blank pdf files.
+  + `pdf_create_blank()` creates blank pdf files.
   + `pdf_pages()` calculates an integer vector of subset of pdf pages (#9).
   + `pdf_width()` and `pdf_height()` get pdf page dimensions.
 

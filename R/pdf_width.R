@@ -6,7 +6,7 @@
 #' @param units Units to use.  See [grid::unit()].
 #' @param numeric If `TRUE` return numeric else a [grid::unit()] object.
 #' @examples
-#' f <- pdf_blank(width = 8.5, height = 11)
+#' f <- pdf_create_blank(width = 8.5, height = 11)
 #' pdf_width(f)
 #' pdf_height(f, units = "cm")
 #' pdf_height(f, units = "mm", numeric = TRUE)
