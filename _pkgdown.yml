@@ -10,11 +10,11 @@ reference:
       contents:
           - pdf_add_bookmarks
           - pdf_add_origami
+          - pdf_append_blank
           - pdf_clean
           - pdf_compress
           - pdf_gs
           - pdf_pad_pagesize
-          - pdf_pad_length
           - pdf_rm_crosshairs
     - title: "other utilities"
       desc: ''

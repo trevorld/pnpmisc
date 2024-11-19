@@ -1,20 +1,20 @@
-#' Pad pdf with blank pages
+#' Append blank pages to a pdf
 #'
-#' `pdf_pad_length()` pads a pdf document with blank pages.
+#' `pdf_append_blank()` appends blank pages to a pdf.
 #'
 #' @inheritParams pdf_pad_pagesize
 #' @param minimum Final number of pages should be at least this integer.
 #' @param multiples_of Final number of pages should be a multiple of this integer.
 #' @examples
 #' f1 <- pdf_create_blank(length = 1L)
-#' f2 <- pdf_pad_length(f1, multiples_of = 4L)
+#' f2 <- pdf_append_blank(f1, multiples_of = 4L)
 #' qpdf::pdf_length(f2)
 #'
 #' # Clean up
 #' unlink(f1)
 #' unlink(f2)
 #' @export
-pdf_pad_length <- function(input, output = NULL, ..., minimum = 1L, multiples_of = 1L) {
+pdf_append_blank <- function(input, output = NULL, ..., minimum = 1L, multiples_of = 1L) {
     output <- normalize_output(output, input)
     minimum <- as.integer(minimum)
     multiples_of <- as.integer(multiples_of)
