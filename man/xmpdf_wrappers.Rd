@@ -36,7 +36,7 @@ by default \code{output = tempfile(fileext = ".pdf")}, and all other
 arguments must be named.
 }
 \examples{
-f1 <- pdf_blank(length = 2L)
+f1 <- pdf_create_blank(length = 2L)
 
 if (requireNamespace("xmpdf", quietly = TRUE) &&
     xmpdf::supports_set_bookmarks()) {

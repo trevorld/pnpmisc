@@ -6,7 +6,7 @@
 #'         As a side effect copies `input` to `output` and removes temporary pdf files.
 #' @examples
 #' \dontrun{# May delete user files in `tempdir()`
-#' f1 <- pdf_blank()
+#' f1 <- pdf_create_blank()
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' ls_temp_pdfs()
@@ -33,7 +33,7 @@ pdf_clean <- function(input, output = NULL, ...) {
 #' @rdname rm_temp_pdfs
 #' @examples
 #' \dontrun{# May delete user pdf files in `tempdir()`
-#' f1 <- pdf_blank()
+#' f1 <- pdf_create_blank()
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' ls_temp_pdfs()

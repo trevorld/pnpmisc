@@ -28,7 +28,7 @@ Currently only supports \href{https://greggjewell.itch.io/galdors-grip}{Galdor's
 }
 \examples{
 \donttest{# Make take more than 5s
-input <- pdf_blank(length = 2L, width = 11, height = 8.5)
+input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
 output <- pdf_rm_crosshairs(input, pages = "odd")
 unlink(input)
 unlink(output)

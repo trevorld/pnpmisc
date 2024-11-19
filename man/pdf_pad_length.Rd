@@ -21,7 +21,7 @@ pdf_pad_length(input, output = NULL, ..., minimum = 1L, multiples_of = 1L)
 \code{pdf_pad_length()} pads a pdf document with blank pages.
 }
 \examples{
-f1 <- pdf_blank(length = 1L)
+f1 <- pdf_create_blank(length = 1L)
 f2 <- pdf_pad_length(f1, multiples_of = 4L)
 qpdf::pdf_length(f2)
 

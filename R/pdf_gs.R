@@ -7,7 +7,7 @@
 #'             Automatically adds `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
 #' @examples
 #' if (tools::find_gs_cmd()[[1L]] != "") {
-#'   f1 <- pdf_blank()
+#'   f1 <- pdf_create_blank()
 #'   f2 <- pdf_gs(f1)
 #'
 #'   unlink(f1)

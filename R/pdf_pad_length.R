@@ -6,7 +6,7 @@
 #' @param minimum Final number of pages should be at least this integer.
 #' @param multiples_of Final number of pages should be a multiple of this integer.
 #' @examples
-#' f1 <- pdf_blank(length = 1L)
+#' f1 <- pdf_create_blank(length = 1L)
 #' f2 <- pdf_pad_length(f1, multiples_of = 4L)
 #' qpdf::pdf_length(f2)
 #'
@@ -35,7 +35,7 @@ pdf_pad_length <- function(input, output = NULL, ..., minimum = 1L, multiples_of
     if (to_add == 0L) {
         file.copy(input, output, overwrite = TRUE)
     } else {
-        new <- pdf_blank(length = to_add,
+        new <- pdf_create_blank(length = to_add,
                          width = pdf_width(input, numeric = TRUE)[1L],
                          height = pdf_height(input, numeric = TRUE)[1L])
         on.exit(unlink(new), add = TRUE)

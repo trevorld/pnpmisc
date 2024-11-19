@@ -3,7 +3,7 @@ test_that("{xmpdf} wrappers", {
 
     on.exit(rm_temp_pdfs(), add = TRUE)
 
-    f1 <- pdf_blank(length = 2L)
+    f1 <- pdf_create_blank(length = 2L)
 
     skip_if_not(xmpdf::supports_set_bookmarks())
     bm <- data.frame(title = c("Page 1", "Page 2"), page = c(1, 2))

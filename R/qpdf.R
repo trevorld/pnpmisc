@@ -11,7 +11,7 @@
 #' @return `output` filename of new pdf file invisibly.
 #' @seealso [qpdf::pdf_compress()], [qpdf::pdf_rotate_pages()], [qpdf::pdf_subset()]
 #' @examples
-#' f1 <- pdf_blank(width = 6, height = 4)
+#' f1 <- pdf_create_blank(width = 6, height = 4)
 #' f2 <- pdf_compress(f1)
 #' f3 <- pdf_subset(f2, pages = 1L)
 #' f4 <- pdf_rotate_pages(f3, angle = 90)
