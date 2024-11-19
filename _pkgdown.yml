@@ -21,5 +21,6 @@ reference:
       contents:
           - ls_temp_pdfs
           - pdf_create_blank
+          - pdf_orientation
           - pdf_pages
           - pdf_width

@@ -29,6 +29,5 @@ f <- pdf_create_blank(width = 8.5, height = 11)
 pdf_width(f)
 pdf_height(f, units = "cm")
 pdf_height(f, units = "mm", numeric = TRUE)
-
 unlink(f)
 }

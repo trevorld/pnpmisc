@@ -42,23 +42,15 @@ pdf_pad_pagesize <- function(input, output = NULL, ...,
     paper_size <- match.arg(paper_size)
     output <- normalize_output(output, input)
 
-    df_size_orig <- pdftools::pdf_pagesize(input)
-    stopifnot(nrow(df_size_orig) > 0L)
-
     current_dev <- dev.cur()
     if (current_dev > 1) on.exit(dev.set(current_dev), add = TRUE)
 
-    if (df_size_orig$width[1L] > df_size_orig$height[1L]) { # landscape
-        switch(paper_size,
-            A4 = pdf(output, width = 11.7, height = 8.3, bg = bg),
-            letter = pdf(output, width = 11.0, height = 8.5, bg = bg)
-        )
-    } else { # portrait
-        switch(paper_size,
-            A4 = pdf(output, width = 8.3, height = 11.7, bg = bg),
-            letter = pdf(output, width = 8.5, height = 11.0, bg = bg)
-        )
-    }
+    df_size_orig <- pdftools::pdf_pagesize(input)
+    stopifnot(nrow(df_size_orig) > 0L)
+    orientation <- ifelse(df_size_orig$width[1L] > df_size_orig$height[1L],
+                          "landscape", "portrait")
+
+    pdf2(output, paper_size = paper_size, orientation = orientation, bg = bg)
     for (i in seq_len(nrow(df_size_orig))) {
         width <- unit(df_size_orig$width[i], "bigpts")
         height <- unit(df_size_orig$height[i], "bigpts")
@@ -71,4 +63,23 @@ pdf_pad_pagesize <- function(input, output = NULL, ...,
     }
     invisible(dev.off())
     invisible(output)
+}
+
+pdf2 <- function(output, ...,
+                 paper_size = c("letter", "A4"),
+                 orientation = c("portrait", "landscape")) {
+    paper_size <- match.arg(paper_size)
+    orientation <- match.arg(orientation)
+
+    pg_width <- switch(paper_size, letter = LETTER_WIDTH, A4 = A4_WIDTH)
+    pg_height <- switch(paper_size, letter = LETTER_HEIGHT, A4 = A4_HEIGHT)
+
+    if (orientation == "landscape") { # landscape
+        width <- pg_height
+        height <- pg_width
+    } else { # portrait
+        width <- pg_width
+        height <- pg_height
+    }
+    pdf(output, width = width, height = height, ...)
 }
