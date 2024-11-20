@@ -50,7 +50,7 @@ pdf_rm_crosshairs <- function(input, output = NULL, ..., pages = "odd") {
         }
 
         pushViewport(vp)
-        grid::grid.raster(pixmap, interpolate = FALSE)
+        grid.raster(pixmap, interpolate = FALSE)
         popViewport()
     }
     invisible(dev.off())

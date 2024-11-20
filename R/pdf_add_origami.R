@@ -39,7 +39,7 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
         grid.newpage()
         bitmap <- pdftools::pdf_render_page(input, page = i, dpi = dpi, numeric = TRUE)
         pushViewport(vp)
-        grid::grid.raster(bitmap, interpolate = FALSE)
+        grid.raster(bitmap, interpolate = FALSE)
         popViewport()
 
         pdf_add_origami_sbgj()
