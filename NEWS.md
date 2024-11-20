@@ -6,9 +6,6 @@ New features
 
 * The following pdf modification functions:
 
-  + `pdf_add_bookmarks()`, `pdf_add_docinfo()`, and `pdf_add_xmp()` wrap around
-    `{xmpdf}` functions to edit pdf metadata but follow the conventions of this package
-    (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named) (#8).
   + `pdf_add_origami()` adds origami symbols to the pdf.
     Currently only supports adding some origami symbols to
     [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home) (#1).
@@ -22,6 +19,9 @@ New features
   + `pdf_rm_crosshairs()` removes crosshairs from a pdf file.
     Currently only supports removing crosshairs from
     [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP v1, letter) (#7).
+  + `pdf_set_bookmarks()`, `pdf_set_docinfo()`, and `pdf_set_xmp()` wrap around
+    `{xmpdf}` functions to edit pdf metadata but follow the conventions of this package
+    (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named) (#8).
 
 Other utility functions:
 

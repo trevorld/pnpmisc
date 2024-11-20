@@ -15,28 +15,28 @@
 #' if (requireNamespace("xmpdf", quietly = TRUE) &&
 #'     xmpdf::supports_set_bookmarks()) {
 #'   bm <- data.frame(title = c("Page 1", "Page 2"), page = c(1, 2))
-#'   f2 <- pdf_add_bookmarks(f1, bookmarks = bm)
+#'   f2 <- pdf_set_bookmarks(f1, bookmarks = bm)
 #'   unlink(f2)
 #' }
 #'
 #' if (requireNamespace("xmpdf", quietly = TRUE) &&
 #'     xmpdf::supports_set_docinfo()) {
 #'   di <- xmpdf::docinfo(title = "A Title", author = "The Author")
-#'   f3 <- pdf_add_docinfo(f1, docinfo = di)
+#'   f3 <- pdf_set_docinfo(f1, docinfo = di)
 #'   unlink(f3)
 #' }
 #'
 #' if (requireNamespace("xmpdf", quietly = TRUE) &&
 #'     xmpdf::supports_set_xmp()) {
 #'   xmp <- xmpdf::xmp(title = "A Title", creator = "The Author")
-#'   f4 <- pdf_add_xmp(f1, xmp = xmp)
+#'   f4 <- pdf_set_xmp(f1, xmp = xmp)
 #'   unlink(f4)
 #' }
 #' unlink(f1)
 #' @param bookmarks See [xmpdf::set_bookmarks()].
 #' @rdname xmpdf_wrappers
 #' @export
-pdf_add_bookmarks <- function(input, output = NULL, ..., bookmarks) {
+pdf_set_bookmarks <- function(input, output = NULL, ..., bookmarks) {
     stopifnot(requireNamespace("xmpdf", quietly = TRUE))
     output <- normalize_output(output, input)
     xmpdf::set_bookmarks(bookmarks, input, output)
@@ -46,7 +46,7 @@ pdf_add_bookmarks <- function(input, output = NULL, ..., bookmarks) {
 #' @param docinfo See [xmpdf::set_docinfo()].
 #' @rdname xmpdf_wrappers
 #' @export
-pdf_add_docinfo <- function(input, output = NULL, ..., docinfo) {
+pdf_set_docinfo <- function(input, output = NULL, ..., docinfo) {
     stopifnot(requireNamespace("xmpdf", quietly = TRUE))
     output <- normalize_output(output, input)
     xmpdf::set_docinfo(docinfo, input, output)
@@ -56,7 +56,7 @@ pdf_add_docinfo <- function(input, output = NULL, ..., docinfo) {
 #' @param xmp See [xmpdf::set_xmp()].
 #' @rdname xmpdf_wrappers
 #' @export
-pdf_add_xmp <- function(input, output = NULL, ..., xmp) {
+pdf_set_xmp <- function(input, output = NULL, ..., xmp) {
     stopifnot(requireNamespace("xmpdf", quietly = TRUE))
     output <- normalize_output(output, input)
     xmpdf::set_xmp(xmp, input, output)
