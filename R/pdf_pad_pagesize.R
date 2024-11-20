@@ -58,7 +58,7 @@ pdf_pad_pagesize <- function(input, output = NULL, ...,
         grid.newpage()
         bitmap <- pdftools::pdf_render_page(input, page = i, dpi = dpi, numeric = TRUE)
         pushViewport(vp)
-        grid::grid.raster(bitmap, interpolate = FALSE)
+        grid.raster(bitmap, interpolate = FALSE)
         popViewport()
     }
     invisible(dev.off())

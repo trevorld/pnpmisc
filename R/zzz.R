@@ -1,7 +1,5 @@
 #' @importFrom grDevices dev.cur dev.off dev.set pdf
-#' @importFrom grid grid.circle grid.newpage grid.rect grid.segments
-#' @importFrom grid popViewport pushViewport viewport
-#' @importFrom grid convertWidth convertHeight gpar unit
+#' @import grid
 NULL
 
 normalize_output <- function(output, input = NULL) {
