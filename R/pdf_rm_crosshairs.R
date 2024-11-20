@@ -3,7 +3,7 @@
 #' `pdf_rm_crosshairs()` removes unwanted crosshairs.
 #' Currently only supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
 #'
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @inheritParams pdf_pages
 #' @return `output` pdf file name invisibly.
 #'         As a side effect removes from crosshairs from a pdf.
@@ -35,7 +35,7 @@ pdf_rm_crosshairs <- function(input, output = NULL, ..., pages = "odd") {
     else
         invisible(dev.off()) # `convertWidth()` opened device
 
-    pdf(output, width = width_in, height = height_in)
+    pnp_pdf(output, width = width_in, height = height_in)
     for (i in seq_len(nrow(df_size_orig))) {
         width <- unit(df_size_orig$width[i], "bigpts")
         height <- unit(df_size_orig$height[i], "bigpts")

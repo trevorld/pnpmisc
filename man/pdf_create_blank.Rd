@@ -8,6 +8,8 @@ pdf_create_blank(
   output = NULL,
   ...,
   length = 1L,
+  paper = c("special", "letter", "a4"),
+  orientation = c("portrait", "landscape"),
   width = 8.5,
   height = 11,
   bg = "white"
@@ -20,10 +22,13 @@ pdf_create_blank(
 
 \item{length}{Number of pages to create.}
 
-\item{width, height}{the width and height of the graphics region in
-    inches.  The default values are \code{7}.}
+\item{paper}{Paper size.  Either "letter", "a4", or "special".}
 
-\item{bg}{\code{output} pdf background color.  Passed to \code{\link[grDevices:pdf]{grDevices::pdf()}}.}
+\item{orientation}{Either "portrait" or "landscape".  Ignored if \code{paper = "special"}.}
+
+\item{width, height}{Paper size in inches if \code{paper = "special"}.}
+
+\item{bg}{\code{output} pdf background color.}
 }
 \value{
 \code{output} pdf file name invisibly.

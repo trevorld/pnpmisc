@@ -59,18 +59,18 @@ input |> pdf_gs() |>
     pdf_clean(output)
 ```
 
-### `pdf_pad_pagesize()`
+### `pdf_pad_paper()`
 
 * Since "letter" sized paper is shorter but wider than "A4" sized paper some print-and-play files have a
 weird shared page size that is a bit smaller than both "letter" and "A4" paper sizes.
-* `pdf_pad_pagesize()` pads the size of such files to reach the full letter or A4 paper size without scaling the original component images and making sure the original images stay centered in the page (e.g. for "duplex" printing).
+* `pdf_pad_paper()` pads the size of such files to reach the full letter or A4 paper size without scaling the original component images and making sure the original images stay centered in the page (e.g. for "duplex" printing).
 
 ```{r eval=FALSE}
 library("pnpmisc")
 # Download Birdscaping from <https://www.pnparcade.com/products/birdscaping>
 input <- "Birdscaping 1.8 - Front-Back Layout.pdf"
 output <- "birdscaping_cards.pdf"
-pdf_pad_pagesize(input, output)
+pdf_pad_paper(input, output)
 ```
 
 ### `pdf_rm_crosshairs()`

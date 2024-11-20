@@ -13,7 +13,7 @@ reference:
           - pdf_clean
           - pdf_compress
           - pdf_gs
-          - pdf_pad_pagesize
+          - pdf_pad_paper
           - pdf_rm_crosshairs
           - pdf_set_bookmarks
     - title: "Create PDF files"

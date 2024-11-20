@@ -5,7 +5,7 @@
 #' the first two arguments must be `input` and `output`,
 #' by default `output = tempfile(fileext = ".pdf")`, and all other
 #' arguments must be named.
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @param ... Currently ignored.
 #' @return `output` filename of new pdf file invisibly.
 #' @seealso [xmpdf::set_bookmarks()], [xmpdf::set_docinfo()], [xmpdf::set_xmp()]

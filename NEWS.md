@@ -14,7 +14,7 @@ New features
     same name but follow the conventions of this package (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named).
   + `pdf_gs()` processes a pdf file with ghostscript.
   + `pdf_append_blank()` adds blank pages to the end of a pdf file (#10).
-  + `pdf_pad_pagesize()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
+  + `pdf_pad_paper()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
     The original images are **not** rescaled (#5).
   + `pdf_rm_crosshairs()` removes crosshairs from a pdf file.
     Currently only supports removing crosshairs from

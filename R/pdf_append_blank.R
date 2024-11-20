@@ -2,7 +2,7 @@
 #'
 #' `pdf_append_blank()` appends blank pages to a pdf.
 #'
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @param minimum Final number of pages should be at least this integer.
 #' @param multiples_of Final number of pages should be a multiple of this integer.
 #' @examples
@@ -35,9 +35,12 @@ pdf_append_blank <- function(input, output = NULL, ..., minimum = 1L, multiples_
     if (to_add == 0L) {
         file.copy(input, output, overwrite = TRUE)
     } else {
-        new <- pdf_create_blank(length = to_add,
-                         width = pdf_width(input, numeric = TRUE)[1L],
-                         height = pdf_height(input, numeric = TRUE)[1L])
+        new <- pdf_create_blank(
+            length = to_add,
+            width = pdf_width(input, numeric = TRUE)[1L],
+            height = pdf_height(input, numeric = TRUE)[1L],
+            paper = "special"
+        )
         on.exit(unlink(new), add = TRUE)
         qpdf::pdf_combine(c(input, new), output = output)
     }
