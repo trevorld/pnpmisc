@@ -3,7 +3,7 @@
 #' `pdf_add_origami()` adds origami symbols to the pdf.
 #' Currently only supports adding origami symbols to
 #' [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added origami symbols.
 #' @examples
@@ -30,7 +30,7 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
     else
         invisible(dev.off()) # `convertWidth()` opened device
 
-    pdf(output, width = width_in, height = height_in)
+    pnp_pdf(output, width = width_in, height = height_in)
     for (i in seq_len(nrow(df_size_orig))) {
         width <- unit(df_size_orig$width[i], "bigpts")
         height <- unit(df_size_orig$height[i], "bigpts")
@@ -54,7 +54,7 @@ pdf_mock_sbgj <- function(output = NULL) {
     if (current_dev > 1)
         on.exit(dev.set(current_dev), add = TRUE)
 
-    pdf(output, width = 11, height = 8.5)
+    pnp_pdf(output, width = 11, height = 8.5)
 
     width_fb <- unit(4.139, "inches")
     width_s  <- unit(1.052, "inches")

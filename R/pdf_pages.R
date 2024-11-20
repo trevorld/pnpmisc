@@ -2,7 +2,7 @@
 #'
 #' `pdf_pages()` calculates an integer vector of subset of pdf pages.
 #'
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @param pages A positive numeric vector of pages to include,
 #'              a negative numeric vector of pages to exclude,
 #'              or "all", "even", or "odd" to include all pages, just the even pages,

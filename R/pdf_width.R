@@ -2,7 +2,7 @@
 #'
 #' [pdf_width()] and [pdf_height()] get the dimensions of the pdf file pages.
 #' @return If `numeric = TRUE` a numeric vector else a [grid::unit()] object.
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @param units Units to use.  See [grid::unit()].
 #' @param numeric If `TRUE` return numeric else a [grid::unit()] object.
 #' @examples
@@ -38,7 +38,7 @@ pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
 #'
 #' `pdf_orientation()` tells whether a pdf is in portrait
 #' or landscape mode.
-#' @inheritParams pdf_pad_pagesize
+#' @inheritParams pdf_pad_paper
 #' @return A character vector with a length equal to the number of pages in `input`.
 #' @examples
 #' f1 <- pdf_create_blank(width = 8.5, height = 11)
