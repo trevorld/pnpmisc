@@ -5,10 +5,9 @@ development:
 template:
   bootstrap: 5
 reference:
-    - title: "pdf editing utilities"
-      desc: 'The first positional argument is always the input pdf and the second posiitional argument is the output pdf (which always defaults to `tempfile(fileext=".pdf")`).'
+    - title: "Edit PDF files"
+      desc: 'The first positional argument is always the input pdf and the second positional argument is the output pdf (which always defaults to `tempfile(fileext=".pdf")`).'
       contents:
-          - pdf_add_bookmarks
           - pdf_add_origami
           - pdf_append_blank
           - pdf_clean
@@ -16,11 +15,15 @@ reference:
           - pdf_gs
           - pdf_pad_pagesize
           - pdf_rm_crosshairs
-    - title: "other utilities"
+          - pdf_set_bookmarks
+    - title: "Create PDF files"
+      desc: 'The first positional argument is always the output pdf (which always defaults to `tempfile(fileext=".pdf")`).'
+      contents:
+          - pdf_create_blank
+    - title: "Other PDF utilities"
       desc: ''
       contents:
           - ls_temp_pdfs
-          - pdf_create_blank
           - pdf_orientation
           - pdf_pages
           - pdf_width
