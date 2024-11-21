@@ -1,7 +1,7 @@
 # pnpmisc
 
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version/pnpmisc)](https://cran.r-project.org/package=pnpmisc)
-[![R-CMD-check](https://github.com/trevorld/pnpmisc/workflows/R-CMD-check/badge.svg?branch=main)](https://github.com/trevorld/pnpmisc/actions)
+[![R-CMD-check](https://github.com/trevorld/pnpmisc/actions/workflows/R-CMD-check.yaml/badge.svg?branch=main)](https://github.com/trevorld/pnpmisc/actions)
 [![Coverage Status](https://codecov.io/gh/trevorld/pnpmisc/branch/main/graph/badge.svg)](https://app.codecov.io/gh/trevorld/pnpmisc)
 
 ### Table of Contents
