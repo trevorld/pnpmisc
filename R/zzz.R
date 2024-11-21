@@ -2,8 +2,12 @@
 #' @import grid
 NULL
 
-is_odd <- function(x) (x %% 2L) > 0L
 is_even <- function(x) (x %% 2L) == 0L
+is_odd <- function(x) (x %% 2L) > 0L
+is_fill <- function(x) {
+    if (is.grob(x)) return(FALSE)
+    is.na(x) || is.character(x) || inherits(x, "GridPattern")
+}
 
 normalize_output <- function(output, input = NULL) {
     if (is.null(output))

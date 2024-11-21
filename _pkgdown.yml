@@ -20,6 +20,7 @@ reference:
       desc: 'The first positional argument is always the output pdf (which always defaults to `tempfile(fileext=".pdf")`).'
       contents:
           - pdf_create_blank
+          - pdf_create_wallet
     - title: "Other PDF utilities"
       desc: ''
       contents:
