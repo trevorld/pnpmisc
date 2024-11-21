@@ -16,6 +16,8 @@ Imports:
     tools
 Suggests:
     bittermelon,
+    gridpattern,
+    piecepackr,
     testthat,
     xmpdf
 License: MIT + file LICENSE
