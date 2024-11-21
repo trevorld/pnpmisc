@@ -44,7 +44,9 @@ pnp_pdf <- function(output, ...,
         }
     }
     if (capabilities("cairo")[[1L]])
-        grDevices::cairo_pdf(output, width = width, height = height, bg = bg, ...)
+        grDevices::cairo_pdf(output, width = width, height = height,
+                             bg = bg, onefile = TRUE, ...)
     else
-        grDevices::pdf(output, width = width, height = height, bg = bg, ...)
+        grDevices::pdf(output, width = width, height = height,
+                       bg = bg, onefile = TRUE, ...)
 }
