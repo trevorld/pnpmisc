@@ -1,0 +1,12 @@
+test_that("`pdf_create_jacket()`", {
+    on.exit(rm_temp_pdfs(), add = TRUE)
+
+    f1 <- pdf_create_jacket()
+    expect_equal(qpdf::pdf_length(f1), 1L)
+    
+    f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "green")
+    expect_equal(qpdf::pdf_length(f2), 1L)
+
+    f3 <- pdf_create_jacket(front = nullGrob(), back = nullGrob(), spine = nullGrob())
+    expect_equal(qpdf::pdf_length(f3), 1L)
+})

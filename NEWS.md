@@ -23,10 +23,11 @@ New features
     `{xmpdf}` functions to edit pdf metadata but follow the conventions of this package
     (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named) (#8).
 
-Other utility functions:
+* Other utility functions:
 
   + `ls_temp_pdfs()` lists temporary pdfs while `rm_temp_pdfs()` removes temporary pdfs.
   + `pdf_create_blank()` creates blank pdf files.
+  + `pdf_create_jacket()` creates 4x6 photo box jacket pdf files (#16).
   + `pdf_create_wallet()` creates origami wallet pdf files (#4).
   + `pdf_orientation()` tells whether a pdf is in portrait or landscape mode.
   + `pdf_pages()` calculates an integer vector of subset of pdf pages (#9).
