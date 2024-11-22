@@ -30,6 +30,11 @@ reference:
           - pdf_pages
           - pdf_render_raster
           - pdf_width
+    - title: "Layout data frames"
+      desc: ''
+      contents:
+          - layout_grid
+          - layout_preset
     - title: "{bittermelon} pixmap object utilities"
       desc: ''
       contents:
