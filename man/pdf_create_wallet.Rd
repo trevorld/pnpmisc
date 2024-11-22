@@ -68,7 +68,6 @@ trim the edges with a cutting tool
 }
 }
 \examples{
-
 # Template `front`, `back`, and `spine`
 f1 <- pdf_create_wallet()
 unlink(f1)

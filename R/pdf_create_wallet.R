@@ -39,7 +39,6 @@
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a print-and-play card wallet pdf file.
 #' @examples
-#'
 #' # Template `front`, `back`, and `spine`
 #' f1 <- pdf_create_wallet()
 #' unlink(f1)

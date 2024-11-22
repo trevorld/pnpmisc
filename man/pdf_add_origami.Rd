@@ -25,7 +25,7 @@ Currently only supports adding origami symbols to
 \href{https://sites.google.com/view/boardgamebarrio/home}{Boardgame Barrio's Small Board Game Jackets}.
 }
 \examples{
-f1 <- pnpmisc:::pdf_mock_sbgj()
+f1 <- pnpmisc:::pdf_create_mock_sbgj()
 f2 <- pdf_add_origami(f1)
 
 unlink(f1)

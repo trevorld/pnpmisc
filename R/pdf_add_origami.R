@@ -7,7 +7,7 @@
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added origami symbols.
 #' @examples
-#' f1 <- pnpmisc:::pdf_mock_sbgj()
+#' f1 <- pnpmisc:::pdf_create_mock_sbgj()
 #' f2 <- pdf_add_origami(f1)
 #'
 #' unlink(f1)
@@ -42,52 +42,19 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
         grid.raster(bitmap, interpolate = FALSE)
         popViewport()
 
-        pdf_add_origami_sbgj()
+        xc <- unit(0.5, "npc") - unit(0.7, "mm")
+        yc <- unit(0.5, "npc") - unit(1.45, "mm")
+        draw_jacket_origami(xc, yc)
     }
     invisible(dev.off())
     invisible(output)
 }
 
-pdf_mock_sbgj <- function(output = NULL) {
-    output <- normalize_output(output)
-    current_dev <- dev.cur()
-    if (current_dev > 1)
-        on.exit(dev.set(current_dev), add = TRUE)
+draw_jacket_origami <- function(xc = unit(0.5, "npc"), yc = unit(0.5, "npc")) {
 
-    pnp_pdf(output, width = 11, height = 8.5)
-
-    width_fb <- unit(4.139, "inches")
-    width_s  <- unit(1.052, "inches")
-    height   <- unit(6.141, "inches")
-    xc <- unit(0.5, "npc") - unit(0.7, "mm")
-    yc <- unit(0.5, "npc") - unit(1.45, "mm")
-
-    xo_edge <- width_fb + 0.5 * width_s
-    xo_fold <- 0.5 * width_s
-    xo_target <- width_fb - 0.5 * width_s
-    yo_edge <- 0.5 * height
-    yo_dotdash <- yo_edge + unit(2.0, "cm")
-    yo_circle <- yo_edge + unit(2.0, "mm")
-
-    grid.rect(x = xc, y = yc,
-        width = 2 * width_fb + width_s, height = height,
-        gp = gpar(col = NA, fill = "grey"))
-    grid.rect(x = xc, y = yc,
-        width = width_s, height = height,
-        gp = gpar(col = NA, fill = "black"))
-
-    invisible(dev.off())
-
-    invisible(output)
-}
-
-pdf_add_origami_sbgj <- function() {
-
-    width_fb <- unit(4.139, "inches")
-    width_s  <- unit(1.052, "inches")
-    height   <- unit(6.141, "inches")
-    xc <- unit(0.5, "npc") - unit(0.7, "mm")
-    yc <- unit(0.5, "npc") - unit(1.45, "mm")
+    width_fb <- unit(JACKET_FACE_WIDTH, "inches")
+    width_s  <- unit(JACKET_SPINE_WIDTH, "inches")
+    height   <- unit(JACKET_HEIGHT, "inches")
 
     # Line up our calculated crop/fold marks with their crop/fold marks
     # piecepackr::grid.cropmark(x = xc, y = yc,
