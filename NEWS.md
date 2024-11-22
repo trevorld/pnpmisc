@@ -37,6 +37,13 @@ New features
   + `pdf_render_raster()` renders a PDF page as a `raster` or `nativeRaster` object.
   + `pdf_width()` and `pdf_height()` get pdf page dimensions.
 
+* Layout data frame functions:
+
+  + `layout_grid()` calculates a layout data frame
+    for a grid of identically sized print-and-play components.
+  + `layout_preset()` calculates a layout data frame for a named preset.
+  + `layout_names()` returns the supported layout presets.
+
 * `{bittermelon}` pixmap object functions:
 
   + `pdf_render_bm_pixmap()` renders a PDF page as a `bittermelon::bm_pixmap()` object.
