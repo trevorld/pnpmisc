@@ -1,13 +1,14 @@
-#' Create 4x6 photo box jacket
+#' Create printable 4x6 photo box jacket pdf
 #' 
-#' `pdf_create_jacket()` creates print-and-play 4x6 photo box jacket.
+#' `pdf_create_jacket()` creates a printable 4x6 photo box jacket.
 #'
-#' To make the 4x6 photo wallets from the pdf files:
+#' To make the 4x6 photo jacket from the pdf file:
 #'
-#' 1. Print out
+#' 1. Print it out
 #' 2. Use the crop marks to trim off the left and right edge
 #' 3. Make the two indicated mountain folds on both sides of the spine
 #' 4. Trim off the top and bottom edge
+#' 5. Insert into the 4x6 photo box
 #'
 #' @export
 #' @inheritParams pdf_pad_paper
@@ -48,6 +49,7 @@
 #'                           spine = rhombille, bleed = TRUE)
 #'   unlink(f3)
 #' }
+#' @seealso [pdf_add_origami()] to add origami symbols to pre-existing [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
 #' @export
 pdf_create_jacket <- function(output = NULL, ...,
                               front = NULL,

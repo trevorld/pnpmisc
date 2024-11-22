@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_create_wallet.R
 \name{pdf_create_wallet}
 \alias{pdf_create_wallet}
-\title{Create print-and-play card wallet pdfs}
+\title{Create print-and-play card wallet pdf}
 \usage{
 pdf_create_wallet(
   output = NULL,

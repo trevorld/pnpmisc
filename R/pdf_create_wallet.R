@@ -1,4 +1,4 @@
-#' Create print-and-play card wallet pdfs
+#' Create print-and-play card wallet pdf
 #'
 #' `pdf_create_wallet()` creates print-and-play card origami wallets pdfs.
 #'
