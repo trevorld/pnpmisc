@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_create_jacket.R
 \name{pdf_create_jacket}
 \alias{pdf_create_jacket}
-\title{Create 4x6 photo box jacket}
+\title{Create printable 4x6 photo box jacket pdf}
 \usage{
 pdf_create_jacket(
   output = NULL,
@@ -39,15 +39,16 @@ If \code{NULL} (default) we draw a template.}
 \item{paper}{Paper size.  Either "letter", "a4", or "special".}
 }
 \description{
-\code{pdf_create_jacket()} creates print-and-play 4x6 photo box jacket.
+\code{pdf_create_jacket()} creates a printable 4x6 photo box jacket.
 }
 \details{
-To make the 4x6 photo wallets from the pdf files:
+To make the 4x6 photo jacket from the pdf file:
 \enumerate{
-\item Print out
+\item Print it out
 \item Use the crop marks to trim off the left and right edge
 \item Make the two indicated mountain folds on both sides of the spine
 \item Trim off the top and bottom edge
+\item Insert into the 4x6 photo box
 }
 }
 \examples{
@@ -72,4 +73,7 @@ if (require("gridpattern", quietly = TRUE)) {
                           spine = rhombille, bleed = TRUE)
   unlink(f3)
 }
+}
+\seealso{
+\code{\link[=pdf_add_origami]{pdf_add_origami()}} to add origami symbols to pre-existing \href{https://sites.google.com/view/boardgamebarrio/home}{Boardgame Barrio's Small Board Game Jackets}.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_create_blank.R
 \name{pdf_create_blank}
 \alias{pdf_create_blank}
-\title{Create blank pdf pages}
+\title{Create pdf of blank pages}
 \usage{
 pdf_create_blank(
   output = NULL,

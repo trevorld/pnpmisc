@@ -1,4 +1,4 @@
-#' Create blank pdf pages
+#' Create pdf of blank pages
 #'
 #' `pdf_create_blank()` creates blank pdf pages.
 #'
