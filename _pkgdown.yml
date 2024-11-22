@@ -38,4 +38,5 @@ reference:
     - title: "{bittermelon} pixmap object utilities"
       desc: ''
       contents:
+          - bm_crop_layout
           - pdf_render_bm_pixmap

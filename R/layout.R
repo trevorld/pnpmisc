@@ -28,26 +28,26 @@ layout_grid <- function(nrow = 2L, ncol = 1L,
         x <- xc
     } else if (is_odd(ncol)) {
         m <- ceiling(ncol / 2)
-        xl <- rev(seq(from = xc, by = -(width + bleed), length.out = m)[-1L])
-        xr <- seq(from = xc, by = (width + bleed), length.out = m)[-1L]
+        xl <- rev(seq(from = xc, by = -(width + 2 * bleed), length.out = m)[-1L])
+        xr <- seq(from = xc, by = (width + 2 * bleed), length.out = m)[-1L]
         x <- c(xl, xc, xr)
     } else {
         m <- ncol / 2
-        xl <- rev(seq(from = xc - 0.5 * (width + bleed), by = -(width + bleed), length.out = m))
-        xr <- seq(from = xc + 0.5 * (width + bleed), by = (width + bleed), length.out = m)
+        xl <- rev(seq(from = xc - 0.5 * (width + 2 * bleed), by = -(width + 2 * bleed), length.out = m))
+        xr <- seq(from = xc + 0.5 * (width + 2 * bleed), by = (width + 2 * bleed), length.out = m)
         x <- c(xl, xr)
     }
     if (nrow == 1L) {
         y <- yc
     } else if (is_odd(nrow)) {
         m <- ceiling(nrow / 2)
-        yl <- rev(seq(from = yc, by = -(height + bleed), length.out = m)[-1L])
-        yr <- seq(from = yc, by = (height + bleed), length.out = m)[-1L]
+        yl <- rev(seq(from = yc, by = -(height + 2 * bleed), length.out = m)[-1L])
+        yr <- seq(from = yc, by = (height + 2 * bleed), length.out = m)[-1L]
         y <- c(yl, yc, yr)
     } else {
         m <- nrow / 2
-        yl <- rev(seq(from = yc - 0.5 * (height + bleed), by = -(height + bleed), length.out = m))
-        yr <- seq(from = yc + 0.5 * (height + bleed), by = (height + bleed), length.out = m)
+        yl <- rev(seq(from = yc - 0.5 * (height + 2 * bleed), by = -(height + 2 * bleed), length.out = m))
+        yr <- seq(from = yc + 0.5 * (height + 2 * bleed), by = (height + 2 * bleed), length.out = m)
         y <- c(yl, yr)
     }
     data.frame(row = rep(seq.int(nrow), each = ncol),
@@ -72,19 +72,21 @@ layout_grid <- function(nrow = 2L, ncol = 1L,
 layout_preset <- function(name = "button_shy_cards") {
     name <- match.arg(name, layout_names())
     switch(name,
-           button_shy_cards = layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.25)
+           button_shy_cards = layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125),
+           button_shy_rules = layout_grid(nrow = 2L, ncol = 4L)
            )
 }
 
 #' @rdname layout_preset
 #' @export
-layout_names <- function() c("button_shy_cards")
+layout_names <- function() c("button_shy_cards", "button_shy_rules")
 
 # To check fit of presets try something like
 # vp = viewport(width = unit(11, "in"), height = unit(8.5, "in"))
 # pm = pdf_render_bm_pixmap("tmp/A Nice Cuppa - PNP.pdf", page = 2)
-# df = layout_grid(nrow = 2, ncol = 3, height = 3.447, width = 2.469, bleed = 0.25)
-# grid.newpage(); pushViewport(vp); grid.raster(pm); draw_layout(df)
+# # df = layout_grid(nrow = 2, ncol = 3, height = 3.447, width = 2.469, bleed = 0.125)
+# df = layout_preset("button_shy_cards")
+# grid.newpage(); pushViewport(vp); grid.raster(pm); draw_layout(df, NA, "red")
 
 draw_hline <- function(y = unit(0.5, "npc"), ...) {
     grid.segments(x0 = unit(0, "npc"), x1 = unit(1, "npc"),

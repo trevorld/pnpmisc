@@ -47,3 +47,4 @@ New features
 * `{bittermelon}` pixmap object functions:
 
   + `pdf_render_bm_pixmap()` renders a PDF page as a `bittermelon::bm_pixmap()` object.
+  + `bm_crop_layout()` crops out a print-and-play component from a layout.
