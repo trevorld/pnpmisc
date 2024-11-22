@@ -38,6 +38,8 @@ As a side effect creates a blank pdf file.
 \code{pdf_create_blank()} creates blank pdf pages.
 }
 \examples{
-f <- pdf_create_blank(length = 4L)
-unlink(f) # clean up
+f1 <- pdf_create_blank(paper = "a4", orientation = "landscape")
+f2 <- pdf_create_blank(length = 4L)
+unlink(f1)
+unlink(f2)
 }

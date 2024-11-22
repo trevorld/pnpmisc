@@ -28,4 +28,9 @@ reference:
           - ls_temp_pdfs
           - pdf_orientation
           - pdf_pages
+          - pdf_render_raster
           - pdf_width
+    - title: "{bittermelon} pixmap object utilities"
+      desc: ''
+      contents:
+          - pdf_render_bm_pixmap

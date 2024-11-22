@@ -20,6 +20,21 @@ normalize_output <- function(output, input = NULL) {
     output
 }
 
+paper_width <- function(paper, orientation = "portrait") {
+    if (orientation == "portrait") {
+        switch(paper, letter = LETTER_WIDTH, a4 = A4_WIDTH)
+    } else { # landscape
+        paper_height(paper)
+    }
+}
+paper_height <- function(paper, orientation = "portrait") {
+    if (orientation == "portrait") {
+        switch(paper, letter = LETTER_HEIGHT, a4 = A4_HEIGHT)
+    } else { # landscape
+        paper_width(paper)
+    }
+}
+
 # Handle both `paper`/`orientation` or `width`/`height`
 # Prefer `cairo_pdf()` if available since better pattern fill support (e.g. wallets)
 pnp_pdf <- function(output, ...,
@@ -31,17 +46,8 @@ pnp_pdf <- function(output, ...,
     paper <- match.arg(paper)
     if (paper != "special" ) {
         orientation <- match.arg(orientation)
-
-        pg_width <- switch(paper, letter = LETTER_WIDTH, a4 = A4_WIDTH)
-        pg_height <- switch(paper, letter = LETTER_HEIGHT, a4 = A4_HEIGHT)
-
-        if (orientation == "landscape") { # landscape
-            width <- pg_height
-            height <- pg_width
-        } else { # portrait
-            width <- pg_width
-            height <- pg_height
-        }
+        width <- paper_width(paper, orientation)
+        height <- paper_height(paper, orientation)
     }
     if (capabilities("cairo")[[1L]])
         grDevices::cairo_pdf(output, width = width, height = height,

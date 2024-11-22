@@ -9,8 +9,10 @@
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a blank pdf file.
 #' @examples
-#' f <- pdf_create_blank(length = 4L)
-#' unlink(f) # clean up
+#' f1 <- pdf_create_blank(paper = "a4", orientation = "landscape")
+#' f2 <- pdf_create_blank(length = 4L)
+#' unlink(f1)
+#' unlink(f2)
 #' @export
 pdf_create_blank <- function(output = NULL, ...,
                              length = 1L,
