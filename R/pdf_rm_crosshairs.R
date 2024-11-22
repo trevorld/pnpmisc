@@ -37,21 +37,17 @@ pdf_rm_crosshairs <- function(input, output = NULL, ..., pages = "odd") {
 
     pnp_pdf(output, width = width_in, height = height_in)
     for (i in seq_len(nrow(df_size_orig))) {
-        width <- unit(df_size_orig$width[i], "bigpts")
-        height <- unit(df_size_orig$height[i], "bigpts")
-        vp <- viewport(width = width, height = height)
-
         grid.newpage()
-        bitmap <- pdftools::pdf_render_page(input, page = i, dpi = 300, numeric = TRUE)
-        pixmap <- bittermelon::as_bm_pixmap(bitmap)
 
+        pixmap <- pdf_render_bm_pixmap(input, page = i)
         if (i %in% pages) {
             pixmap <- pdf_rm_crosshairs_galdors_grip(pixmap, page = i)
         }
 
-        pushViewport(vp)
-        grid.raster(pixmap, interpolate = FALSE)
-        popViewport()
+        width <- unit(df_size_orig$width[i], "bigpts")
+        height <- unit(df_size_orig$height[i], "bigpts")
+        vp <- viewport(width = width, height = height)
+        grid.raster(pixmap, interpolate = FALSE, vp = vp)
     }
     invisible(dev.off())
     invisible(output)
