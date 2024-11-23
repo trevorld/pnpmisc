@@ -5,7 +5,7 @@ NULL
 is_even <- function(x) (x %% 2L) == 0L
 is_odd <- function(x) (x %% 2L) > 0L
 is_fill <- function(x) {
-    if (is.grob(x)) return(FALSE)
+    if (is.grob(x) || inherits(x, "gList")) return(FALSE)
     is.na(x) || is.character(x) || inherits(x, "GridPattern")
 }
 
