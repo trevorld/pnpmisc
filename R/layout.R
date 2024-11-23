@@ -7,7 +7,7 @@
 #' @param paper,orientation print-and-play paper size and orientation
 #' @examples
 #' # Button Shy card layout
-#' layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.25)
+#' layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
 #' @return A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
 #' @export
 layout_grid <- function(nrow = 2L, ncol = 1L,

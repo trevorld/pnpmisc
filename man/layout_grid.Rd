@@ -30,5 +30,5 @@ for a grid of identically sized print-and-play components.
 }
 \examples{
 # Button Shy card layout
-layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.25)
+layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
 }
