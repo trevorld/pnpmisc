@@ -61,6 +61,36 @@ input |> pdf_gs() |>
     pdf_clean(output)
 ```
 
+### `pdf_create_wallet()`
+
+* I like to store my smaller print-and-play card games (i.e. up to 36 cards or so) in an origami card wallet.
+* `pdf_create_wallet()` can create a customizable print-and-play layout for an origami card wallet.
+
+
+``` r
+library("bittermelon")
+library("grid")
+library("gridpattern")
+library("pnpmisc")
+# Download "A Nice Cuppa"
+# <https://www.pnparcade.com/collections/button-shy-games>
+input <- "A Nice Cuppa - PNP.pdf"
+output <- "a_nice_cuppa_wallet.pdf"
+bm_cover <- pdf_render_bm_pixmap(input, page = 1L) |>
+  bm_crop_layout(layout = "button_shy_rules", row = 1L, col = 4L)
+bm_sip <- pdf_render_bm_pixmap(input, page = 4L) |>
+  bm_crop_layout(layout = "button_shy_cards", row = 1L, col = 1L)
+bm_back <- pdf_render_bm_pixmap(input, page = 5L) |>
+  bm_crop_layout(layout = "button_shy_cards", row = 1L, col = 1L) |>
+  bm_rotate(90)
+herringbone <- patternGrob("polygon_tiling", type = "herringbone",
+                           angle = 45, fill = "#8A624A", spacing = 0.1)
+front <- gList(herringbone, rasterGrob(bm_cover, width = unit(1.8, "in")))
+back <- gList(herringbone, rasterGrob(bm_sip, width = unit(1.8, "in")))
+spine <- rasterGrob(bm_back, width = unit(8.25, "in"))
+pdf_create_wallet(output, front = front, back = back, spine = spine, bleed = 0.125)
+```
+
 ### `pdf_pad_paper()`
 
 * Since "letter" sized paper is shorter but wider than "A4" sized paper some print-and-play files have a
