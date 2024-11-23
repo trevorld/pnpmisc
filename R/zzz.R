@@ -1,5 +1,6 @@
 #' @importFrom grDevices dev.cur dev.off dev.set
 #' @import grid
+#' @importFrom stats median quantile
 NULL
 
 is_even <- function(x) (x %% 2L) == 0L

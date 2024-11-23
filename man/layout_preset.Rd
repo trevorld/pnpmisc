@@ -20,6 +20,16 @@ A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "p
 for a named preset.
 \code{layout_names()} returns the supported layout presets.
 }
+\details{
+Unless otherwise indicated assumes letter-sized paper.  Supports the following presets:
+
+\describe{
+\item{button_shy_cards}{\href{https://buttonshygames.com/collections/pnps}{Button Shy Games} PnP cards.}
+\item{button_shy_rules}{\href{https://buttonshygames.com/collections/pnps}{Button Shy Games} PnP rule booklet pages.}
+\item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip}.}
+\item{poker_4x2}{Poker-sized cards (2.5" by 3.5") in 4 columns of 2 cards (landscape) with zero bleed around each card.  Examples of PnP games using this layout include the \href{https://www.decktet.com/getit.php}{Decktet}.}
+}
+}
 \examples{
 layout_preset("button_shy_cards")
 layout_names()

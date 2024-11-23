@@ -63,6 +63,16 @@ layout_grid <- function(nrow = 2L, ncol = 1L,
 #' `layout_preset()` calculates a layout data frame
 #' for a named preset.
 #' `layout_names()` returns the supported layout presets.
+#'
+#' Unless otherwise indicated assumes letter-sized paper.  Supports the following presets:
+#'
+#' \describe{
+#' \item{button_shy_cards}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP cards.}
+#' \item{button_shy_rules}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP rule booklet pages.}
+#' \item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include [Galdor's Grip](https://greggjewell.itch.io/galdors-grip).}
+#' \item{poker_4x2}{Poker-sized cards (2.5" by 3.5") in 4 columns of 2 cards (landscape) with zero bleed around each card.  Examples of PnP games using this layout include the [Decktet](https://www.decktet.com/getit.php).}
+#' }
+#'
 #' @param name Preset name.  Must be in `layout_names()`.
 #' @examples
 #' layout_preset("button_shy_cards")
@@ -73,19 +83,22 @@ layout_preset <- function(name = "button_shy_cards") {
     name <- match.arg(name, layout_names())
     switch(name,
            button_shy_cards = layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125),
-           button_shy_rules = layout_grid(nrow = 2L, ncol = 4L)
+           button_shy_rules = layout_grid(nrow = 2L, ncol = 4L),
+           poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125),
+           poker_4x2 = layout_grid(nrow = 2L, ncol = 4L)
            )
 }
 
 #' @rdname layout_preset
 #' @export
-layout_names <- function() c("button_shy_cards", "button_shy_rules")
+layout_names <- function() c("button_shy_cards", "button_shy_rules",
+                             "poker_3x2_bleed", "poker_4x2")
 
 # To check fit of presets try something like
 # vp = viewport(width = unit(11, "in"), height = unit(8.5, "in"))
-# pm = pdf_render_bm_pixmap("tmp/A Nice Cuppa - PNP.pdf", page = 2)
-# # df = layout_grid(nrow = 2, ncol = 3, height = 3.447, width = 2.469, bleed = 0.125)
-# df = layout_preset("button_shy_cards")
+# pm = pdf_render_bm_pixmap("tmp/decktet.pdf", page = 2)
+# # df = layout_grid(nrow = 2, ncol = 4, height = 3.500, width = 2.500)
+# df = layout_preset("poker_4x2")
 # grid.newpage(); pushViewport(vp); grid.raster(pm); draw_layout(df, NA, "red")
 
 draw_hline <- function(y = unit(0.5, "npc"), ...) {

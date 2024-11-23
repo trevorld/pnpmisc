@@ -112,8 +112,9 @@ pdf_pad_paper(input, output)
 
 * Since there may be some font-back printing drift when duplex printing cards
   I prefer only crosshairs on one side of the double-sided leaf so the both sides of the cards look clean after removing the corners.
-* `pdf_rm_crosshairs()` removes the crosshairs from [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (v1, letter).
-* By default removes the crosshairs from the odd pages but can also remove them from the even pages.
+* `pdf_rm_crosshairs()` removes the crosshairs from a PnP layout with a solid color bleed.
+* By default removes the crosshairs from the odd pages but can also remove them from the even pages (or any subset supported by `pdf_pages()`).
+* The default `layout` supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (v1, letter).
 
 
 ``` r

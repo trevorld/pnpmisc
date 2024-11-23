@@ -4,7 +4,14 @@
 \alias{bm_crop_layout}
 \title{Crop out a component from a print-and-play layout}
 \usage{
-bm_crop_layout(page, ..., layout = "button_shy_cards", row = 1L, col = 1L)
+bm_crop_layout(
+  page,
+  ...,
+  layout = "button_shy_cards",
+  row = 1L,
+  col = 1L,
+  bleed = FALSE
+)
 }
 \arguments{
 \item{page}{A \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} object representing a print-and-play layout page.
@@ -16,6 +23,8 @@ Often the output from \code{\link[=pdf_render_bm_pixmap]{pdf_render_bm_pixmap()}
 with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
 
 \item{row, col}{The \code{row} and \code{col} of the component in the layout (integers).}
+
+\item{bleed}{Include the bleed (if available).}
 }
 \value{
 A \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} object.

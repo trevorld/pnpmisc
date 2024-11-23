@@ -4,7 +4,14 @@
 \alias{pdf_rm_crosshairs}
 \title{Remove crosshairs}
 \usage{
-pdf_rm_crosshairs(input, output = NULL, ..., pages = "odd")
+pdf_rm_crosshairs(
+  input,
+  output = NULL,
+  ...,
+  layout = "poker_3x2_bleed",
+  pages = "odd",
+  dpi = 300
+)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -13,10 +20,15 @@ pdf_rm_crosshairs(input, output = NULL, ..., pages = "odd")
 
 \item{...}{Ignored.}
 
+\item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
+with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
+
 \item{pages}{A positive numeric vector of pages to include,
 a negative numeric vector of pages to exclude,
 or "all", "even", or "odd" to include all pages, just the even pages,
 or just the odd pages.}
+
+\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
 }
 \value{
 \code{output} pdf file name invisibly.
@@ -24,13 +36,17 @@ As a side effect removes from crosshairs from a pdf.
 }
 \description{
 \code{pdf_rm_crosshairs()} removes unwanted crosshairs.
-Currently only supports \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip} (PnP letter size v1).
+}
+\details{
+\itemize{
+\item In order to work the PnP layout needs a solid color bleed.
+\item The default layout supports \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip} (PnP letter size v1).
+\item The original pdf document will be rasterized.
+}
 }
 \examples{
-\donttest{# Make take more than 5s
 input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
-output <- pdf_rm_crosshairs(input, pages = "odd")
+output <- pdf_rm_crosshairs(input, pages = "odd", dpi = 75)
 unlink(input)
 unlink(output)
-}
 }
