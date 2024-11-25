@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_add_crosshairs.R
 \name{pdf_add_crosshairs}
 \alias{pdf_add_crosshairs}
-\title{Add crosshairs}
+\title{Add crosshairs to a pdf}
 \usage{
 pdf_add_crosshairs(
   input,
@@ -35,7 +35,7 @@ or just the odd pages.}
 As a side effect removes from crosshairs from a pdf.
 }
 \description{
-\code{pdf_add_crosshairs()} adds crosshairs.
+\code{pdf_add_crosshairs()} adds crosshairs to the corners of components of a print-and-play layout.
 }
 \details{
 \itemize{

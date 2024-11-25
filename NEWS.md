@@ -10,6 +10,7 @@ New features
   + `pdf_add_origami()` adds origami symbols to the pdf.
     Currently only supports adding some origami symbols to
     [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home) (#1).
+  + `pdf_add_rects()` adds (round)rects to the pdf (#6).
   + `pdf_clean()` copies pdf file while removing temporary pdf files.
   + `pdf_compress()`, `pdf_rotate_pages()`, and `pdf_subset()` wrap the `{qpdf}` functions of the
     same name but follow the conventions of this package (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named).

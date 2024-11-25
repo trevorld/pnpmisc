@@ -1,4 +1,4 @@
-#' Add origami symbols to pdf
+#' Add origami symbols to a pdf
 #'
 #' `pdf_add_origami()` adds origami symbols to the pdf.
 #' Currently only supports adding origami symbols to

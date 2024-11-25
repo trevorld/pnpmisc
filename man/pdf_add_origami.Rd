@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_add_origami.R
 \name{pdf_add_origami}
 \alias{pdf_add_origami}
-\title{Add origami symbols to pdf}
+\title{Add origami symbols to a pdf}
 \usage{
 pdf_add_origami(input, output = NULL, ..., dpi = 300)
 }
