@@ -59,6 +59,29 @@ input |> pdf_subset(pages = -1L) |>
 rm_temp_pdfs()
 ```
 
+### `pdf_add_rects()`
+
+* Border lines don't look very clean when manually cutting cards out.
+  Instead I'd prefer no border lines and instead some crosshairs on the card corners of one side
+  (which will get cleanly removed after cutting the corners off).
+* If the PnP layout has a white background you sometimes can "remove" unwanted border lines by
+  covering them up with new white border lines.
+
+
+``` r
+library("piecepackr")
+library("pnpmisc")
+# Download Mini Rogue (Original)
+# <https://boardgamegeek.com/boardgame/199242/mini-rogue-a-roguelike-microgame/files>
+input <- "Mini_Rogue_-_Cards_v1.2.1.pdf"
+output <- "mini_rogue_cards.pdf"
+input |> pdf_subset(pages = 1:2) |>
+    pdf_add_rects(layout = "poker_3x3", 
+                  gp = grid::gpar(fill = NA, col = "white", lwd = 2)) |>
+    pdf_add_crosshairs(output, pages = 2L, layout = "poker_3x3")
+rm_temp_pdfs()
+```
+
 ### `pdf_add_origami()`
 
 * Sometimes when folding paper with a tool like a bone folder it is easier to fold if you

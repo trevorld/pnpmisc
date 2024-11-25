@@ -1,32 +1,31 @@
-#' Add crosshairs to a pdf
+#' Add (round)rects to a pdf
 #'
-#' `pdf_add_crosshairs()` adds crosshairs to the corners of components of a print-and-play layout.
+#' `pdf_add_rects()` adds (round)rects around components of a print-and-play layout.
 #'
-#' * The default layout supports Button Shy games.
-#' * The original pdf document will be rasterized.
+#' * Sometimes if you use the same color as a solid background color
+#'   this can be used to effectively "remove" unwanted card outlines.
 #'
 #' @inheritParams pdf_pad_paper
-#' @inheritParams pdf_pages
-#' @inheritParams bm_crop_layout
-#' @param ... Passed to [piecepackr::grid.crosshair()].
+#' @inheritParams pdf_add_crosshairs
+#' @param r,gp Passed to [grid::grid.roundrect()].
+#' @param ... Ignored for now.
 #' @return `output` pdf file name invisibly.
-#'         As a side effect removes from crosshairs from a pdf.
+#'         As a side effect creates pdf file with added origami symbols.
 #' @examples
-#' if (requireNamespace("piecepackr", quietly = TRUE) &&
-#'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
-#'   input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
-#'   output <- pdf_add_crosshairs(input, pages = "odd",
-#'                                layout = "button_shy_cards", dpi = 75)
-#'   unlink(input)
-#'   unlink(output)
-#' }
+#' f1 <- pdf_create_blank(length = 2L, paper = "letter")
+#' f2 <- pdf_add_rects(f1, layout = "poker_3x3", dpi = 75)
+#' # "Remove" unwanted card border lines by covering up with white
+#' f3 <- pdf_add_rects(f2, layout = "poker_3x3", dpi = 75, 
+#'                     gp = grid::gpar(col = "white", fill = NA, lwd = 2))
+#' unlink(f1)
+#' unlink(f2)
+#' unlink(f3)
 #' @export
-pdf_add_crosshairs <- function(input, output = NULL, ...,
-                              layout = "button_shy_cards",
-                              pages = "even",
-                              dpi = 300) {
-    stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-    stopifnot(utils::packageVersion("piecepackr") >= "1.14.0-5")
+pdf_add_rects <- function(input, output = NULL, ...,
+                          layout = "poker_3x3",
+                          pages = "all", dpi = 300,
+                          r = unit(0, "in"),
+                          gp = gpar(col = "black", fill = NA, lwd = 1)) {
     current_dev <- dev.cur()
 
     pages <- pdf_pages(input, pages = pages)
@@ -55,18 +54,16 @@ pdf_add_crosshairs <- function(input, output = NULL, ...,
         height <- unit(df_size_orig$height[i], "bigpts")
         vp <- viewport(width = width, height = height)
 
-        r <- pdf_render_raster(input, page = i, dpi = dpi)
-        grid.raster(r, interpolate = FALSE, vp = vp)
+        raster <- pdf_render_raster(input, page = i, dpi = dpi)
+        grid.raster(raster, interpolate = FALSE, vp = vp)
 
         pixmap <- pdf_render_bm_pixmap(input, page = i, dpi = dpi)
         if (i %in% pages) {
             for (j in seq_len(nrow(layout))) {
-                # draw_layout(layout, NA, "red")
-
-                piecepackr::grid.crosshair(
+                grid.roundrect(
                     x = layout$x[j], y = layout$y[j],
                     width = layout$width[j], height = layout$height[j],
-                    default.units = "in", ...
+                    default.units = "in", r = r, gp = gp
                 )
             }
         }
