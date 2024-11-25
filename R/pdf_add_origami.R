@@ -32,15 +32,12 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
 
     pnp_pdf(output, width = width_in, height = height_in)
     for (i in seq_len(nrow(df_size_orig))) {
+        grid.newpage()
         width <- unit(df_size_orig$width[i], "bigpts")
         height <- unit(df_size_orig$height[i], "bigpts")
         vp <- viewport(width = width, height = height)
-
-        grid.newpage()
-        bitmap <- pdftools::pdf_render_page(input, page = i, dpi = dpi, numeric = TRUE)
-        pushViewport(vp)
-        grid.raster(bitmap, interpolate = FALSE)
-        popViewport()
+        r <- pdf_render_raster(input, page = i, dpi = dpi)
+        grid.raster(r, interpolate = FALSE, vp = vp)
 
         xc <- unit(0.5, "npc") - unit(0.7, "mm")
         yc <- unit(0.5, "npc") - unit(1.45, "mm")

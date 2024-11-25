@@ -12,10 +12,18 @@
 #' @return `output` pdf file name invisibly.
 #'         As a side effect removes from crosshairs from a pdf.
 #' @examples
-#' input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
-#' output <- pdf_rm_crosshairs(input, pages = "odd", dpi = 75)
-#' unlink(input)
-#' unlink(output)
+#' if (requireNamespace("bittermelon", quietly = TRUE) &&
+#'     requireNamespace("piecepackr", quietly = TRUE) &&
+#'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
+#'   f1 <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
+#'   f2 <- pdf_add_crosshairs(f1, pages = "all",
+#'                            layout = "poker_3x2_bleed", dpi = 75)
+#'   f3 <- pdf_rm_crosshairs(f2, pages = "odd",
+#'                           layout = "poker_3x2_bleed", dpi = 75)
+#'   unlink(f1)
+#'   unlink(f2)
+#'   unlink(f3)
+#' }
 #' @export
 pdf_rm_crosshairs <- function(input, output = NULL, ...,
                               layout = "poker_3x2_bleed",

@@ -67,9 +67,11 @@ layout_grid <- function(nrow = 2L, ncol = 1L,
 #' Unless otherwise indicated assumes letter-sized paper.  Supports the following presets:
 #'
 #' \describe{
-#' \item{button_shy_cards}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP cards.}
+#' \item{button_shy_cards}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP cards.
+#'                         **Caveat:** doesn't closely match **all** of their PnP cards.}
 #' \item{button_shy_rules}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP rule booklet pages.}
 #' \item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include [Galdor's Grip](https://greggjewell.itch.io/galdors-grip).}
+#' \item{poker_3x3}{Poker-sized cards (2.5" by 3.5") in 3 columns of 3 cards (portrait) with an zero bleed around each card.  Examples of PnP games using this layout include the original [Mini Rogue](https://boardgamegeek.com/boardgame/199242/mini-rogue-a-roguelike-microgame).}
 #' \item{poker_4x2}{Poker-sized cards (2.5" by 3.5") in 4 columns of 2 cards (landscape) with zero bleed around each card.  Examples of PnP games using this layout include the [Decktet](https://www.decktet.com/getit.php).}
 #' }
 #'
@@ -85,6 +87,7 @@ layout_preset <- function(name = "button_shy_cards") {
            button_shy_cards = layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125),
            button_shy_rules = layout_grid(nrow = 2L, ncol = 4L),
            poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125),
+           poker_3x3 = layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait"),
            poker_4x2 = layout_grid(nrow = 2L, ncol = 4L)
            )
 }
@@ -92,7 +95,7 @@ layout_preset <- function(name = "button_shy_cards") {
 #' @rdname layout_preset
 #' @export
 layout_names <- function() c("button_shy_cards", "button_shy_rules",
-                             "poker_3x2_bleed", "poker_4x2")
+                             "poker_3x2_bleed", "poker_3x3", "poker_4x2")
 
 # To check fit of presets try something like
 # vp = viewport(width = unit(11, "in"), height = unit(8.5, "in"))
