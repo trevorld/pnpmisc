@@ -41,6 +41,24 @@ remotes::install_github("trevorld/pnpmisc")
 
 ## <a name="examples">Examples</a>
 
+### `pdf_add_crosshairs()`
+
+* The old rotary trimmer I use to cut cards doesn't let me cut only the interior of a laminated sheet of cards so it is nice if one side has crosshairs at the corner of each card to help guide cuts after the outside crop marks have been cut away.
+* `pdf_add_crosshairs()` adds such crosshairs to the corners of the cards on the indicated pages.
+
+
+``` r
+library("piecepackr")
+library("pnpmisc")
+# Download "A Nice Cuppa"
+# <https://www.pnparcade.com/collections/button-shy-games>
+input <- "A Nice Cuppa - PNP.pdf"
+output <- "a_nice_cuppa_cards.pdf"
+input |> pdf_subset(pages = -1L) |>
+    pdf_add_crosshairs(output, layout = "button_shy_cards", pages = "even")
+rm_temp_pdfs()
+```
+
 ### `pdf_add_origami()`
 
 * Sometimes when folding paper with a tool like a bone folder it is easier to fold if you
@@ -57,8 +75,8 @@ input <- "SBG_Jacket_-_Animal_Upon_Animal.pdf"
 output <- "animal_upon_animal_jacket.pdf"
 input |> pdf_gs() |>
     pdf_subset(pages = 1L) |>
-    pdf_add_origami() |>
-    pdf_clean(output)
+    pdf_add_origami(output)
+rm_temp_pdfs()
 ```
 
 ### `pdf_create_wallet()`

@@ -8,6 +8,7 @@ reference:
     - title: "Edit PDF files"
       desc: 'The first positional argument is always the `input` pdf and the second positional argument is the `output` pdf (which always defaults to `tempfile(fileext=".pdf")`).  Returns the `output` pdf invisibly.'
       contents:
+          - pdf_add_crosshairs
           - pdf_add_origami
           - pdf_append_blank
           - pdf_clean

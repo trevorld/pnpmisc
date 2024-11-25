@@ -6,6 +6,7 @@ New features
 
 * The following PDF modification functions:
 
+  + `pdf_add_crosshairs()` adds crosshairs to the pdf (#2).
   + `pdf_add_origami()` adds origami symbols to the pdf.
     Currently only supports adding some origami symbols to
     [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home) (#1).
@@ -16,9 +17,7 @@ New features
   + `pdf_append_blank()` adds blank pages to the end of a pdf file (#10).
   + `pdf_pad_paper()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
     The original images are **not** rescaled (#5).
-  + `pdf_rm_crosshairs()` removes crosshairs from a pdf file.
-    Currently only supports removing crosshairs from
-    [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP v1, letter) (#7).
+  + `pdf_rm_crosshairs()` removes crosshairs from a pdf file (#7).
   + `pdf_set_bookmarks()`, `pdf_set_docinfo()`, and `pdf_set_xmp()` wrap around
     `{xmpdf}` functions to edit pdf metadata but follow the conventions of this package
     (i.e. input first positional argument, output second positional argument and defaults to temporary file, all other arguments must be named) (#8).
