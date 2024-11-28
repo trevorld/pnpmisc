@@ -26,7 +26,7 @@ pdf_add_crosshairs <- function(input, output = NULL, ...,
                               pages = "even",
                               dpi = 300) {
     stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-    stopifnot(utils::packageVersion("piecepackr") >= "1.14.0-5")
+    stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
     current_dev <- dev.cur()
 
     pages <- pdf_pages(input, pages = pages)

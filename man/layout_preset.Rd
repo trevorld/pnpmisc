@@ -25,7 +25,7 @@ Unless otherwise indicated assumes letter-sized paper.  Supports the following p
 
 \describe{
 \item{button_shy_cards}{\href{https://buttonshygames.com/collections/pnps}{Button Shy Games} PnP cards.
-\strong{Caveat:} doesn't closely match \strong{all} of their PnP cards.}
+\strong{Caveat:} matches many but not \strong{all} of their PnP files e.g. \code{ROVE-PNP-V2.pdf} better matches the \code{poker_3x2_bleed} layout.}
 \item{button_shy_rules}{\href{https://buttonshygames.com/collections/pnps}{Button Shy Games} PnP rule booklet pages.}
 \item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip}.}
 \item{poker_3x3}{Poker-sized cards (2.5" by 3.5") in 3 columns of 3 cards (portrait) with an zero bleed around each card.  Examples of PnP games using this layout include the original \href{https://boardgamegeek.com/boardgame/199242/mini-rogue-a-roguelike-microgame}{Mini Rogue}.}

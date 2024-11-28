@@ -34,6 +34,15 @@ My personal print-and-play preferences:
 
 ## <a name="installation">Installation</a>
 
+You can install the development version using my [R-universe](https://ropensci.org/r-universe/) universe:
+
+
+``` r
+install.packages('pnpmisc', repos = c('https://trevorld.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+or by using the `{remotes}` package:
+
 
 ``` r
 remotes::install_github("trevorld/pnpmisc")

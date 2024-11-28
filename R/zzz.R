@@ -1,6 +1,7 @@
 #' @importFrom grDevices dev.cur dev.off dev.set
 #' @import grid
 #' @importFrom stats median quantile
+#' @importFrom utils head tail packageVersion hasName
 NULL
 
 is_even <- function(x) (x %% 2L) == 0L
