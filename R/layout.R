@@ -68,7 +68,7 @@ layout_grid <- function(nrow = 2L, ncol = 1L,
 #'
 #' \describe{
 #' \item{button_shy_cards}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP cards.
-#'                         **Caveat:** doesn't closely match **all** of their PnP cards.}
+#'                         **Caveat:** matches many but not **all** of their PnP files e.g. `ROVE-PNP-V2.pdf` better matches the `poker_3x2_bleed` layout.}
 #' \item{button_shy_rules}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP rule booklet pages.}
 #' \item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include [Galdor's Grip](https://greggjewell.itch.io/galdors-grip).}
 #' \item{poker_3x3}{Poker-sized cards (2.5" by 3.5") in 3 columns of 3 cards (portrait) with an zero bleed around each card.  Examples of PnP games using this layout include the original [Mini Rogue](https://boardgamegeek.com/boardgame/199242/mini-rogue-a-roguelike-microgame).}
@@ -98,11 +98,15 @@ layout_names <- function() c("button_shy_cards", "button_shy_rules",
                              "poker_3x2_bleed", "poker_3x3", "poker_4x2")
 
 # To check fit of presets try something like
+# input <- "tmp/galdors_grip.pdf"
 # vp = viewport(width = unit(11, "in"), height = unit(8.5, "in"))
-# pm = pdf_render_bm_pixmap("tmp/decktet.pdf", page = 2)
-# # df = layout_grid(nrow = 2, ncol = 4, height = 3.500, width = 2.500)
-# df = layout_preset("poker_4x2")
+# pm = pdf_render_bm_pixmap(input, page = 1)
+# df = layout_grid(nrow = 2, ncol = 3, height = 3.500, width = 2.500, bleed = 0.125)
+# # df = layout_preset("poker_3x2_bleed")
 # grid.newpage(); pushViewport(vp); grid.raster(pm); draw_layout(df, NA, "red")
+
+# Birdscaping after padding to letter size and rotating 90 degrees is close to
+# layout_grid(nrow = 2, ncol = 4, height = 3.405, width = 2.425, bleed = 0.125)
 
 draw_hline <- function(y = unit(0.5, "npc"), ...) {
     grid.segments(x0 = unit(0, "npc"), x1 = unit(1, "npc"),
