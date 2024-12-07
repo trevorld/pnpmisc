@@ -4,6 +4,7 @@
 #' @importFrom utils head tail packageVersion hasName
 NULL
 
+`%||%` <- function(x, y) if (is.null(x)) y else x
 is_even <- function(x) (x %% 2L) == 0L
 is_odd <- function(x) (x %% 2L) > 0L
 is_fill <- function(x) {

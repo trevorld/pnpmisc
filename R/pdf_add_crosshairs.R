@@ -10,7 +10,7 @@
 #' @inheritParams bm_crop_layout
 #' @param ... Passed to [piecepackr::grid.crosshair()].
 #' @return `output` pdf file name invisibly.
-#'         As a side effect removes from crosshairs from a pdf.
+#'         As a side effect adds crosshairs to a pdf.
 #' @examples
 #' if (requireNamespace("piecepackr", quietly = TRUE) &&
 #'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
@@ -61,8 +61,6 @@ pdf_add_crosshairs <- function(input, output = NULL, ...,
         pixmap <- pdf_render_bm_pixmap(input, page = i, dpi = dpi)
         if (i %in% pages) {
             for (j in seq_len(nrow(layout))) {
-                # draw_layout(layout, NA, "red")
-
                 piecepackr::grid.crosshair(
                     x = layout$x[j], y = layout$y[j],
                     width = layout$width[j], height = layout$height[j],

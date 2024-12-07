@@ -10,4 +10,8 @@ test_that("`pdf_rm_crosshairs()`", {
                             layout = "poker_3x2_bleed", dpi = 75)
     expect_equal(qpdf::pdf_length(f2), 2L)
     expect_equal(qpdf::pdf_length(f3), 2L)
+
+    f4 <- pdf_add_cropmarks(f2, pages = "all",
+                            layout = "poker_3x2_bleed", dpi = 75)
+    expect_equal(qpdf::pdf_length(f4), 2L)
 })
