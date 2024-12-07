@@ -6,6 +6,7 @@ New features
 
 * The following PDF modification functions:
 
+  + `pdf_add_cropmarks()` adds crop marks to the pdf (#21).
   + `pdf_add_crosshairs()` adds crosshairs to the pdf (#2).
   + `pdf_add_origami()` adds origami symbols to the pdf.
     Currently only supports adding some origami symbols to
