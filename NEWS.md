@@ -49,3 +49,10 @@ New features
 
   + `pdf_render_bm_pixmap()` renders a PDF page as a `bittermelon::bm_pixmap()` object.
   + `bm_crop_layout()` crops out a print-and-play component from a layout.
+
+* `{grid}` functions:
+
+  + `grid_add_cropmarks()` draws crop marks around components in a layout.
+  + `grid_add_crosshairs()` draws crosshairs around components in a layout.
+  + `grid_add_lines()` draws along the edges of components in a layout.
+  + `grid_add_rects()` draws (rounded) rectangles around components in a layout.

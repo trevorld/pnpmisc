@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_add_rects.R
 \name{pdf_add_rects}
 \alias{pdf_add_rects}
-\title{Add (round)rects to a pdf}
+\title{Add (rounded) rectangles to a pdf}
 \usage{
 pdf_add_rects(
   input,
@@ -43,7 +43,7 @@ or a string:\describe{
 As a side effect creates pdf file with added origami symbols.
 }
 \description{
-\code{pdf_add_rects()} adds (round)rects around components of a print-and-play layout.
+\code{pdf_add_rects()} adds (rounded) rectangles around components of a print-and-play layout.
 }
 \details{
 \itemize{
@@ -55,9 +55,12 @@ this can be used to effectively "remove" unwanted card outlines.
 f1 <- pdf_create_blank(length = 2L, paper = "letter")
 f2 <- pdf_add_rects(f1, layout = "poker_3x3", dpi = 75)
 # "Remove" unwanted card border lines by covering up with white
-f3 <- pdf_add_rects(f2, layout = "poker_3x3", dpi = 75, 
+f3 <- pdf_add_rects(f2, layout = "poker_3x3", dpi = 75,
                     gp = grid::gpar(col = "white", fill = NA, lwd = 2))
 unlink(f1)
 unlink(f2)
 unlink(f3)
+}
+\seealso{
+\code{\link[=grid_add_rects]{grid_add_rects()}}, \code{\link[grid:grid.roundrect]{grid::grid.roundrect()}}
 }
