@@ -59,3 +59,6 @@ if (requireNamespace("piecepackr", quietly = TRUE)) {
   unlink(output)
 }
 }
+\seealso{
+\code{\link[=grid_add_cropmarks]{grid_add_cropmarks()}}, \code{\link[piecepackr:grid.cropmark]{piecepackr::grid.cropmark()}}
+}

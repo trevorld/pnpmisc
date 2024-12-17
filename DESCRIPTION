@@ -1,7 +1,7 @@
 Package: pnpmisc
 Type: Package
 Title: Utilities for Print-and-Play Board Games
-Version: 0.1.0-13
+Version: 0.1.0-14
 Authors@R: c(person("Trevor L.", "Davis", role=c("aut", "cre"),
              email="trevor.l.davis@gmail.com",
              comment = c(ORCID = "0000-0001-6341-4639")))
@@ -18,7 +18,7 @@ Imports:
 Suggests:
     bittermelon,
     gridpattern,
-    piecepackr (>= 1.14.0-5),
+    piecepackr (>= 1.14.0-6),
     testthat,
     xmpdf
 Remotes: piecepackr/piecepackr

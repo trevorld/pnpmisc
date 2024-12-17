@@ -103,7 +103,7 @@ layout_names <- function() c("button_shy_cards", "button_shy_rules",
 # pm = pdf_render_bm_pixmap(input, page = 1)
 # df = layout_grid(nrow = 2, ncol = 3, height = 3.500, width = 2.500, bleed = 0.125)
 # # df = layout_preset("poker_3x2_bleed")
-# grid.newpage(); pushViewport(vp); grid.raster(pm); draw_layout(df, NA, "red")
+# grid.newpage(); pushViewport(vp); grid.raster(pm); grid_draw_lines(layout=df, gp=gpar(col="red", lty="dashed"))
 
 # Birdscaping after padding to letter size and rotating 90 degrees is close to
 # layout_grid(nrow = 2, ncol = 4, height = 3.405, width = 2.425, bleed = 0.125)
@@ -116,18 +116,40 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
     grid.segments(y0 = unit(0, "npc"), y1 = unit(1, "npc"),
                   x0 = x, x1 = x, ...)
 }
-draw_layout <- function(df, solid = "white", dashed = "black") {
-    for (i in seq_len(nrow(df))) {
-        dy <- 0.5 * (df$height[i])
-        dx <- 0.5 * (df$width[i])
-        draw_hline(unit(df$y[i] + dy, "in"), gp = gpar(col = solid))
-        draw_hline(unit(df$y[i] + dy, "in"), gp = gpar(col = dashed, lty = "dashed"))
-        draw_hline(unit(df$y[i] - dy, "in"), gp = gpar(col = solid))
-        draw_hline(unit(df$y[i] - dy, "in"), gp = gpar(col = dashed, lty = "dashed"))
-        draw_vline(unit(df$x[i] + dx, "in"), gp = gpar(col = solid))
-        draw_vline(unit(df$x[i] + dx, "in"), gp = gpar(col = dashed, lty = "dashed"))
-        draw_vline(unit(df$x[i] - dx, "in"), gp = gpar(col = solid))
-        draw_vline(unit(df$x[i] - dx, "in"), gp = gpar(col = dashed, lty = "dashed"))
+
+#' Draw lines along component edges
+#'
+#' `grid_add_lines()` draws lines along the components of a print-and-play layout.
+#'
+#' * This function draws in **inches** so make sure your graphics device is "big" enough.
+#'
+#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_add_crosshairs
+#' @param gp Passed to [grid::grid.segments()].
+#' @param ... Ignored for now.
+#' @return `NULL` invisibly.
+#'         As a side effect draws rectangles to the active graphics device.
+#' @seealso [grid::grid.segments()]
+#' @examples
+#' grid::grid.newpage()
+#' vp <- grid::viewport(width=8.5, height=11, default.units="in",
+#'                      x=0.0, y=0.0, just=c("left", "bottom"))
+#' grid::pushViewport(vp)
+#' grid_add_lines(layout = "poker_3x3",
+#'                gp = grid::gpar(lty = "dashed", col = "grey"))
+#' grid::popViewport()
+#' @export
+grid_add_lines <- function(..., layout = "poker_3x3", gp = gpar()) {
+    if (is.character(layout))
+        layout <- layout_preset(layout)
+
+    for (i in seq_len(nrow(layout))) {
+        dy <- 0.5 * (layout$height[i])
+        dx <- 0.5 * (layout$width[i])
+        draw_hline(unit(layout$y[i] + dy, "in"), gp = gp)
+        draw_hline(unit(layout$y[i] - dy, "in"), gp = gp)
+        draw_vline(unit(layout$x[i] + dx, "in"), gp = gp)
+        draw_vline(unit(layout$x[i] - dx, "in"), gp = gp)
     }
     invisible(NULL)
 }
