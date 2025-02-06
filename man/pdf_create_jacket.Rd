@@ -10,6 +10,7 @@ pdf_create_jacket(
   front = NULL,
   back = NULL,
   spine = NULL,
+  inner = NULL,
   paper = c("letter", "a4")
 )
 }
@@ -18,23 +19,28 @@ pdf_create_jacket(
 
 \item{...}{Ignored.}
 
-\item{front}{Fill color/pattern/gradient or grob for front cover section of wallet.
+\item{front}{Fill color/pattern/gradient or grob for front cover section of jacket
 Will be drawn in a viewport with a
 width of 4.139 inches
 and a height of 6.141 inches.
 If \code{NULL} (default) we draw a template.}
 
-\item{back}{Fill color/pattern/gradient or grob for back cover section of wallet.
+\item{back}{Fill color/pattern/gradient or grob for back cover section of jacket
 Will be drawn in a viewport with a
 width of 4.139 inches
 and a height of 6.141 inches.
 If \code{NULL} (default) we draw a template.}
 
-\item{spine}{Fill color/pattern/gradient or grob for spine section of wallet.
+\item{spine}{Fill color/pattern/gradient or grob for spine section of jacket
 Will be drawn in a rotated viewport with a
 width of 6.141 inches
 and a height of 1.052 inches.
 If \code{NULL} (default) we draw a template.}
+
+\item{inner}{Fill color/pattern/gradient or grob for inner section of jacket.
+Will be drawn in a viewport with a width of 9.33 inches
+and a height of 6.141 inches.
+If \code{NULL} (default) we do not create page for inner section.}
 
 \item{paper}{Paper size.  Either "letter", "a4", or "special".}
 }
@@ -63,7 +69,7 @@ unlink(f2)
 # Grob `front`, `back`, and `spine`
 if (require("gridpattern", quietly = TRUE)) {
   pal <- grDevices::palette()
-  herringbone <- patternGrob("polygon_tiling", type = "herringbone", 
+  herringbone <- patternGrob("polygon_tiling", type = "herringbone",
                              fill = pal[2], spacing = 0.1)
   rhombille <- patternGrob("polygon_tiling", type = "rhombille",
                            fill = pal[3], spacing = 0.3)

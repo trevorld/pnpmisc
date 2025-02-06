@@ -1,5 +1,5 @@
 #' Create printable 4x6 photo box jacket pdf
-#' 
+#'
 #' `pdf_create_jacket()` creates a printable 4x6 photo box jacket.
 #'
 #' To make the 4x6 photo jacket from the pdf file:
@@ -12,21 +12,25 @@
 #'
 #' @export
 #' @inheritParams pdf_pad_paper
-#' @param front Fill color/pattern/gradient or grob for front cover section of wallet.
-#'              Will be drawn in a viewport with a 
+#' @param front Fill color/pattern/gradient or grob for front cover section of jacket
+#'              Will be drawn in a viewport with a
 #'              width of `r JACKET_FACE_WIDTH` inches
 #'              and a height of `r JACKET_HEIGHT` inches.
 #'              If `NULL` (default) we draw a template.
-#' @param back Fill color/pattern/gradient or grob for back cover section of wallet.
-#'              Will be drawn in a viewport with a 
+#' @param back Fill color/pattern/gradient or grob for back cover section of jacket
+#'              Will be drawn in a viewport with a
 #'              width of `r JACKET_FACE_WIDTH` inches
 #'              and a height of `r JACKET_HEIGHT` inches.
 #'              If `NULL` (default) we draw a template.
-#' @param spine Fill color/pattern/gradient or grob for spine section of wallet.
-#'              Will be drawn in a rotated viewport with a 
+#' @param spine Fill color/pattern/gradient or grob for spine section of jacket
+#'              Will be drawn in a rotated viewport with a
 #'              width of `r JACKET_HEIGHT` inches
 #'              and a height of `r JACKET_SPINE_WIDTH` inches.
 #'              If `NULL` (default) we draw a template.
+#' @param inner Fill color/pattern/gradient or grob for inner section of jacket.
+#'              Will be drawn in a viewport with a width of `r JACKET_WIDTH` inches
+#'              and a height of `r JACKET_HEIGHT` inches.
+#'              If `NULL` (default) we do not create page for inner section.
 #' @examples
 #' # Template `front`, `back`, and `spine`
 #' f1 <- pdf_create_jacket()
@@ -35,11 +39,11 @@
 #' # Fill `front`, `back`, and `spine`
 #' f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "purple")
 #' unlink(f2)
-#' 
+#'
 #' # Grob `front`, `back`, and `spine`
 #' if (require("gridpattern", quietly = TRUE)) {
 #'   pal <- grDevices::palette()
-#'   herringbone <- patternGrob("polygon_tiling", type = "herringbone", 
+#'   herringbone <- patternGrob("polygon_tiling", type = "herringbone",
 #'                              fill = pal[2], spacing = 0.1)
 #'   rhombille <- patternGrob("polygon_tiling", type = "rhombille",
 #'                            fill = pal[3], spacing = 0.3)
@@ -55,6 +59,7 @@ pdf_create_jacket <- function(output = NULL, ...,
                               front = NULL,
                               back = NULL,
                               spine = NULL,
+                              inner = NULL,
                               paper = c("letter", "a4")) {
     paper <- tolower(paper)
     paper <- match.arg(paper)
@@ -68,7 +73,7 @@ pdf_create_jacket <- function(output = NULL, ...,
     pnp_pdf(output, paper = paper, orientation = "landscape")
 
     # Front
-    vp_front <- viewport(x = unit(0.5, "npc") + 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"), 
+    vp_front <- viewport(x = unit(0.5, "npc") + 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
                          width = unit(JACKET_FACE_WIDTH, "in"),
                          height = unit(JACKET_HEIGHT, "in"))
     pushViewport(vp_front)
@@ -80,10 +85,10 @@ pdf_create_jacket <- function(output = NULL, ...,
     } else {
         grid.draw(front)
     }
-    popViewport()
+    upViewport()
 
     # Back
-    vp_back <- viewport(x = unit(0.5, "npc") - 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"), 
+    vp_back <- viewport(x = unit(0.5, "npc") - 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
                          width = unit(JACKET_FACE_WIDTH, "in"),
                          height = unit(JACKET_HEIGHT, "in"))
     pushViewport(vp_back)
@@ -95,7 +100,7 @@ pdf_create_jacket <- function(output = NULL, ...,
     } else {
         grid.draw(back)
     }
-    popViewport()
+    upViewport()
 
     # Spine
     vp_spine <- viewport(width = unit(JACKET_HEIGHT, "in"),
@@ -110,14 +115,28 @@ pdf_create_jacket <- function(output = NULL, ...,
     } else {
         grid.draw(spine)
     }
-    popViewport()
+    upViewport()
 
     piecepackr::grid.cropmark(
-        width = unit(2 * JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"), 
+        width = unit(2 * JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
         height = unit(JACKET_HEIGHT, "in"),
         gp = gpar(col = "black")
     )
     draw_jacket_origami()
+
+    if (!is.null(inner)) {
+        grid.newpage()
+        vp_inner <- viewport(width = unit(JACKET_WIDTH, "in"),
+                             height = unit(JACKET_HEIGHT, "in"))
+        pushViewport(vp_inner)
+        if (is_fill(inner)) {
+            grid.rect(gp = gpar(col = NA, fill = inner))
+        } else {
+            grid.draw(inner)
+        }
+        upViewport()
+
+    }
 
     invisible(dev.off())
 
@@ -148,4 +167,3 @@ pdf_create_mock_sbgj <- function(output = NULL) {
 
     invisible(output)
 }
-
