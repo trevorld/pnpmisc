@@ -1,4 +1,5 @@
 test_that("`pdf_create_jacket()`", {
+    skip_if_not_installed("piecepackr")
     on.exit(rm_temp_pdfs(), add = TRUE)
 
     f1 <- pdf_create_jacket()

@@ -1,4 +1,6 @@
 test_that("`pdf_create_wallet()`", {
+    skip_if_not_installed("piecepackr")
+    skip_if_not(getRversion() >= "4.1")
     on.exit(rm_temp_pdfs(), add = TRUE)
 
     f1 <- pdf_create_wallet()

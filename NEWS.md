@@ -28,6 +28,8 @@ New features
 
   + `pdf_create_blank()` creates blank pdf files.
   + `pdf_create_jacket()` creates 4x6 photo box jacket pdf files (#16).
+    `pdf_create_jacket_instructions()` creates a printable sheet of
+    instructions for making such a jacket.
   + `pdf_create_wallet()` creates origami wallet pdf files (#4).
 
 * Other PDF utility functions:

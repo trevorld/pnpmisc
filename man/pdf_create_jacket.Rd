@@ -2,6 +2,7 @@
 % Please edit documentation in R/pdf_create_jacket.R
 \name{pdf_create_jacket}
 \alias{pdf_create_jacket}
+\alias{pdf_create_jacket_instructions}
 \title{Create printable 4x6 photo box jacket pdf}
 \usage{
 pdf_create_jacket(
@@ -12,6 +13,13 @@ pdf_create_jacket(
   spine = NULL,
   inner = NULL,
   paper = c("letter", "a4")
+)
+
+pdf_create_jacket_instructions(
+  output = NULL,
+  ...,
+  paper = c("letter", "a4"),
+  style = marquee::classic_style()
 )
 }
 \arguments{
@@ -43,31 +51,68 @@ and a height of 6.141 inches.
 If \code{NULL} (default) we do not create page for inner section.}
 
 \item{paper}{Paper size.  Either "letter", "a4", or "special".}
+
+\item{style}{A style set such as \code{\link[marquee:classic_style]{marquee::classic_style()}} to
+be passed to \code{\link[marquee:marquee_grob]{marquee::marquee_grob()}}.}
 }
 \description{
 \code{pdf_create_jacket()} creates a printable 4x6 photo box jacket.
+\code{pdf_create_jacket_instructions()} creates a printable sheet of
+instructions for making such a jacket
+(these instructions are repeated in the \code{Details} section below).
 }
 \details{
 To make the 4x6 photo jacket from the pdf file:
 \enumerate{
-\item Print it out
-\item Use the crop marks to trim off the left and right edge
-\item Make the two indicated mountain folds on both sides of the spine
-\item Trim off the top and bottom edge
-\item Insert into the 4x6 photo box
+\item Print the jacket out (ideally on cardstock).
+\itemize{
+\item Print “actual size” (100\%).
+\item To include the jacket inside (if any) print double-sided flipping on the “short edge”.
+}
+\item Use the crop marks and origami symbols to cut and fold the jacket.
+\itemize{
+\item Exact procedure depends on your tools and preferred methods.
+\item Example procedure #1:
+\enumerate{
+\item Use the origami mountain fold lines to score
+the fold lines (e.g. using a ruler and a penknife).
+\item Use the crop marks to cut the edges off.
+\item Make two mountain folds using the scored lines along the spine.
+}
+\item Example procedure #2:
+\enumerate{
+\item Use the crop marks to cut away the left and right edge.
+\item Make a \emph{valley} fold by touching the origami dots symbols
+along the top edge together
+and then flatten the paper
+to make the fold and then unfold flat.
+Repeat this procedure with the origami dot symbols along the bottom edge.
+\item Cut away the top and bottom edges
+(you may use the ends of the
+origami mountain fold lines as well as the edges of the jacket
+as guide to where to make these cuts).
+\item Make two \emph{mountain} folds by reversing the (valley) creases.
+}
+}
+\item Insert the jacket into the 4x6 photo storage box.
 }
 }
 \examples{
 # Template `front`, `back`, and `spine`
-f1 <- pdf_create_jacket()
-unlink(f1)
+if (requireNamespace("piecepackr", quietlyr= TRUE)) {
+  f1 <- pdf_create_jacket()
+  unlink(f1)
+}
 
 # Fill `front`, `back`, and `spine`
-f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "purple")
-unlink(f2)
+if (requireNamespace("piecepackr", quietly = TRUE)) {
+  f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "purple")
+  unlink(f2)
+}
 
 # Grob `front`, `back`, and `spine`
-if (require("gridpattern", quietly = TRUE)) {
+if (requireNamespace("piecepackr", quietly = TRUE) &&
+    require("gridpattern", quietly = TRUE)) {
   pal <- grDevices::palette()
   herringbone <- patternGrob("polygon_tiling", type = "herringbone",
                              fill = pal[2], spacing = 0.1)
