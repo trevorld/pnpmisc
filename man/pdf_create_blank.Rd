@@ -12,7 +12,8 @@ pdf_create_blank(
   orientation = c("portrait", "landscape"),
   width = 8.5,
   height = 11,
-  bg = "white"
+  bg = "white",
+  grob = NULL
 )
 }
 \arguments{
@@ -29,6 +30,10 @@ pdf_create_blank(
 \item{width, height}{Paper size in inches if \code{paper = "special"}.}
 
 \item{bg}{\code{output} pdf background color.}
+
+\item{grob}{A grid grob to draw on each page
+(e.g. \code{grid::textGrob("This page intentionally left blank.")}).
+Default \code{NULL} is to draw nothing.}
 }
 \value{
 \code{output} pdf file name invisibly.
