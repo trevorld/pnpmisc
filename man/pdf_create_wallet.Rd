@@ -69,15 +69,23 @@ trim the edges with a cutting tool
 }
 \examples{
 # Template `front`, `back`, and `spine`
-f1 <- pdf_create_wallet()
-unlink(f1)
+if (requireNamespace("piecepackr", quietly = TRUE) &&
+    getRversion() >= "4.1") {
+  f1 <- pdf_create_wallet()
+  unlink(f1)
+}
 
 # Fill `front`, `back`, and `spine`
+if (requireNamespace("piecepackr", quietly = TRUE) &&
+    getRversion() >= "4.1") {
 f2 <- pdf_create_wallet(front = "red", back = "blue", spine = "purple")
 unlink(f2)
+}
 
 # Grob `front`, `back`, and `spine` with bleed
-if (require("gridpattern", quietly = TRUE)) {
+if (requireNamespace("piecepackr", quietly = TRUE) &&
+    getRversion() >= "4.1" &&
+    require("gridpattern", quietly = TRUE)) {
   pal <- grDevices::palette()
   herringbone <- patternGrob("polygon_tiling", type = "herringbone", 
                              fill = pal[2], spacing = 0.1)

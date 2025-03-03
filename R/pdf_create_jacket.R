@@ -1,14 +1,13 @@
 #' Create printable 4x6 photo box jacket pdf
 #'
 #' `pdf_create_jacket()` creates a printable 4x6 photo box jacket.
+#' `pdf_create_jacket_instructions()` creates a printable sheet of
+#' instructions for making such a jacket
+#' (these instructions are repeated in the `Details` section below).
 #'
 #' To make the 4x6 photo jacket from the pdf file:
 #'
-#' 1. Print it out
-#' 2. Use the crop marks to trim off the left and right edge
-#' 3. Make the two indicated mountain folds on both sides of the spine
-#' 4. Trim off the top and bottom edge
-#' 5. Insert into the 4x6 photo box
+#' `r jacket_instructions_md`
 #'
 #' @export
 #' @inheritParams pdf_pad_paper
@@ -33,15 +32,20 @@
 #'              If `NULL` (default) we do not create page for inner section.
 #' @examples
 #' # Template `front`, `back`, and `spine`
-#' f1 <- pdf_create_jacket()
-#' unlink(f1)
+#' if (requireNamespace("piecepackr", quietlyr= TRUE)) {
+#'   f1 <- pdf_create_jacket()
+#'   unlink(f1)
+#' }
 #'
 #' # Fill `front`, `back`, and `spine`
-#' f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "purple")
-#' unlink(f2)
+#' if (requireNamespace("piecepackr", quietly = TRUE)) {
+#'   f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "purple")
+#'   unlink(f2)
+#' }
 #'
 #' # Grob `front`, `back`, and `spine`
-#' if (require("gridpattern", quietly = TRUE)) {
+#' if (requireNamespace("piecepackr", quietly = TRUE) &&
+#'     require("gridpattern", quietly = TRUE)) {
 #'   pal <- grDevices::palette()
 #'   herringbone <- patternGrob("polygon_tiling", type = "herringbone",
 #'                              fill = pal[2], spacing = 0.1)
@@ -165,5 +169,68 @@ pdf_create_mock_sbgj <- function(output = NULL) {
 
     invisible(dev.off())
 
+    invisible(output)
+}
+
+jacket_instructions_md <- sprintf("1. Print the jacket out (ideally on cardstock).
+
+   * Print %s (100%%).
+   * To include the jacket inside (if any) print double-sided flipping on the %s.
+
+2. Use the crop marks and origami symbols to cut and fold the jacket.
+
+   * Exact procedure depends on your tools and preferred methods.
+   * Example procedure #1:
+
+     1. Use the origami mountain fold lines to score
+        the fold lines (e.g. using a ruler and a penknife).
+     2. Use the crop marks to cut the edges off.
+     3. Make two mountain folds using the scored lines along the spine.
+
+   * Example procedure #2:
+
+     1. Use the crop marks to cut away the left and right edge.
+     2. Make a *valley* fold by touching the origami dots symbols
+        along the top edge together
+        and then flatten the paper
+        to make the fold and then unfold flat.
+        Repeat this procedure with the origami dot symbols along the bottom edge.
+     3. Cut away the top and bottom edges
+        (you may use the ends of the
+        origami mountain fold lines as well as the edges of the jacket
+        as guide to where to make these cuts).
+     4. Make two *mountain* folds by reversing the (valley) creases.
+
+3. Insert the jacket into the 4x6 photo storage box.",
+    dQuote("actual size"),
+    dQuote("short edge")
+)
+
+#' @rdname pdf_create_jacket
+#' @param style A style set such as [marquee::classic_style()] to
+#'              be passed to [marquee::marquee_grob()].
+#' @export
+pdf_create_jacket_instructions <- function(output = NULL, ...,
+                                           paper = c("letter", "a4"),
+                                           style = marquee::classic_style()) {
+    paper <- tolower(paper)
+    paper <- match.arg(paper)
+    output <- normalize_output(output)
+
+    stopifnot(requireNamespace("marquee", quietly = TRUE))
+
+    pnp_pdf(output, paper = paper, orientation = "landscape")
+
+    vp <- viewport(width = unit(JACKET_WIDTH, "in"),
+                   height = unit(JACKET_HEIGHT + 1.5, "in"))
+    pushViewport(vp)
+    text <- paste0('# 4\u2033 x 6\u2033 Photo Storage Box Jacket Setup\n', jacket_instructions_md)
+    mg <- marquee::marquee_grob(text,
+                                style = style, x = unit(1/8, "in"),
+                                width = unit(JACKET_WIDTH - 2/8, "in"),
+                                y = unit(1, "npc") - unit(1/8, "in"))
+    grid.draw(mg)
+    upViewport()
+    invisible(dev.off())
     invisible(output)
 }

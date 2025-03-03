@@ -19,6 +19,7 @@ Suggests:
     bittermelon,
     gridpattern,
     piecepackr (>= 1.14.0-6),
+    marquee,
     testthat,
     xmpdf
 Remotes: piecepackr/piecepackr
