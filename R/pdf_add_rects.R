@@ -22,48 +22,55 @@
 #' unlink(f2)
 #' unlink(f3)
 #' @export
-pdf_add_rects <- function(input, output = NULL, ...,
-                          layout = "poker_3x3",
-                          pages = "all", dpi = 300,
-                          r = unit(0, "in"),
-                          gp = gpar(col = "black", fill = NA, lwd = 1)) {
-    current_dev <- dev.cur()
+pdf_add_rects <- function(
+	input,
+	output = NULL,
+	...,
+	layout = "poker_3x3",
+	pages = "all",
+	dpi = 300,
+	r = unit(0, "in"),
+	gp = gpar(col = "black", fill = NA, lwd = 1)
+) {
+	current_dev <- dev.cur()
 
-    pages <- pdf_pages(input, pages = pages)
+	pages <- pdf_pages(input, pages = pages)
 
-    output <- normalize_output(output, input)
-    if (is.character(layout))
-        layout <- layout_preset(layout)
+	output <- normalize_output(output, input)
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
 
-    df_size_orig <- pdftools::pdf_pagesize(input)
-    stopifnot(nrow(df_size_orig) > 0L)
-    width <- unit(df_size_orig$width[1L], "bigpts")
-    height <- unit(df_size_orig$height[1L], "bigpts")
-    width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-    height_in <- convertHeight(height, "inches", valueOnly = TRUE)
+	df_size_orig <- pdftools::pdf_pagesize(input)
+	stopifnot(nrow(df_size_orig) > 0L)
+	width <- unit(df_size_orig$width[1L], "bigpts")
+	height <- unit(df_size_orig$height[1L], "bigpts")
+	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
+	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
 
-    if (current_dev > 1)
-        on.exit(dev.set(current_dev), add = TRUE)
-    else
-        invisible(dev.off()) # `convertWidth()` opened device
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	} else {
+		invisible(dev.off())
+	} # `convertWidth()` opened device
 
-    pnp_pdf(output, width = width_in, height = height_in)
-    for (i in seq_len(nrow(df_size_orig))) {
-        grid.newpage()
+	pnp_pdf(output, width = width_in, height = height_in)
+	for (i in seq_len(nrow(df_size_orig))) {
+		grid.newpage()
 
-        width <- unit(df_size_orig$width[i], "bigpts")
-        height <- unit(df_size_orig$height[i], "bigpts")
-        vp <- viewport(width = width, height = height)
+		width <- unit(df_size_orig$width[i], "bigpts")
+		height <- unit(df_size_orig$height[i], "bigpts")
+		vp <- viewport(width = width, height = height)
 
-        raster <- pdf_render_raster(input, page = i, dpi = dpi)
-        grid.raster(raster, interpolate = FALSE, vp = vp)
+		raster <- pdf_render_raster(input, page = i, dpi = dpi)
+		grid.raster(raster, interpolate = FALSE, vp = vp)
 
-        if (i %in% pages) {
-            grid_add_rects(..., layout = layout, r = r, gp = gp)
-        }
-    }
-    invisible(dev.off())
-    invisible(output)
+		if (i %in% pages) {
+			grid_add_rects(..., layout = layout, r = r, gp = gp)
+		}
+	}
+	invisible(dev.off())
+	invisible(output)
 }
 
 #' Draw (rounded) rectangles around components
@@ -89,18 +96,26 @@ pdf_add_rects <- function(input, output = NULL, ...,
 #' grid_add_rects(layout = "poker_3x3")
 #' grid::popViewport()
 #' @export
-grid_add_rects <- function(..., layout = "poker_3x3",
-                           r = unit(0, "in"),
-                           gp = gpar(col = "black", fill = NA, lwd = 1)) {
-    if (is.character(layout))
-        layout <- layout_preset(layout)
+grid_add_rects <- function(
+	...,
+	layout = "poker_3x3",
+	r = unit(0, "in"),
+	gp = gpar(col = "black", fill = NA, lwd = 1)
+) {
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
 
-    for (j in seq_len(nrow(layout))) {
-        grid.roundrect(
-            x = layout$x[j], y = layout$y[j],
-            width = layout$width[j], height = layout$height[j],
-            default.units = "in", r = r, gp = gp
-        )
-    }
-    invisible(NULL)
+	for (j in seq_len(nrow(layout))) {
+		grid.roundrect(
+			x = layout$x[j],
+			y = layout$y[j],
+			width = layout$width[j],
+			height = layout$height[j],
+			default.units = "in",
+			r = r,
+			gp = gp
+		)
+	}
+	invisible(NULL)
 }

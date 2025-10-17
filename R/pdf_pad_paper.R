@@ -34,32 +34,38 @@
 #'
 #' unlink(input)
 #' @export
-pdf_pad_paper <- function(input, output = NULL, ...,
-                          bg = "white", dpi = 300,
-                          paper = c("letter", "a4")) {
-    paper <- tolower(paper)
-    paper <- match.arg(paper)
-    output <- normalize_output(output, input)
+pdf_pad_paper <- function(
+	input,
+	output = NULL,
+	...,
+	bg = "white",
+	dpi = 300,
+	paper = c("letter", "a4")
+) {
+	paper <- tolower(paper)
+	paper <- match.arg(paper)
+	output <- normalize_output(output, input)
 
-    current_dev <- dev.cur()
-    if (current_dev > 1) on.exit(dev.set(current_dev), add = TRUE)
+	current_dev <- dev.cur()
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	}
 
-    df_size_orig <- pdftools::pdf_pagesize(input)
-    stopifnot(nrow(df_size_orig) > 0L)
+	df_size_orig <- pdftools::pdf_pagesize(input)
+	stopifnot(nrow(df_size_orig) > 0L)
 
-    orientation <- pdf_orientation(input)[1L]
-    pnp_pdf(output, paper = paper, orientation = orientation, bg = bg)
-    for (i in seq_len(nrow(df_size_orig))) {
-        width <- unit(df_size_orig$width[i], "bigpts")
-        height <- unit(df_size_orig$height[i], "bigpts")
-        vp <- viewport(width = width, height = height)
-        grid.newpage()
-        bitmap <- pdftools::pdf_render_page(input, page = i, dpi = dpi, numeric = TRUE)
-        pushViewport(vp)
-        grid.raster(bitmap, interpolate = FALSE)
-        popViewport()
-    }
-    invisible(dev.off())
-    invisible(output)
+	orientation <- pdf_orientation(input)[1L]
+	pnp_pdf(output, paper = paper, orientation = orientation, bg = bg)
+	for (i in seq_len(nrow(df_size_orig))) {
+		width <- unit(df_size_orig$width[i], "bigpts")
+		height <- unit(df_size_orig$height[i], "bigpts")
+		vp <- viewport(width = width, height = height)
+		grid.newpage()
+		bitmap <- pdftools::pdf_render_page(input, page = i, dpi = dpi, numeric = TRUE)
+		pushViewport(vp)
+		grid.raster(bitmap, interpolate = FALSE)
+		popViewport()
+	}
+	invisible(dev.off())
+	invisible(output)
 }
-

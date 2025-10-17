@@ -59,120 +59,133 @@
 #' }
 #' @seealso [pdf_add_origami()] to add origami symbols to pre-existing [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
 #' @export
-pdf_create_jacket <- function(output = NULL, ...,
-                              front = NULL,
-                              back = NULL,
-                              spine = NULL,
-                              inner = NULL,
-                              paper = c("letter", "a4")) {
-    paper <- tolower(paper)
-    paper <- match.arg(paper)
-    output <- normalize_output(output)
+pdf_create_jacket <- function(
+	output = NULL,
+	...,
+	front = NULL,
+	back = NULL,
+	spine = NULL,
+	inner = NULL,
+	paper = c("letter", "a4")
+) {
+	paper <- tolower(paper)
+	paper <- match.arg(paper)
+	output <- normalize_output(output)
 
-    stopifnot(requireNamespace("piecepackr", quietly = TRUE))
+	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
 
-    current_dev <- dev.cur()
-    if (current_dev > 1) on.exit(dev.set(current_dev), add = TRUE)
+	current_dev <- dev.cur()
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	}
 
-    pnp_pdf(output, paper = paper, orientation = "landscape")
+	pnp_pdf(output, paper = paper, orientation = "landscape")
 
-    # Front
-    vp_front <- viewport(x = unit(0.5, "npc") + 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
-                         width = unit(JACKET_FACE_WIDTH, "in"),
-                         height = unit(JACKET_HEIGHT, "in"))
-    pushViewport(vp_front)
-    if (is.null(front)) {
-        grid.text("Front", gp = gpar(fontsize = 24))
-        grid.rect(gp = gpar(col = "black", fill = NA))
-    } else if (is_fill(front)) {
-        grid.rect(gp = gpar(col = NA, fill = front))
-    } else {
-        grid.draw(front)
-    }
-    upViewport()
+	# Front
+	vp_front <- viewport(
+		x = unit(0.5, "npc") + 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
+		width = unit(JACKET_FACE_WIDTH, "in"),
+		height = unit(JACKET_HEIGHT, "in")
+	)
+	pushViewport(vp_front)
+	if (is.null(front)) {
+		grid.text("Front", gp = gpar(fontsize = 24))
+		grid.rect(gp = gpar(col = "black", fill = NA))
+	} else if (is_fill(front)) {
+		grid.rect(gp = gpar(col = NA, fill = front))
+	} else {
+		grid.draw(front)
+	}
+	upViewport()
 
-    # Back
-    vp_back <- viewport(x = unit(0.5, "npc") - 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
-                         width = unit(JACKET_FACE_WIDTH, "in"),
-                         height = unit(JACKET_HEIGHT, "in"))
-    pushViewport(vp_back)
-    if (is.null(back)) {
-        grid.text("Back", gp = gpar(fontsize = 24))
-        grid.rect(gp = gpar(col = "black", fill = NA))
-    } else if (is_fill(back)) {
-        grid.rect(gp = gpar(col = NA, fill = back))
-    } else {
-        grid.draw(back)
-    }
-    upViewport()
+	# Back
+	vp_back <- viewport(
+		x = unit(0.5, "npc") - 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
+		width = unit(JACKET_FACE_WIDTH, "in"),
+		height = unit(JACKET_HEIGHT, "in")
+	)
+	pushViewport(vp_back)
+	if (is.null(back)) {
+		grid.text("Back", gp = gpar(fontsize = 24))
+		grid.rect(gp = gpar(col = "black", fill = NA))
+	} else if (is_fill(back)) {
+		grid.rect(gp = gpar(col = NA, fill = back))
+	} else {
+		grid.draw(back)
+	}
+	upViewport()
 
-    # Spine
-    vp_spine <- viewport(width = unit(JACKET_HEIGHT, "in"),
-                        height = unit(JACKET_SPINE_WIDTH, "in"),
-                        angle = -90)
-    pushViewport(vp_spine)
-    if (is.null(spine)) {
-        grid.text("Spine", gp = gpar(fontsize = 24))
-        grid.rect(gp = gpar(col = "black", fill = NA))
-    } else if (is_fill(spine)) {
-        grid.rect(gp = gpar(col = NA, fill = spine))
-    } else {
-        grid.draw(spine)
-    }
-    upViewport()
+	# Spine
+	vp_spine <- viewport(
+		width = unit(JACKET_HEIGHT, "in"),
+		height = unit(JACKET_SPINE_WIDTH, "in"),
+		angle = -90
+	)
+	pushViewport(vp_spine)
+	if (is.null(spine)) {
+		grid.text("Spine", gp = gpar(fontsize = 24))
+		grid.rect(gp = gpar(col = "black", fill = NA))
+	} else if (is_fill(spine)) {
+		grid.rect(gp = gpar(col = NA, fill = spine))
+	} else {
+		grid.draw(spine)
+	}
+	upViewport()
 
-    piecepackr::grid.cropmark(
-        width = unit(2 * JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
-        height = unit(JACKET_HEIGHT, "in"),
-        gp = gpar(col = "black")
-    )
-    draw_jacket_origami()
+	piecepackr::grid.cropmark(
+		width = unit(2 * JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
+		height = unit(JACKET_HEIGHT, "in"),
+		gp = gpar(col = "black")
+	)
+	draw_jacket_origami()
 
-    if (!is.null(inner)) {
-        grid.newpage()
-        vp_inner <- viewport(width = unit(JACKET_WIDTH, "in"),
-                             height = unit(JACKET_HEIGHT, "in"))
-        pushViewport(vp_inner)
-        if (is_fill(inner)) {
-            grid.rect(gp = gpar(col = NA, fill = inner))
-        } else {
-            grid.draw(inner)
-        }
-        upViewport()
+	if (!is.null(inner)) {
+		grid.newpage()
+		vp_inner <- viewport(width = unit(JACKET_WIDTH, "in"), height = unit(JACKET_HEIGHT, "in"))
+		pushViewport(vp_inner)
+		if (is_fill(inner)) {
+			grid.rect(gp = gpar(col = NA, fill = inner))
+		} else {
+			grid.draw(inner)
+		}
+		upViewport()
+	}
 
-    }
+	invisible(dev.off())
 
-    invisible(dev.off())
-
-    invisible(output)
+	invisible(output)
 }
 
 pdf_create_mock_sbgj <- function(output = NULL) {
-    output <- normalize_output(output)
-    current_dev <- dev.cur()
-    if (current_dev > 1)
-        on.exit(dev.set(current_dev), add = TRUE)
+	output <- normalize_output(output)
+	current_dev <- dev.cur()
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	}
 
-    pnp_pdf(output, width = 11, height = 8.5)
+	pnp_pdf(output, width = 11, height = 8.5)
 
-    width_fb <- unit(JACKET_FACE_WIDTH, "inches")
-    width_s  <- unit(JACKET_SPINE_WIDTH, "inches")
-    height   <- unit(JACKET_HEIGHT, "inches")
-    xc <- unit(0.5, "npc") - unit(0.7, "mm")
-    yc <- unit(0.5, "npc") - unit(1.45, "mm")
-    grid.rect(x = xc, y = yc,
-        width = 2 * width_fb + width_s, height = height,
-        gp = gpar(col = NA, fill = "grey"))
-    grid.rect(x = xc, y = yc,
-        width = width_s, height = height,
-        gp = gpar(col = NA, fill = "black"))
+	width_fb <- unit(JACKET_FACE_WIDTH, "inches")
+	width_s <- unit(JACKET_SPINE_WIDTH, "inches")
+	height <- unit(JACKET_HEIGHT, "inches")
+	xc <- unit(0.5, "npc") - unit(0.7, "mm")
+	yc <- unit(0.5, "npc") - unit(1.45, "mm")
+	grid.rect(
+		x = xc,
+		y = yc,
+		width = 2 * width_fb + width_s,
+		height = height,
+		gp = gpar(col = NA, fill = "grey")
+	)
+	grid.rect(x = xc, y = yc, width = width_s, height = height, gp = gpar(col = NA, fill = "black"))
 
-    invisible(dev.off())
+	invisible(dev.off())
 
-    invisible(output)
+	invisible(output)
 }
 
-jacket_instructions_md <- sprintf("1. Print the jacket out (ideally on cardstock).
+jacket_instructions_md <- sprintf(
+	"1. Print the jacket out (ideally on cardstock).
 
    * Print %s (100%%).
    * To include the jacket inside (if any) print double-sided flipping on the %s.
@@ -202,35 +215,40 @@ jacket_instructions_md <- sprintf("1. Print the jacket out (ideally on cardstock
      4. Make two *mountain* folds by reversing the (valley) creases.
 
 3. Insert the jacket into the 4x6 photo storage box.",
-    dQuote("actual size"),
-    dQuote("short edge")
+	dQuote("actual size"),
+	dQuote("short edge")
 )
 
 #' @rdname pdf_create_jacket
 #' @param style A style set such as [marquee::classic_style()] to
 #'              be passed to [marquee::marquee_grob()].
 #' @export
-pdf_create_jacket_instructions <- function(output = NULL, ...,
-                                           paper = c("letter", "a4"),
-                                           style = marquee::classic_style()) {
-    paper <- tolower(paper)
-    paper <- match.arg(paper)
-    output <- normalize_output(output)
+pdf_create_jacket_instructions <- function(
+	output = NULL,
+	...,
+	paper = c("letter", "a4"),
+	style = marquee::classic_style()
+) {
+	paper <- tolower(paper)
+	paper <- match.arg(paper)
+	output <- normalize_output(output)
 
-    stopifnot(requireNamespace("marquee", quietly = TRUE))
+	stopifnot(requireNamespace("marquee", quietly = TRUE))
 
-    pnp_pdf(output, paper = paper, orientation = "landscape")
+	pnp_pdf(output, paper = paper, orientation = "landscape")
 
-    vp <- viewport(width = unit(JACKET_WIDTH, "in"),
-                   height = unit(JACKET_HEIGHT + 1.5, "in"))
-    pushViewport(vp)
-    text <- paste0('# 4\u2033 x 6\u2033 Photo Storage Box Jacket Setup\n', jacket_instructions_md)
-    mg <- marquee::marquee_grob(text,
-                                style = style, x = unit(1/8, "in"),
-                                width = unit(JACKET_WIDTH - 2/8, "in"),
-                                y = unit(1, "npc") - unit(1/8, "in"))
-    grid.draw(mg)
-    upViewport()
-    invisible(dev.off())
-    invisible(output)
+	vp <- viewport(width = unit(JACKET_WIDTH, "in"), height = unit(JACKET_HEIGHT + 1.5, "in"))
+	pushViewport(vp)
+	text <- paste0('# 4\u2033 x 6\u2033 Photo Storage Box Jacket Setup\n', jacket_instructions_md)
+	mg <- marquee::marquee_grob(
+		text,
+		style = style,
+		x = unit(1 / 8, "in"),
+		width = unit(JACKET_WIDTH - 2 / 8, "in"),
+		y = unit(1, "npc") - unit(1 / 8, "in")
+	)
+	grid.draw(mg)
+	upViewport()
+	invisible(dev.off())
+	invisible(output)
 }

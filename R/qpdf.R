@@ -22,26 +22,26 @@
 #' unlink(f4)
 #' @export
 pdf_compress <- function(input, output = NULL, ...) {
-    output <- normalize_output(output, input)
-    qpdf::pdf_compress(input, output = output, ...)
-    invisible(output)
+	output <- normalize_output(output, input)
+	qpdf::pdf_compress(input, output = output, ...)
+	invisible(output)
 }
 
 #' @inheritParams pdf_pages
 #' @rdname qpdf_wrappers
 #' @export
 pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
-    output <- normalize_output(output, input)
-    pages <- pdf_pages(input, pages = pages)
-    qpdf::pdf_rotate_pages(input, output = output, ..., pages = pages)
-    invisible(output)
+	output <- normalize_output(output, input)
+	pages <- pdf_pages(input, pages = pages)
+	qpdf::pdf_rotate_pages(input, output = output, ..., pages = pages)
+	invisible(output)
 }
 
 #' @rdname qpdf_wrappers
 #' @export
 pdf_subset <- function(input, output = NULL, ..., pages = 1L) {
-    output <- normalize_output(output, input)
-    pages <- pdf_pages(input, pages = pages)
-    qpdf::pdf_subset(input, output = output, ..., pages = pages)
-    invisible(output)
+	output <- normalize_output(output, input)
+	pages <- pdf_pages(input, pages = pages)
+	qpdf::pdf_subset(input, output = output, ..., pages = pages)
+	invisible(output)
 }
