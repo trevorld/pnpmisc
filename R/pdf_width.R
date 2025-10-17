@@ -13,25 +13,29 @@
 #' unlink(f)
 #' @export
 pdf_width <- function(input, ..., units = "inches", numeric = FALSE) {
-    width <- pdftools::pdf_pagesize(input)$width
-    if (units == "bigpts" && numeric) {
-        return (width)
-    } else {
-        if (dev.cur() == 1L) on.exit(invisible(dev.off()), add = TRUE)
-        convertWidth(unit(width, "bigpts"), units, valueOnly = numeric)
-    }
+	width <- pdftools::pdf_pagesize(input)$width
+	if (units == "bigpts" && numeric) {
+		return(width)
+	} else {
+		if (dev.cur() == 1L) {
+			on.exit(invisible(dev.off()), add = TRUE)
+		}
+		convertWidth(unit(width, "bigpts"), units, valueOnly = numeric)
+	}
 }
 
 #' @rdname pdf_width
 #' @export
 pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
-    height <- pdftools::pdf_pagesize(input)$height
-    if (units == "bigpts" && numeric) {
-        return (height)
-    } else {
-        if (dev.cur() == 1L) on.exit(invisible(dev.off()), add = TRUE)
-        convertHeight(unit(height, "bigpts"), units, valueOnly = numeric)
-    }
+	height <- pdftools::pdf_pagesize(input)$height
+	if (units == "bigpts" && numeric) {
+		return(height)
+	} else {
+		if (dev.cur() == 1L) {
+			on.exit(invisible(dev.off()), add = TRUE)
+		}
+		convertHeight(unit(height, "bigpts"), units, valueOnly = numeric)
+	}
 }
 
 #' Tell whether pdf is in portrait or landscape mode
@@ -51,6 +55,6 @@ pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
 #' unlink(f2)
 #' @export
 pdf_orientation <- function(input, ...) {
-    df <- pdftools::pdf_pagesize(input)
-    ifelse(df$width > df$height, "landscape", "portrait")
+	df <- pdftools::pdf_pagesize(input)
+	ifelse(df$width > df$height, "landscape", "portrait")
 }

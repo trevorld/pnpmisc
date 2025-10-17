@@ -25,84 +25,113 @@
 #'   unlink(f3)
 #' }
 #' @export
-pdf_rm_crosshairs <- function(input, output = NULL, ...,
-                              layout = "poker_3x2_bleed",
-                              pages = "odd",
-                              dpi = 300) {
-    stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-    current_dev <- dev.cur()
+pdf_rm_crosshairs <- function(
+	input,
+	output = NULL,
+	...,
+	layout = "poker_3x2_bleed",
+	pages = "odd",
+	dpi = 300
+) {
+	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+	current_dev <- dev.cur()
 
-    pages <- pdf_pages(input, pages = pages)
+	pages <- pdf_pages(input, pages = pages)
 
-    output <- normalize_output(output, input)
-    if (is.character(layout))
-        layout <- layout_preset(layout)
+	output <- normalize_output(output, input)
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
 
-    df_size_orig <- pdftools::pdf_pagesize(input)
-    stopifnot(nrow(df_size_orig) > 0L)
-    width <- unit(df_size_orig$width[1L], "bigpts")
-    height <- unit(df_size_orig$height[1L], "bigpts")
-    width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-    height_in <- convertHeight(height, "inches", valueOnly = TRUE)
+	df_size_orig <- pdftools::pdf_pagesize(input)
+	stopifnot(nrow(df_size_orig) > 0L)
+	width <- unit(df_size_orig$width[1L], "bigpts")
+	height <- unit(df_size_orig$height[1L], "bigpts")
+	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
+	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
 
-    if (current_dev > 1)
-        on.exit(dev.set(current_dev), add = TRUE)
-    else
-        invisible(dev.off()) # `convertWidth()` opened device
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	} else {
+		invisible(dev.off())
+	} # `convertWidth()` opened device
 
-    pnp_pdf(output, width = width_in, height = height_in)
-    for (i in seq_len(nrow(df_size_orig))) {
-        grid.newpage()
+	pnp_pdf(output, width = width_in, height = height_in)
+	for (i in seq_len(nrow(df_size_orig))) {
+		grid.newpage()
 
-        pixmap <- pdf_render_bm_pixmap(input, page = i, dpi = dpi)
-        if (i %in% pages) {
-            pixmap <- bm_rm_crosshairs_layout(pixmap, layout)
-        }
+		pixmap <- pdf_render_bm_pixmap(input, page = i, dpi = dpi)
+		if (i %in% pages) {
+			pixmap <- bm_rm_crosshairs_layout(pixmap, layout)
+		}
 
-        width <- unit(df_size_orig$width[i], "bigpts")
-        height <- unit(df_size_orig$height[i], "bigpts")
-        vp <- viewport(width = width, height = height)
-        grid.raster(pixmap, interpolate = FALSE, vp = vp)
-    }
-    invisible(dev.off())
-    invisible(output)
+		width <- unit(df_size_orig$width[i], "bigpts")
+		height <- unit(df_size_orig$height[i], "bigpts")
+		vp <- viewport(width = width, height = height)
+		grid.raster(pixmap, interpolate = FALSE, vp = vp)
+	}
+	invisible(dev.off())
+	invisible(output)
 }
 
 bm_rm_crosshairs_layout <- function(pixmap, layout = layout_preset("poker_3x2_bleed")) {
-    dpi <- get_dpi(pixmap, layout$paper[1L], layout$orientation[1L])
-    for (i in seq_len(nrow(layout))) {
-        x <- layout$x[i]
-        y <- layout$y[i]
-        col <- layout$col[i]
-        row <- layout$row[i]
-        width <- layout$width[i]
-        height <- layout$height[i]
-        bleed <- layout$bleed[i]
+	dpi <- get_dpi(pixmap, layout$paper[1L], layout$orientation[1L])
+	for (i in seq_len(nrow(layout))) {
+		x <- layout$x[i]
+		y <- layout$y[i]
+		col <- layout$col[i]
+		row <- layout$row[i]
+		width <- layout$width[i]
+		height <- layout$height[i]
+		bleed <- layout$bleed[i]
 
-        rows <- bm_card_rows(pixmap, layout = layout, row = row, col = col)
-        cols <- bm_card_cols(pixmap, layout = layout, row = row, col = col)
-        color <- pixmap[ceiling(quantile(rows, probs = 0.02, names = FALSE)),
-                        floor(median(cols))]
-        # Lower-left corner
-        pixmap[seq.int(round(dpi * (y - 0.5*height - 0.82*bleed)),
-                       round(dpi * (y - 0.5*height + 0.82*bleed))),
-               seq.int(round(dpi * (x - 0.5*width - 0.82*bleed)),
-                       round(dpi * (x - 0.5*width + 0.82*bleed)))] <- color
-        # Upper-left corner
-        pixmap[seq.int(round(dpi * (y + 0.5*height - 0.82*bleed)),
-                       round(dpi * (y + 0.5*height + 0.82*bleed))),
-               seq.int(round(dpi * (x - 0.5*width - 0.82*bleed)),
-                       round(dpi * (x - 0.5*width + 0.82*bleed)))] <- color
-        # Lower-right corner
-        pixmap[seq.int(round(dpi * (y - 0.5*height - 0.82*bleed)),
-                       round(dpi * (y - 0.5*height + 0.82*bleed))),
-               seq.int(round(dpi * (x + 0.5*width - 0.82*bleed)),
-                       round(dpi * (x + 0.5*width + 0.82*bleed)))] <- color
-        # Upper-right corner
-        pixmap[seq.int(round(dpi * (y + 0.5*height - 0.82*bleed)),
-                       round(dpi * (y + 0.5*height + 0.82*bleed))),
-               seq.int(round(dpi * (x + 0.5*width - 0.82*bleed)),
-                       round(dpi * (x + 0.5*width + 0.82*bleed)))] <- color
-    }
-    pixmap
+		rows <- bm_card_rows(pixmap, layout = layout, row = row, col = col)
+		cols <- bm_card_cols(pixmap, layout = layout, row = row, col = col)
+		color <- pixmap[ceiling(quantile(rows, probs = 0.02, names = FALSE)), floor(median(cols))]
+		# Lower-left corner
+		pixmap[
+			seq.int(
+				round(dpi * (y - 0.5 * height - 0.82 * bleed)),
+				round(dpi * (y - 0.5 * height + 0.82 * bleed))
+			),
+			seq.int(
+				round(dpi * (x - 0.5 * width - 0.82 * bleed)),
+				round(dpi * (x - 0.5 * width + 0.82 * bleed))
+			)
+		] <- color
+		# Upper-left corner
+		pixmap[
+			seq.int(
+				round(dpi * (y + 0.5 * height - 0.82 * bleed)),
+				round(dpi * (y + 0.5 * height + 0.82 * bleed))
+			),
+			seq.int(
+				round(dpi * (x - 0.5 * width - 0.82 * bleed)),
+				round(dpi * (x - 0.5 * width + 0.82 * bleed))
+			)
+		] <- color
+		# Lower-right corner
+		pixmap[
+			seq.int(
+				round(dpi * (y - 0.5 * height - 0.82 * bleed)),
+				round(dpi * (y - 0.5 * height + 0.82 * bleed))
+			),
+			seq.int(
+				round(dpi * (x + 0.5 * width - 0.82 * bleed)),
+				round(dpi * (x + 0.5 * width + 0.82 * bleed))
+			)
+		] <- color
+		# Upper-right corner
+		pixmap[
+			seq.int(
+				round(dpi * (y + 0.5 * height - 0.82 * bleed)),
+				round(dpi * (y + 0.5 * height + 0.82 * bleed))
+			),
+			seq.int(
+				round(dpi * (x + 0.5 * width - 0.82 * bleed)),
+				round(dpi * (x + 0.5 * width + 0.82 * bleed))
+			)
+		] <- color
+	}
+	pixmap
 }

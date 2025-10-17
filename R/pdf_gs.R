@@ -15,30 +15,31 @@
 #' }
 #' @export
 pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
+	input <- normalizePath(input)
+	output <- normalize_output(output, input)
 
-    input <- normalizePath(input)
-    output <- normalize_output(output, input)
+	args <- c(
+		"-dBATCH",
+		"-dNOPAUSE",
+		"-sDEVICE=pdfwrite",
+		"-sAutoRotatePages=None",
+		paste0("-sOutputFile=", shQuote(output)),
+		args,
+		shQuote(input)
+	)
 
-    args <- c("-dBATCH",
-              "-dNOPAUSE",
-              "-sDEVICE=pdfwrite",
-              "-sAutoRotatePages=None",
-              paste0("-sOutputFile=", shQuote(output)),
-              args,
-              shQuote(input))
+	stdout <- system2_gs(args)
 
-    stdout <- system2_gs(args)
-
-    invisible(output)
+	invisible(output)
 }
 
 # Adapted from `xmpdf:::xmpdf_system2()`
 system2_gs <- function(args) {
-    cmd <- tools::find_gs_cmd()
-    output <- system2(cmd, args, stdout = TRUE)
-    if (!is.null(attr(output, "status"))) {
-        msg <- c(paste(sQuote("system2()"), "command failed."))
-        stop(msg)
-    }
-    invisible(output)
+	cmd <- tools::find_gs_cmd()
+	output <- system2(cmd, args, stdout = TRUE)
+	if (!is.null(attr(output, "status"))) {
+		msg <- c(paste(sQuote("system2()"), "command failed."))
+		stop(msg)
+	}
+	invisible(output)
 }

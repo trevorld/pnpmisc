@@ -19,44 +19,58 @@
 #' }
 #' }
 #' @export
-bm_crop_layout <- function(page, ..., layout = "button_shy_cards", row = 1L, col = 1L, bleed = FALSE) {
-    stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-    stopifnot(bittermelon::is_bm_pixmap(page))
-    if (is.character(layout))
-        layout <- layout_preset(layout)
-    rows <- bm_card_rows(page, layout = layout, row = row, col = col, bleed = bleed)
-    cols <- bm_card_cols(page, layout = layout, row = row, col = col, bleed = bleed)
-    page[rows, cols]
+bm_crop_layout <- function(
+	page,
+	...,
+	layout = "button_shy_cards",
+	row = 1L,
+	col = 1L,
+	bleed = FALSE
+) {
+	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+	stopifnot(bittermelon::is_bm_pixmap(page))
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
+	rows <- bm_card_rows(page, layout = layout, row = row, col = col, bleed = bleed)
+	cols <- bm_card_cols(page, layout = layout, row = row, col = col, bleed = bleed)
+	page[rows, cols]
 }
 
 #### Also bleed
 # Get card from page
 bm_card_rows <- function(page, ..., layout, row = 1L, col = 1L, bleed = FALSE) {
-    i <- which(layout$row == row & layout$col == col)
-    dpi <- get_dpi(page, layout$paper[i], layout$orientation[i])
-    if (bleed)
-        height <- layout$height[i] + 2 * layout$bleed[i]
-    else
-        height <- layout$height[i]
-    rows <- seq.int(from = dpi * (layout$y[i] - 0.5 * height),
-                    to = dpi * (layout$y[i] + 0.5 * height))
-    rows
+	i <- which(layout$row == row & layout$col == col)
+	dpi <- get_dpi(page, layout$paper[i], layout$orientation[i])
+	if (bleed) {
+		height <- layout$height[i] + 2 * layout$bleed[i]
+	} else {
+		height <- layout$height[i]
+	}
+	rows <- seq.int(
+		from = dpi * (layout$y[i] - 0.5 * height),
+		to = dpi * (layout$y[i] + 0.5 * height)
+	)
+	rows
 }
 
 # Get card from page
 bm_card_cols <- function(page, ..., layout, row = 1L, col = 1L, bleed = FALSE) {
-    i <- which(layout$row == row & layout$col == col)
-    dpi <- get_dpi(page, layout$paper[i], layout$orientation[i])
-    if (bleed)
-        width <- layout$width[i] + 2 * layout$bleed[i]
-    else
-        width <- layout$width[i]
-    cols <- seq.int(from = dpi * (layout$x[i] - 0.5 * width),
-                    to = dpi * (layout$x[i] + 0.5 * width))
-    cols
+	i <- which(layout$row == row & layout$col == col)
+	dpi <- get_dpi(page, layout$paper[i], layout$orientation[i])
+	if (bleed) {
+		width <- layout$width[i] + 2 * layout$bleed[i]
+	} else {
+		width <- layout$width[i]
+	}
+	cols <- seq.int(
+		from = dpi * (layout$x[i] - 0.5 * width),
+		to = dpi * (layout$x[i] + 0.5 * width)
+	)
+	cols
 }
 
 get_dpi <- function(page, paper, orientation) {
-    width_in <- paper_width(paper, orientation)
-    ncol(page) / width_in
+	width_in <- paper_width(paper, orientation)
+	ncol(page) / width_in
 }

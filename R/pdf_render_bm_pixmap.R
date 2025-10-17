@@ -14,10 +14,10 @@
 #' }
 #' @export
 pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = 300) {
-    stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 
-    bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
-    bittermelon::as_bm_pixmap(bitmap)
+	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
+	bittermelon::as_bm_pixmap(bitmap)
 }
 
 
@@ -38,11 +38,11 @@ pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = 300) {
 #' }
 #' @export
 pdf_render_raster <- function(input, ..., page = 1L, dpi = 300, native = FALSE) {
-    bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
-    if (native) {
-        stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-        grDevices::as.raster(bittermelon::as_bm_pixmap(bitmap), native = TRUE)
-    } else {
-        grDevices::as.raster(bitmap)
-    }
+	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
+	if (native) {
+		stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+		grDevices::as.raster(bittermelon::as_bm_pixmap(bitmap), native = TRUE)
+	} else {
+		grDevices::as.raster(bitmap)
+	}
 }

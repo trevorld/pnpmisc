@@ -15,35 +15,35 @@
 #' unlink(f2)
 #' @export
 pdf_append_blank <- function(input, output = NULL, ..., minimum = 1L, multiples_of = 1L) {
-    output <- normalize_output(output, input)
-    minimum <- as.integer(minimum)
-    multiples_of <- as.integer(multiples_of)
+	output <- normalize_output(output, input)
+	minimum <- as.integer(minimum)
+	multiples_of <- as.integer(multiples_of)
 
-    input_length <- qpdf::pdf_length(input)
-    target <- input_length
+	input_length <- qpdf::pdf_length(input)
+	target <- input_length
 
-    if (target < minimum) {
-        target <- minimum
-    }
+	if (target < minimum) {
+		target <- minimum
+	}
 
-    remainder <- target %% multiples_of
-    if (remainder != 0L) {
-        target <- target + (multiples_of - remainder)
-    }
+	remainder <- target %% multiples_of
+	if (remainder != 0L) {
+		target <- target + (multiples_of - remainder)
+	}
 
-    to_add <- target - input_length
-    if (to_add == 0L) {
-        file.copy(input, output, overwrite = TRUE)
-    } else {
-        new <- pdf_create_blank(
-            length = to_add,
-            width = pdf_width(input, numeric = TRUE)[1L],
-            height = pdf_height(input, numeric = TRUE)[1L],
-            paper = "special"
-        )
-        on.exit(unlink(new), add = TRUE)
-        qpdf::pdf_combine(c(input, new), output = output)
-    }
+	to_add <- target - input_length
+	if (to_add == 0L) {
+		file.copy(input, output, overwrite = TRUE)
+	} else {
+		new <- pdf_create_blank(
+			length = to_add,
+			width = pdf_width(input, numeric = TRUE)[1L],
+			height = pdf_height(input, numeric = TRUE)[1L],
+			paper = "special"
+		)
+		on.exit(unlink(new), add = TRUE)
+		qpdf::pdf_combine(c(input, new), output = output)
+	}
 
-    invisible(output)
+	invisible(output)
 }

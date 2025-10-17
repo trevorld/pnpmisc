@@ -21,49 +21,55 @@
 #'   unlink(output)
 #' }
 #' @export
-pdf_add_crosshairs <- function(input, output = NULL, ...,
-                              layout = "button_shy_cards",
-                              pages = "even",
-                              dpi = 300) {
-    stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-    stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
-    current_dev <- dev.cur()
+pdf_add_crosshairs <- function(
+	input,
+	output = NULL,
+	...,
+	layout = "button_shy_cards",
+	pages = "even",
+	dpi = 300
+) {
+	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
+	stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
+	current_dev <- dev.cur()
 
-    pages <- pdf_pages(input, pages = pages)
+	pages <- pdf_pages(input, pages = pages)
 
-    output <- normalize_output(output, input)
-    if (is.character(layout))
-        layout <- layout_preset(layout)
+	output <- normalize_output(output, input)
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
 
-    df_size_orig <- pdftools::pdf_pagesize(input)
-    stopifnot(nrow(df_size_orig) > 0L)
-    width <- unit(df_size_orig$width[1L], "bigpts")
-    height <- unit(df_size_orig$height[1L], "bigpts")
-    width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-    height_in <- convertHeight(height, "inches", valueOnly = TRUE)
+	df_size_orig <- pdftools::pdf_pagesize(input)
+	stopifnot(nrow(df_size_orig) > 0L)
+	width <- unit(df_size_orig$width[1L], "bigpts")
+	height <- unit(df_size_orig$height[1L], "bigpts")
+	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
+	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
 
-    if (current_dev > 1)
-        on.exit(dev.set(current_dev), add = TRUE)
-    else
-        invisible(dev.off()) # `convertWidth()` opened device
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	} else {
+		invisible(dev.off())
+	} # `convertWidth()` opened device
 
-    pnp_pdf(output, width = width_in, height = height_in)
-    for (i in seq_len(nrow(df_size_orig))) {
-        grid.newpage()
+	pnp_pdf(output, width = width_in, height = height_in)
+	for (i in seq_len(nrow(df_size_orig))) {
+		grid.newpage()
 
-        width <- unit(df_size_orig$width[i], "bigpts")
-        height <- unit(df_size_orig$height[i], "bigpts")
-        vp <- viewport(width = width, height = height)
+		width <- unit(df_size_orig$width[i], "bigpts")
+		height <- unit(df_size_orig$height[i], "bigpts")
+		vp <- viewport(width = width, height = height)
 
-        r <- pdf_render_raster(input, page = i, dpi = dpi)
-        grid.raster(r, interpolate = FALSE, vp = vp)
+		r <- pdf_render_raster(input, page = i, dpi = dpi)
+		grid.raster(r, interpolate = FALSE, vp = vp)
 
-        if (i %in% pages) {
-            grid_add_crosshairs(..., layout = layout)
-        }
-    }
-    invisible(dev.off())
-    invisible(output)
+		if (i %in% pages) {
+			grid_add_crosshairs(..., layout = layout)
+		}
+	}
+	invisible(dev.off())
+	invisible(output)
 }
 
 #' Draw (rounded) rectangles around components
@@ -90,16 +96,20 @@ pdf_add_crosshairs <- function(input, output = NULL, ...,
 #' }
 #' @export
 grid_add_crosshairs <- function(..., layout = "poker_3x3") {
-    stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-    stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
-    if (is.character(layout))
-        layout <- layout_preset(layout)
-    for (j in seq_len(nrow(layout))) {
-        piecepackr::grid.crosshair(
-            x = layout$x[j], y = layout$y[j],
-            width = layout$width[j], height = layout$height[j],
-            default.units = "in", ...
-        )
-    }
-    invisible(NULL)
+	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
+	stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
+	for (j in seq_len(nrow(layout))) {
+		piecepackr::grid.crosshair(
+			x = layout$x[j],
+			y = layout$y[j],
+			width = layout$width[j],
+			height = layout$height[j],
+			default.units = "in",
+			...
+		)
+	}
+	invisible(NULL)
 }

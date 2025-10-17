@@ -37,28 +37,28 @@
 #' @rdname xmpdf_wrappers
 #' @export
 pdf_set_bookmarks <- function(input, output = NULL, ..., bookmarks) {
-    stopifnot(requireNamespace("xmpdf", quietly = TRUE))
-    output <- normalize_output(output, input)
-    xmpdf::set_bookmarks(bookmarks, input, output)
-    invisible(output)
+	stopifnot(requireNamespace("xmpdf", quietly = TRUE))
+	output <- normalize_output(output, input)
+	xmpdf::set_bookmarks(bookmarks, input, output)
+	invisible(output)
 }
 
 #' @param docinfo See [xmpdf::set_docinfo()].
 #' @rdname xmpdf_wrappers
 #' @export
 pdf_set_docinfo <- function(input, output = NULL, ..., docinfo) {
-    stopifnot(requireNamespace("xmpdf", quietly = TRUE))
-    output <- normalize_output(output, input)
-    xmpdf::set_docinfo(docinfo, input, output)
-    invisible(output)
+	stopifnot(requireNamespace("xmpdf", quietly = TRUE))
+	output <- normalize_output(output, input)
+	xmpdf::set_docinfo(docinfo, input, output)
+	invisible(output)
 }
 
 #' @param xmp See [xmpdf::set_xmp()].
 #' @rdname xmpdf_wrappers
 #' @export
 pdf_set_xmp <- function(input, output = NULL, ..., xmp) {
-    stopifnot(requireNamespace("xmpdf", quietly = TRUE))
-    output <- normalize_output(output, input)
-    xmpdf::set_xmp(xmp, input, output)
-    invisible(output)
+	stopifnot(requireNamespace("xmpdf", quietly = TRUE))
+	output <- normalize_output(output, input)
+	xmpdf::set_xmp(xmp, input, output)
+	invisible(output)
 }

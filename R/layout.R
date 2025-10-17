@@ -10,52 +10,71 @@
 #' layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
 #' @return A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
 #' @export
-layout_grid <- function(nrow = 2L, ncol = 1L,
-                        width = 2.5, height = 3.5, bleed = 0,
-                        paper = c("letter", "a4"), orientation = c("landscape", "portrait")) {
-    nrow <- as.integer(nrow)
-    ncol <- as.integer(ncol)
-    paper <- tolower(paper)
-    paper <- match.arg(paper)
-    orientation <- match.arg(orientation)
+layout_grid <- function(
+	nrow = 2L,
+	ncol = 1L,
+	width = 2.5,
+	height = 3.5,
+	bleed = 0,
+	paper = c("letter", "a4"),
+	orientation = c("landscape", "portrait")
+) {
+	nrow <- as.integer(nrow)
+	ncol <- as.integer(ncol)
+	paper <- tolower(paper)
+	paper <- match.arg(paper)
+	orientation <- match.arg(orientation)
 
-    stopifnot(nrow > 0L, ncol > 0L)
+	stopifnot(nrow > 0L, ncol > 0L)
 
-    xc <- 0.5 * paper_width(paper, orientation)
-    yc <- 0.5 * paper_height(paper, orientation)
+	xc <- 0.5 * paper_width(paper, orientation)
+	yc <- 0.5 * paper_height(paper, orientation)
 
-    if (ncol == 1L) {
-        x <- xc
-    } else if (is_odd(ncol)) {
-        m <- ceiling(ncol / 2)
-        xl <- rev(seq(from = xc, by = -(width + 2 * bleed), length.out = m)[-1L])
-        xr <- seq(from = xc, by = (width + 2 * bleed), length.out = m)[-1L]
-        x <- c(xl, xc, xr)
-    } else {
-        m <- ncol / 2
-        xl <- rev(seq(from = xc - 0.5 * (width + 2 * bleed), by = -(width + 2 * bleed), length.out = m))
-        xr <- seq(from = xc + 0.5 * (width + 2 * bleed), by = (width + 2 * bleed), length.out = m)
-        x <- c(xl, xr)
-    }
-    if (nrow == 1L) {
-        y <- yc
-    } else if (is_odd(nrow)) {
-        m <- ceiling(nrow / 2)
-        yl <- rev(seq(from = yc, by = -(height + 2 * bleed), length.out = m)[-1L])
-        yr <- seq(from = yc, by = (height + 2 * bleed), length.out = m)[-1L]
-        y <- c(yl, yc, yr)
-    } else {
-        m <- nrow / 2
-        yl <- rev(seq(from = yc - 0.5 * (height + 2 * bleed), by = -(height + 2 * bleed), length.out = m))
-        yr <- seq(from = yc + 0.5 * (height + 2 * bleed), by = (height + 2 * bleed), length.out = m)
-        y <- c(yl, yr)
-    }
-    data.frame(row = rep(seq.int(nrow), each = ncol),
-               col = rep(seq.int(ncol), nrow),
-               x = rep(x, nrow),
-               y = rep(rev(y), each = ncol),
-               width = width, height = height, bleed = bleed,
-               paper = paper, orientation = orientation)
+	if (ncol == 1L) {
+		x <- xc
+	} else if (is_odd(ncol)) {
+		m <- ceiling(ncol / 2)
+		xl <- rev(seq(from = xc, by = -(width + 2 * bleed), length.out = m)[-1L])
+		xr <- seq(from = xc, by = (width + 2 * bleed), length.out = m)[-1L]
+		x <- c(xl, xc, xr)
+	} else {
+		m <- ncol / 2
+		xl <- rev(seq(
+			from = xc - 0.5 * (width + 2 * bleed),
+			by = -(width + 2 * bleed),
+			length.out = m
+		))
+		xr <- seq(from = xc + 0.5 * (width + 2 * bleed), by = (width + 2 * bleed), length.out = m)
+		x <- c(xl, xr)
+	}
+	if (nrow == 1L) {
+		y <- yc
+	} else if (is_odd(nrow)) {
+		m <- ceiling(nrow / 2)
+		yl <- rev(seq(from = yc, by = -(height + 2 * bleed), length.out = m)[-1L])
+		yr <- seq(from = yc, by = (height + 2 * bleed), length.out = m)[-1L]
+		y <- c(yl, yc, yr)
+	} else {
+		m <- nrow / 2
+		yl <- rev(seq(
+			from = yc - 0.5 * (height + 2 * bleed),
+			by = -(height + 2 * bleed),
+			length.out = m
+		))
+		yr <- seq(from = yc + 0.5 * (height + 2 * bleed), by = (height + 2 * bleed), length.out = m)
+		y <- c(yl, yr)
+	}
+	data.frame(
+		row = rep(seq.int(nrow), each = ncol),
+		col = rep(seq.int(ncol), nrow),
+		x = rep(x, nrow),
+		y = rep(rev(y), each = ncol),
+		width = width,
+		height = height,
+		bleed = bleed,
+		paper = paper,
+		orientation = orientation
+	)
 }
 
 #' Layout data frame for a named preset
@@ -82,20 +101,28 @@ layout_grid <- function(nrow = 2L, ncol = 1L,
 #' @return A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
 #' @export
 layout_preset <- function(name = "button_shy_cards") {
-    name <- match.arg(name, layout_names())
-    switch(name,
-           button_shy_cards = layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125),
-           button_shy_rules = layout_grid(nrow = 2L, ncol = 4L),
-           poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125),
-           poker_3x3 = layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait"),
-           poker_4x2 = layout_grid(nrow = 2L, ncol = 4L)
-           )
+	name <- match.arg(name, layout_names())
+	switch(
+		name,
+		button_shy_cards = layout_grid(
+			nrow = 2L,
+			ncol = 3L,
+			height = 3.447,
+			width = 2.469,
+			bleed = 0.125
+		),
+		button_shy_rules = layout_grid(nrow = 2L, ncol = 4L),
+		poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125),
+		poker_3x3 = layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait"),
+		poker_4x2 = layout_grid(nrow = 2L, ncol = 4L)
+	)
 }
 
 #' @rdname layout_preset
 #' @export
-layout_names <- function() c("button_shy_cards", "button_shy_rules",
-                             "poker_3x2_bleed", "poker_3x3", "poker_4x2")
+layout_names <- function() {
+	c("button_shy_cards", "button_shy_rules", "poker_3x2_bleed", "poker_3x3", "poker_4x2")
+}
 
 # To check fit of presets try something like
 # input <- "tmp/galdors_grip.pdf"
@@ -109,12 +136,10 @@ layout_names <- function() c("button_shy_cards", "button_shy_rules",
 # layout_grid(nrow = 2, ncol = 4, height = 3.405, width = 2.425, bleed = 0.125)
 
 draw_hline <- function(y = unit(0.5, "npc"), ...) {
-    grid.segments(x0 = unit(0, "npc"), x1 = unit(1, "npc"),
-                  y0 = y, y1 = y, ...)
+	grid.segments(x0 = unit(0, "npc"), x1 = unit(1, "npc"), y0 = y, y1 = y, ...)
 }
 draw_vline <- function(x = unit(0.5, "npc"), ...) {
-    grid.segments(y0 = unit(0, "npc"), y1 = unit(1, "npc"),
-                  x0 = x, x1 = x, ...)
+	grid.segments(y0 = unit(0, "npc"), y1 = unit(1, "npc"), x0 = x, x1 = x, ...)
 }
 
 #' Draw lines along component edges
@@ -140,16 +165,17 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #' grid::popViewport()
 #' @export
 grid_add_lines <- function(..., layout = "poker_3x3", gp = gpar()) {
-    if (is.character(layout))
-        layout <- layout_preset(layout)
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
 
-    for (i in seq_len(nrow(layout))) {
-        dy <- 0.5 * (layout$height[i])
-        dx <- 0.5 * (layout$width[i])
-        draw_hline(unit(layout$y[i] + dy, "in"), gp = gp)
-        draw_hline(unit(layout$y[i] - dy, "in"), gp = gp)
-        draw_vline(unit(layout$x[i] + dx, "in"), gp = gp)
-        draw_vline(unit(layout$x[i] - dx, "in"), gp = gp)
-    }
-    invisible(NULL)
+	for (i in seq_len(nrow(layout))) {
+		dy <- 0.5 * (layout$height[i])
+		dx <- 0.5 * (layout$width[i])
+		draw_hline(unit(layout$y[i] + dy, "in"), gp = gp)
+		draw_hline(unit(layout$y[i] - dy, "in"), gp = gp)
+		draw_vline(unit(layout$x[i] + dx, "in"), gp = gp)
+		draw_vline(unit(layout$x[i] - dx, "in"), gp = gp)
+	}
+	invisible(NULL)
 }
