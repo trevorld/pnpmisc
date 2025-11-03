@@ -42,16 +42,40 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
 
 		xc <- unit(0.5, "npc") - unit(0.7, "mm")
 		yc <- unit(0.5, "npc") - unit(1.45, "mm")
-		draw_jacket_origami(xc, yc)
+
+		# Cover up the "fold here" text
+		yo_edge <- 0.5 * unit(JACKET_4x6_HEIGHT, "inches")
+		grid.rect(
+			x = xc,
+			y = yc + yo_edge + unit(1.1, "cm"),
+			width = unit(2, "in"),
+			height = unit(2, "cm"),
+			gp = gpar(col = NA, fill = "white")
+		)
+		grid.rect(
+			x = xc,
+			y = yc - yo_edge - unit(1.1, "cm"),
+			width = unit(2, "in"),
+			height = unit(2, "cm"),
+			gp = gpar(col = NA, fill = "white")
+		)
+
+		grid_add_origami(xc, yc)
 	}
 	invisible(dev.off())
 	invisible(output)
 }
 
-draw_jacket_origami <- function(xc = unit(0.5, "npc"), yc = unit(0.5, "npc")) {
-	width_fb <- unit(JACKET_FACE_WIDTH, "inches")
-	width_s <- unit(JACKET_SPINE_WIDTH, "inches")
-	height <- unit(JACKET_HEIGHT, "inches")
+grid_add_origami <- function(
+	...,
+	xc = unit(0.5, "npc"),
+	yc = unit(0.5, "npc"),
+	width = unit(JACKET_4x6_FRONT_WIDTH, "inches"),
+	height = unit(JACKET_4x6_HEIGHT, "inches"),
+	depth = unit(JACKET_4x6_SPINE_WIDTH, "inches")
+) {
+	width_fb <- width
+	width_s <- depth
 
 	# Line up our calculated crop/fold marks with their crop/fold marks
 	# piecepackr::grid.cropmark(x = xc, y = yc,
@@ -63,22 +87,6 @@ draw_jacket_origami <- function(xc = unit(0.5, "npc"), yc = unit(0.5, "npc")) {
 	yo_edge <- 0.5 * height
 	yo_dotdash <- yo_edge + unit(2.0, "cm")
 	yo_circle <- yo_edge + unit(2.0, "mm")
-
-	# Cover up the "fold here" text
-	grid.rect(
-		x = xc,
-		y = yc + yo_edge + unit(1.1, "cm"),
-		width = unit(2, "in"),
-		height = unit(2, "cm"),
-		gp = gpar(col = NA, fill = "white")
-	)
-	grid.rect(
-		x = xc,
-		y = yc - yo_edge - unit(1.1, "cm"),
-		width = unit(2, "in"),
-		height = unit(2, "cm"),
-		gp = gpar(col = NA, fill = "white")
-	)
 
 	# Put-the-points-together dots and line
 	grid.circle(

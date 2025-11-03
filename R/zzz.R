@@ -13,6 +13,9 @@ is_fill <- function(x) {
 	}
 	is.na(x) || is.character(x) || inherits(x, "GridPattern")
 }
+is_list <- function(x) {
+	is.list(x) && !inherits(x, c("grob", "gList"))
+}
 
 normalize_output <- function(output, input = NULL) {
 	if (is.null(output)) {
