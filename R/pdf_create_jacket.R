@@ -1,45 +1,54 @@
-#' Create printable 4x6 photo box jacket pdf
+#' Create printable storage box jacket pdf
 #'
-#' `pdf_create_jacket()` creates a printable 4x6 photo box jacket.
+#' `pdf_create_jacket()` creates a printable storage box jacket.
+#' `pdf_create_4x6_jacket()` is a wrapper targeting a 4x6 photo storage box.
+#' `pdf_create_poker_jacket()` is an alternative targeting one or two poker deck storage boxes.
 #' `pdf_create_jacket_instructions()` creates a printable sheet of
 #' instructions for making such a jacket
 #' (these instructions are repeated in the `Details` section below).
 #'
-#' To make the 4x6 photo jacket from the pdf file:
+#' To make the storage box jacket from the pdf file:
 #'
-#' `r jacket_instructions_md`
+#' `r jacket_instructions_md()`
 #'
 #' @export
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_create_blank
 #' @param front Fill color/pattern/gradient or grob for front cover section of jacket
 #'              Will be drawn in a viewport with a
-#'              width of `r JACKET_FACE_WIDTH` inches
-#'              and a height of `r JACKET_HEIGHT` inches.
+#'              width of `width` and a height of `height`.
 #'              If `NULL` (default) we draw a template.
+#'              For `pdf_create_poker_jacket()` may also be a list with one or two of these values (in which case will generate two jackets).
 #' @param back Fill color/pattern/gradient or grob for back cover section of jacket
 #'              Will be drawn in a viewport with a
-#'              width of `r JACKET_FACE_WIDTH` inches
-#'              and a height of `r JACKET_HEIGHT` inches.
+#'              width of `width` and a height of `height`.
 #'              If `NULL` (default) we draw a template.
+#'              For `pdf_create_poker_jacket()` may also be a list with one or two of these values (in which case will generate two jackets).
 #' @param spine Fill color/pattern/gradient or grob for spine section of jacket
 #'              Will be drawn in a rotated viewport with a
-#'              width of `r JACKET_HEIGHT` inches
-#'              and a height of `r JACKET_SPINE_WIDTH` inches.
+#'              width of `height` and a height of `depth`.
 #'              If `NULL` (default) we draw a template.
+#'              For `pdf_create_poker_jacket()` may also be a list with one or two of these values (in which case will generate two jackets).
 #' @param inner Fill color/pattern/gradient or grob for inner section of jacket.
-#'              Will be drawn in a viewport with a width of `r JACKET_WIDTH` inches
-#'              and a height of `r JACKET_HEIGHT` inches.
+#'              Will be drawn in a viewport with a width of `2 * width + depth` inches
+#'              and a height of `height` inches.
 #'              If `NULL` (default) we do not create page for inner section.
+#'              For `pdf_create_poker_jacket()` may also be a list with one or two of these values (in which case will generate two jackets).
+#' @param width Width of the jacket face as a grid unit.
+#'              For a 4x6 photo storage box a good value is `r JACKET_4x6_FRONT_WIDTH` inches and for a poker deck storage box a good value is `r JACKET_POKER_FRONT_WIDTH` inches.
+#' @param height Height of the jacket face as a grid unit.
+#'              For a 4x6 photo storage box a good value is `r JACKET_4x6_HEIGHT` inches and for a poker deck storage box a good value is `r JACKET_POKER_HEIGHT` inches.
+#' @param depth Width of the spine as a grid unit.
+#'              For a 4x6 photo storage box a good value is `r JACKET_4x6_SPINE_WIDTH` inches and for a poker deck storage box a good value is `r JACKET_POKER_SPINE_WIDTH` inches.
 #' @examples
 #' # Template `front`, `back`, and `spine`
 #' if (requireNamespace("piecepackr", quietlyr= TRUE)) {
-#'   f1 <- pdf_create_jacket()
+#'   f1 <- pdf_create_4x6_jacket()
 #'   unlink(f1)
 #' }
 #'
 #' # Fill `front`, `back`, and `spine`
 #' if (requireNamespace("piecepackr", quietly = TRUE)) {
-#'   f2 <- pdf_create_jacket(front = "red", back = "blue", spine = "purple")
+#'   f2 <- pdf_create_4x6_jacket(front = "red", back = "blue", spine = "purple")
 #'   unlink(f2)
 #' }
 #'
@@ -53,7 +62,7 @@
 #'                            fill = pal[3], spacing = 0.3)
 #'   pythagorean <- patternGrob("polygon_tiling", type = "pythagorean",
 #'                              fill = pal[4], spacing = 0.1)
-#'   f3 <- pdf_create_jacket(front = herringbone, back = pythagorean,
+#'   f3 <- pdf_create_4x6_jacket(front = herringbone, back = pythagorean,
 #'                           spine = rhombille, bleed = TRUE)
 #'   unlink(f3)
 #' }
@@ -66,26 +75,88 @@ pdf_create_jacket <- function(
 	back = NULL,
 	spine = NULL,
 	inner = NULL,
-	paper = c("letter", "a4")
+	paper = c("letter", "a4"),
+	orientation = "landscape",
+	width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
+	height = unit(JACKET_4x6_HEIGHT, "in"),
+	depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
 ) {
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	output <- normalize_output(output)
 
-	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
+	stopifnot(
+		requireNamespace("piecepackr", quietly = TRUE),
+		is.unit(width),
+		is.unit(height),
+		is.unit(depth)
+	)
 
 	current_dev <- dev.cur()
 	if (current_dev > 1) {
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 
-	pnp_pdf(output, paper = paper, orientation = "landscape")
+	pnp_pdf(output, paper = paper, orientation = orientation)
+
+	grid_add_origami(width = width, height = height, depth = depth)
+
+	grid_add_jacket_outer(
+		front = front,
+		back = back,
+		spine = spine,
+		width = width,
+		height = height,
+		depth = depth
+	)
+
+	if (!is.null(inner)) {
+		grid.newpage()
+		grid_add_jacket_inner(inner, width, height, depth)
+	}
+
+	invisible(dev.off())
+
+	invisible(output)
+}
+
+grid_add_jacket_inner <- function(
+	inner = NULL,
+	width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
+	height = unit(JACKET_4x6_HEIGHT, "in"),
+	depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
+) {
+	stopifnot(is.unit(width), is.unit(height), is.unit(depth))
+
+	vp_inner <- viewport(width = 2 * width + depth, height = height)
+	pushViewport(vp_inner)
+	if (is.null(inner)) {
+		grid.null()
+	} else if (is_fill(inner)) {
+		grid.rect(gp = gpar(col = NA, fill = inner))
+	} else {
+		grid.draw(inner)
+	}
+	upViewport()
+
+	invisible(NULL)
+}
+
+grid_add_jacket_outer <- function(
+	front = NULL,
+	back = NULL,
+	spine = NULL,
+	width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
+	height = unit(JACKET_4x6_HEIGHT, "in"),
+	depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
+) {
+	stopifnot(is.unit(width), is.unit(height), is.unit(depth))
 
 	# Front
 	vp_front <- viewport(
-		x = unit(0.5, "npc") + 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
-		width = unit(JACKET_FACE_WIDTH, "in"),
-		height = unit(JACKET_HEIGHT, "in")
+		x = unit(0.5, "npc") + 0.5 * (width + depth),
+		width = width,
+		height = height
 	)
 	pushViewport(vp_front)
 	if (is.null(front)) {
@@ -100,9 +171,9 @@ pdf_create_jacket <- function(
 
 	# Back
 	vp_back <- viewport(
-		x = unit(0.5, "npc") - 0.5 * unit(JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
-		width = unit(JACKET_FACE_WIDTH, "in"),
-		height = unit(JACKET_HEIGHT, "in")
+		x = unit(0.5, "npc") - 0.5 * (width + depth),
+		width = width,
+		height = height
 	)
 	pushViewport(vp_back)
 	if (is.null(back)) {
@@ -116,11 +187,7 @@ pdf_create_jacket <- function(
 	upViewport()
 
 	# Spine
-	vp_spine <- viewport(
-		width = unit(JACKET_HEIGHT, "in"),
-		height = unit(JACKET_SPINE_WIDTH, "in"),
-		angle = -90
-	)
+	vp_spine <- viewport(width = height, height = depth, angle = -90)
 	pushViewport(vp_spine)
 	if (is.null(spine)) {
 		grid.text("Spine", gp = gpar(fontsize = 24))
@@ -133,27 +200,143 @@ pdf_create_jacket <- function(
 	upViewport()
 
 	piecepackr::grid.cropmark(
-		width = unit(2 * JACKET_FACE_WIDTH + JACKET_SPINE_WIDTH, "in"),
-		height = unit(JACKET_HEIGHT, "in"),
+		width = 2 * width + depth,
+		height = height,
 		gp = gpar(col = "black")
 	)
-	draw_jacket_origami()
+	invisible(NULL)
+}
 
-	if (!is.null(inner)) {
-		grid.newpage()
-		vp_inner <- viewport(width = unit(JACKET_WIDTH, "in"), height = unit(JACKET_HEIGHT, "in"))
-		pushViewport(vp_inner)
-		if (is_fill(inner)) {
-			grid.rect(gp = gpar(col = NA, fill = inner))
-		} else {
-			grid.draw(inner)
+#' @rdname pdf_create_jacket
+#' @export
+pdf_create_4x6_jacket <- function(
+	output = NULL,
+	...,
+	front = NULL,
+	back = NULL,
+	spine = NULL,
+	inner = NULL,
+	paper = c("letter", "a4")
+) {
+	paper <- tolower(paper)
+	paper <- match.arg(paper)
+	pdf_create_jacket(
+		output,
+		front = front,
+		back = back,
+		spine = spine,
+		inner = inner,
+		paper = paper,
+		orientation = "landscape",
+		width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
+		height = unit(JACKET_4x6_HEIGHT, "in"),
+		depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
+	)
+}
+
+#' @rdname pdf_create_jacket
+#' @export
+pdf_create_poker_jacket <- function(
+	output = NULL,
+	...,
+	front = NULL,
+	back = NULL,
+	spine = NULL,
+	inner = NULL,
+	paper = c("letter", "a4")
+) {
+	paper <- tolower(paper)
+	paper <- match.arg(paper)
+
+	# Draw 2 jackets
+	if (is_list(front) || is_list(back) || is_list(spine) || is_list(inner)) {
+		output <- normalize_output(output)
+		stopifnot(requireNamespace("piecepackr", quietly = TRUE))
+
+		if (!is_list(front)) {
+			front <- list(front)
 		}
-		upViewport()
+		if (!is_list(back)) {
+			back <- list(back)
+		}
+		if (!is_list(spine)) {
+			spine <- list(spine)
+		}
+		if (!is_list(inner)) {
+			inner <- list(inner)
+		}
+		if (length(front) == 1L) {
+			front <- front[c(1L, 1L)]
+		}
+		if (length(back) == 1L) {
+			back <- back[c(1L, 1L)]
+		}
+		if (length(spine) == 1L) {
+			spine <- spine[c(1L, 1L)]
+		}
+		if (length(inner) == 1L) {
+			inner <- inner[c(1L, 1L)]
+		}
+
+		stopifnot(length(front) == 2L, length(back) == 2L, length(spine) == 2L, length(inner) == 2L)
+
+		current_dev <- dev.cur()
+		if (current_dev > 1) {
+			on.exit(dev.set(current_dev), add = TRUE)
+		}
+
+		width <- unit(JACKET_POKER_FRONT_WIDTH, "in")
+		height <- unit(JACKET_POKER_HEIGHT, "in")
+		depth <- unit(JACKET_POKER_SPINE_WIDTH, "in")
+
+		pnp_pdf(output, paper = paper, orientation = "portrait")
+
+		yt <- unit(0.5, "npc") + 1.0 * unit(JACKET_POKER_HEIGHT, "in") - unit(1.218, "in")
+		yb <- unit(0.5, "npc") - 1.0 * unit(JACKET_POKER_HEIGHT, "in") + unit(1.218, "in")
+
+		vp <- list(viewport(y = yt), viewport(y = yb))
+
+		for (i in 1:2) {
+			pushViewport(vp[[i]])
+			grid_add_origami(width = width, height = height, depth = depth)
+
+			grid_add_jacket_outer(
+				front = front[[i]],
+				back = back[[i]],
+				spine = spine[[i]],
+				width = width,
+				height = height,
+				depth = depth
+			)
+			upViewport()
+		}
+
+		if (!is.null(inner[[1L]]) || !is.null(inner[[2L]])) {
+			grid.newpage()
+			for (i in 1:2) {
+				pushViewport(vp[[i]])
+				grid_add_jacket_inner(inner[[i]], width, height, depth)
+				upViewport()
+			}
+		}
+
+		invisible(dev.off())
+
+		invisible(output)
+	} else {
+		# Draw 1 jacket
+		pdf_create_jacket(
+			output,
+			front = front,
+			back = back,
+			spine = spine,
+			inner = inner,
+			paper = paper,
+			width = unit(JACKET_POKER_FRONT_WIDTH, "in"),
+			height = unit(JACKET_POKER_HEIGHT, "in"),
+			depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
+		)
 	}
-
-	invisible(dev.off())
-
-	invisible(output)
 }
 
 pdf_create_mock_sbgj <- function(output = NULL) {
@@ -165,9 +348,9 @@ pdf_create_mock_sbgj <- function(output = NULL) {
 
 	pnp_pdf(output, width = 11, height = 8.5)
 
-	width_fb <- unit(JACKET_FACE_WIDTH, "inches")
-	width_s <- unit(JACKET_SPINE_WIDTH, "inches")
-	height <- unit(JACKET_HEIGHT, "inches")
+	width_fb <- unit(JACKET_4x6_FRONT_WIDTH, "inches")
+	width_s <- unit(JACKET_4x6_SPINE_WIDTH, "inches")
+	height <- unit(JACKET_4x6_HEIGHT, "inches")
 	xc <- unit(0.5, "npc") - unit(0.7, "mm")
 	yc <- unit(0.5, "npc") - unit(1.45, "mm")
 	grid.rect(
@@ -181,74 +364,5 @@ pdf_create_mock_sbgj <- function(output = NULL) {
 
 	invisible(dev.off())
 
-	invisible(output)
-}
-
-jacket_instructions_md <- sprintf(
-	"1. Print the jacket out (ideally on cardstock).
-
-   * Print %s (100%%).
-   * To include the jacket inside (if any) print double-sided flipping on the %s.
-
-2. Use the crop marks and origami symbols to cut and fold the jacket.
-
-   * Exact procedure depends on your tools and preferred methods.
-   * Example procedure #1:
-
-     1. Use the origami mountain fold lines to score
-        the fold lines (e.g. using a ruler and a penknife).
-     2. Use the crop marks to cut the edges off.
-     3. Make two mountain folds using the scored lines along the spine.
-
-   * Example procedure #2:
-
-     1. Use the crop marks to cut away the left and right edge.
-     2. Make a *valley* fold by touching the origami dots symbols
-        along the top edge together
-        and then flatten the paper
-        to make the fold and then unfold flat.
-        Repeat this procedure with the origami dot symbols along the bottom edge.
-     3. Cut away the top and bottom edges
-        (you may use the ends of the
-        origami mountain fold lines as well as the edges of the jacket
-        as guide to where to make these cuts).
-     4. Make two *mountain* folds by reversing the (valley) creases.
-
-3. Insert the jacket into the 4x6 photo storage box.",
-	dQuote("actual size"),
-	dQuote("short edge")
-)
-
-#' @rdname pdf_create_jacket
-#' @param style A style set such as [marquee::classic_style()] to
-#'              be passed to [marquee::marquee_grob()].
-#' @export
-pdf_create_jacket_instructions <- function(
-	output = NULL,
-	...,
-	paper = c("letter", "a4"),
-	style = marquee::classic_style()
-) {
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
-	output <- normalize_output(output)
-
-	stopifnot(requireNamespace("marquee", quietly = TRUE))
-
-	pnp_pdf(output, paper = paper, orientation = "landscape")
-
-	vp <- viewport(width = unit(JACKET_WIDTH, "in"), height = unit(JACKET_HEIGHT + 1.5, "in"))
-	pushViewport(vp)
-	text <- paste0('# 4\u2033 x 6\u2033 Photo Storage Box Jacket Setup\n', jacket_instructions_md)
-	mg <- marquee::marquee_grob(
-		text,
-		style = style,
-		x = unit(1 / 8, "in"),
-		width = unit(JACKET_WIDTH - 2 / 8, "in"),
-		y = unit(1, "npc") - unit(1 / 8, "in")
-	)
-	grid.draw(mg)
-	upViewport()
-	invisible(dev.off())
 	invisible(output)
 }
