@@ -1,5 +1,5 @@
-pnpmisc v0.1.0 (development)
-============================
+pnpmisc v0.1.1
+==============
 
 New features
 ------------

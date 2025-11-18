@@ -87,7 +87,7 @@ if (requireNamespace("piecepackr", quietly = TRUE) &&
     getRversion() >= "4.1" &&
     require("gridpattern", quietly = TRUE)) {
   pal <- grDevices::palette()
-  herringbone <- patternGrob("polygon_tiling", type = "herringbone", 
+  herringbone <- patternGrob("polygon_tiling", type = "herringbone",
                              fill = pal[2], spacing = 0.1)
   rhombille <- patternGrob("polygon_tiling", type = "rhombille",
                            fill = pal[3], spacing = 0.2)
