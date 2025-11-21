@@ -243,10 +243,12 @@ pdf_create_poker_jacket <- function(
 	back = NULL,
 	spine = NULL,
 	inner = NULL,
-	paper = c("letter", "a4")
+	paper = c("letter", "a4"),
+	depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
 ) {
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
+	stopifnot(is.unit(depth))
 
 	# Draw 2 jackets
 	if (is_list(front) || is_list(back) || is_list(spine) || is_list(inner)) {
@@ -287,7 +289,6 @@ pdf_create_poker_jacket <- function(
 
 		width <- unit(JACKET_POKER_FRONT_WIDTH, "in")
 		height <- unit(JACKET_POKER_HEIGHT, "in")
-		depth <- unit(JACKET_POKER_SPINE_WIDTH, "in")
 
 		pnp_pdf(output, paper = paper, orientation = "portrait")
 
@@ -334,7 +335,7 @@ pdf_create_poker_jacket <- function(
 			paper = paper,
 			width = unit(JACKET_POKER_FRONT_WIDTH, "in"),
 			height = unit(JACKET_POKER_HEIGHT, "in"),
-			depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
+			depth = depth
 		)
 	}
 }

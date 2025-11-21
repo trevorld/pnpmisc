@@ -39,7 +39,8 @@ pdf_create_poker_jacket(
   back = NULL,
   spine = NULL,
   inner = NULL,
-  paper = c("letter", "a4")
+  paper = c("letter", "a4"),
+  depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
 )
 
 pdf_create_jacket_instructions(
@@ -87,7 +88,7 @@ For \code{pdf_create_poker_jacket()} may also be a list with one or two of these
 For a 4x6 photo storage box a good value is 4.139 inches and for a poker deck storage box a good value is 2.6 inches.}
 
 \item{height}{Height of the jacket face as a grid unit.
-For a 4x6 photo storage box a good value is 6.141 inches and for a poker deck storage box a good value is 3.7 inches.}
+For a 4x6 photo storage box a good value is 6.141 inches and for a poker deck storage box a good value is 3.6 inches.}
 
 \item{depth}{Width of the spine as a grid unit.
 For a 4x6 photo storage box a good value is 1.052 inches and for a poker deck storage box a good value is 0.78 inches.}
