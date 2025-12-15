@@ -11,7 +11,9 @@ layout_grid(
   height = 3.5,
   bleed = 0,
   paper = c("letter", "a4"),
-  orientation = c("landscape", "portrait")
+  orientation = c("landscape", "portrait"),
+  angle = 0,
+  name = NULL
 )
 }
 \arguments{
@@ -19,7 +21,11 @@ layout_grid(
 
 \item{width, height, bleed}{Width, height, and bleed for each print-and-play component (in inches)}
 
-\item{paper, orientation}{print-and-play paper size and orientation}
+\item{paper, orientation}{Print-and-play paper size and orientation}
+
+\item{angle}{Vector of angles of the pieces in degrees (counter-clockwise) (assigned left-to-right, top-to-bottom)}
+
+\item{name}{Vector of names of each piece (assigned left-to-right, top-to-bottom)}
 }
 \value{
 A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".

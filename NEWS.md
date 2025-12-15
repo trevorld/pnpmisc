@@ -12,6 +12,16 @@ New features
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
 
+* The following enhancements to `layout_grid()`:
+
+  + Adds `angle` and `name` arguments
+  + Adds `angle` and `name` columns to returned data frames.
+
+* The following enhancements to `layout_preset()`:
+
+  + Adds `angle` and `name` columns to returned data frames.
+  + New supported `name` value `button_shy_rules_2x2` to support Button Shy's 4-page booklets.
+
 pnpmisc v0.1.1
 ==============
 
