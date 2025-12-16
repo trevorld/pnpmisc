@@ -30,5 +30,5 @@ if (requireNamespace("bittermelon", quietly = TRUE)) {
 }
 }
 \seealso{
-\code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}, \code{\link[=pdf_render_raster]{pdf_render_raster()}}
+\code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}, \code{\link[=pdf_render_raster]{pdf_render_raster()}}, \code{\link[=pdf_render_bm_list]{pdf_render_bm_list()}}
 }
