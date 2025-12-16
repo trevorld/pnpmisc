@@ -12,6 +12,10 @@ New features
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
 
+* `{bittermelon}` pixmap object functions:
+
+  + `bm_split_layout()` extracts all the components in a page of a print-and-play layout into a `bittermelon::bm_list()` of `bittermelon::bm_pixmap()` objects.
+
 * The following enhancements to `bm_crop_layout()`:
 
   + Adds `name` argument as an alternative to `row` and `col`.

@@ -15,4 +15,15 @@ test_that("`pdf_create_jacket()`", {
 		inner = nullGrob()
 	)
 	expect_equal(qpdf::pdf_length(f3), 2L)
+
+	f4 <- pdf_create_poker_jacket(
+		front = list(nullGrob(), nullGrob()),
+		back = nullGrob(),
+		spine = nullGrob(),
+		inner = nullGrob()
+	)
+	expect_equal(qpdf::pdf_length(f4), 2L)
+
+	f5 <- pdf_create_jacket_instructions()
+	expect_equal(qpdf::pdf_length(f5), 1L)
 })
