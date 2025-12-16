@@ -10,6 +10,7 @@
 #' @param name Instead of `row` and `col` can instead use the name of the component in the layout (string).
 #' @param bleed Include the bleed (if available).
 #' @return A [bittermelon::bm_pixmap()] object.
+#' @seealso [bm_split_layout()] to extract all components from the layout
 #' @examples
 #' \dontrun{# User not expected to have this PDF file
 #' if (requireNamespace("bittermelon", quietly = TRUE)) {

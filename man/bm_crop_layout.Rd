@@ -45,3 +45,6 @@ if (requireNamespace("bittermelon", quietly = TRUE)) {
 }
 }
 }
+\seealso{
+\code{\link[=bm_split_layout]{bm_split_layout()}} to extract all components from the layout
+}
