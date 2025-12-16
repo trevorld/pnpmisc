@@ -9,6 +9,9 @@ test_that("`pdf_render_bm_pixmap()` and `pdf_render_raster()`", {
 	pm <- pdf_render_bm_pixmap(f, dpi = 10)
 	expect_true(inherits(pm, "bm_pixmap"))
 
+	bml <- pdf_render_bm_list(f, dpi = 10)
+	expect_true(inherits(bml, "bm_list"))
+
 	skip_if_not_installed("farver")
 	nr <- pdf_render_raster(f, dpi = 10, native = TRUE)
 	expect_true(inherits(nr, "nativeRaster"))

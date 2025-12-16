@@ -4,7 +4,7 @@
 #' @return A [bittermelon::bm_pixmap()] object.
 #' @inheritParams pdf_pad_paper
 #' @param page Integer of page to render.
-#' @seealso [pdftools::pdf_render_page()], [pdf_render_raster()]
+#' @seealso [pdftools::pdf_render_page()], [pdf_render_raster()], [pdf_render_bm_list()]
 #' @examples
 #' if (requireNamespace("bittermelon", quietly = TRUE)) {
 #'   f <- pdf_create_wallet()
@@ -18,6 +18,32 @@ pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = 300) {
 
 	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
 	bittermelon::as_bm_pixmap(bitmap)
+}
+
+#' Render all pages of a pdf into bittermelon pixmap objects
+#'
+#' `pdf_render_bm_list()` renders all pages of a pdf into bittermelon pixmap objects.
+#' @return A [bittermelon::bm_list()] of [bittermelon::bm_pixmap()] objects.
+#' @inheritParams pdf_render_bm_pixmap
+#' @seealso [pdf_render_bm_pixmap()]
+#' @examples
+#' if (requireNamespace("bittermelon", quietly = TRUE)) {
+#'   f <- pdf_create_wallet()
+#'   bml <- pdf_render_bm_list(f, dpi = 75)
+#'   grid::grid.raster(bml[[1L]])
+#'   unlink(f)
+#' }
+#' @export
+pdf_render_bm_list <- function(input, ..., dpi = 300) {
+	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+
+	pages <- pdf_pages(input, pages = "all")
+	bml <- bittermelon::bm_list()
+	for (i in pages) {
+		bml[[i]] <- pdf_render_bm_pixmap(input, page = i, dpi = dpi)
+	}
+
+	bml
 }
 
 
