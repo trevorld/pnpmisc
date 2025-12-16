@@ -12,6 +12,11 @@ New features
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
 
+* The following enhancements to `bm_crop_layout()`:
+
+  + Adds `name` argument as an alternative to `row` and `col`.
+  + Will now rotate the returned pixmap "up" if the `layout`'s `angle` value is non-zero.
+
 * The following enhancements to `layout_grid()`:
 
   + Adds `angle` and `name` arguments

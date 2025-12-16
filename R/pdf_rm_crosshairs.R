@@ -85,8 +85,11 @@ bm_rm_crosshairs_layout <- function(pixmap, layout = layout_preset("poker_3x2_bl
 		height <- layout$height[i]
 		bleed <- layout$bleed[i]
 
-		rows <- bm_card_rows(pixmap, layout = layout, row = row, col = col)
-		cols <- bm_card_cols(pixmap, layout = layout, row = row, col = col)
+		index <- which(layout$row == row & layout$col == col)
+
+		rows <- bm_card_rows(pixmap, layout = layout, index = index)
+		cols <- bm_card_cols(pixmap, layout = layout, index = index)
+
 		color <- pixmap[ceiling(quantile(rows, probs = 0.02, names = FALSE)), floor(median(cols))]
 		# Lower-left corner
 		pixmap[
