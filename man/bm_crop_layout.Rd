@@ -10,7 +10,8 @@ bm_crop_layout(
   layout = "button_shy_cards",
   row = 1L,
   col = 1L,
-  bleed = FALSE
+  bleed = FALSE,
+  name = NULL
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
 \item{row, col}{The \code{row} and \code{col} of the component in the layout (integers).}
 
 \item{bleed}{Include the bleed (if available).}
+
+\item{name}{Instead of \code{row} and \code{col} can instead use the name of the component in the layout (string).}
 }
 \value{
 A \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} object.
