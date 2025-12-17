@@ -48,6 +48,23 @@ remotes::install_github("trevorld/pnpmisc")
 
 ## <a name="examples">Examples</a>
 
+### `bm_split_layout()`
+
+* The provided rules for Button Shy games are formatted as a mini-zine which is great for printing and making into a concise booklet but it is hard to read the rules when looking at them on the computer.
+* You can use functions like `bm_split_layout()` to create a poker-sized pdf of the booklet pages all oriented up.
+
+```{r eval=FALSE}
+library("bittermelon")
+library("pnpmisc")
+# Download "A Nice Cuppa"
+# <https://www.pnparcade.com/products/a-nice-cuppa>
+input <- "A Nice Cuppa - PNP.pdf"
+output <- "a_nice_cuppa_rules_pages.pdf"
+input |> pdf_render_bm_pixmap() |>
+    bm_split_layout(layout = "button_shy_rules") |>
+	bm_create_pdf(output, paper = "poker")
+```
+
 ### `pdf_add_crosshairs()`
 
 * The old rotary trimmer I use to cut cards doesn't let me cut only the interior of a laminated sheet of cards so it is nice if one side has crosshairs at the corner of each card to help guide cuts after the outside crop marks have been cut away.
