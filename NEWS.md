@@ -12,10 +12,10 @@ New features
 
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
-* `bm_create_pdf()` creates pdf documents from a list of (raster) images (#36).
 
 * `{bittermelon}` pixmap object functions:
 
+  * `bm_create_pdf()` creates pdf documents from a list of (raster) images (#36).
   + `bm_split_layout()` extracts all the components in a page of a print-and-play layout into a `bittermelon::bm_list()` of `bittermelon::bm_pixmap()` objects.
   * `pdf_render_bm_list()` renders all the pages in a pdf into bittermelon pixmap objects (#35).
 
