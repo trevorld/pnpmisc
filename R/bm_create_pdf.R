@@ -1,14 +1,11 @@
-#' Create pdf of blank pages
+#' Create a pdf from a list of images
 #'
-#' `pdf_create_blank()` creates blank pdf pages.
+#' `bm_create_pdf()` creates a pdf from a list of images (each representing a page).
 #'
 #' @inheritParams pdf_pad_paper
-#' @param length Number of pages to create.
 #' @param width,height Paper size in inches if `paper = "special"`.
 #' @param orientation Either "portrait" or "landscape".  Ignored if `paper = "special"`.
-#' @param grob A grid grob to draw on each page
-#'             (e.g. `grid::textGrob("This page intentionally left blank.")`).
-#'             Default `NULL` is to draw nothing.
+#' @param pages  A list of images (each representing a page).
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a blank pdf file.
 #' @examples
@@ -17,21 +14,28 @@
 #' unlink(f1)
 #' unlink(f2)
 #' @export
-pdf_create_blank <- function(
+bm_create_pdf <- function(
+	pages,
 	output = NULL,
 	...,
-	length = 1L,
 	paper = c("special", "letter", "a4", "poker"),
 	orientation = c("portrait", "landscape"),
 	width = 8.5,
 	height = 11,
-	bg = "white",
-	grob = NULL
+	bg = "white"
 ) {
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
+
+	stopifnot(requireNamespace("bittermelon"))
+
+	if (bittermelon:::is_supported_bitmap(pages)) {
+		pages <- bittermelon::bm_list(pages)
+	}
+
+	pages <- bittermelon::as_bm_list(pages)
 
 	current_dev <- dev.cur()
 	if (current_dev > 1) {
@@ -46,9 +50,12 @@ pdf_create_blank <- function(
 		height = height,
 		bg = bg
 	)
-	for (page in seq.int(length)) {
+	for (i in seq_along(pages)) {
 		grid.newpage()
-		grid.draw(grob)
+		grid.raster(
+			grDevices::as.raster(pages[[i]]),
+			interpolate = FALSE
+		)
 	}
 	invisible(dev.off())
 

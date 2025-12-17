@@ -50,6 +50,24 @@ remotes::install_github("trevorld/pnpmisc")
 
 ## <a name="examples">Examples</a>
 
+### `bm_split_layout()`
+
+* The provided rules for Button Shy games are formatted as a mini-zine which is great for printing and making into a concise booklet but it is hard to read the rules when looking at them on the computer.
+* You can use functions like `bm_split_layout()` to create a poker-sized pdf of the booklet pages all oriented up.
+
+
+``` r
+library("bittermelon")
+library("pnpmisc")
+# Download "A Nice Cuppa"
+# <https://www.pnparcade.com/products/a-nice-cuppa>
+input <- "A Nice Cuppa - PNP.pdf"
+output <- "a_nice_cuppa_rules_pages.pdf"
+input |> pdf_render_bm_pixmap() |>
+    bm_split_layout(layout = "button_shy_rules") |>
+	bm_create_pdf(output, paper = "poker")
+```
+
 ### `pdf_add_crosshairs()`
 
 * The old rotary trimmer I use to cut cards doesn't let me cut only the interior of a laminated sheet of cards so it is nice if one side has crosshairs at the corner of each card to help guide cuts after the outside crop marks have been cut away.
@@ -60,7 +78,7 @@ remotes::install_github("trevorld/pnpmisc")
 library("piecepackr")
 library("pnpmisc")
 # Download "A Nice Cuppa"
-# <https://www.pnparcade.com/collections/button-shy-games>
+# <https://www.pnparcade.com/products/a-nice-cuppa>
 input <- "A Nice Cuppa - PNP.pdf"
 output <- "a_nice_cuppa_cards.pdf"
 input |> pdf_subset(pages = -1L) |>
@@ -85,7 +103,7 @@ library("pnpmisc")
 input <- "Mini_Rogue_-_Cards_v1.2.1.pdf"
 output <- "mini_rogue_cards.pdf"
 input |> pdf_subset(pages = 1:2) |>
-    pdf_add_rects(layout = "poker_3x3", 
+    pdf_add_rects(layout = "poker_3x3",
                   gp = grid::gpar(fill = NA, col = "white", lwd = 2)) |>
     pdf_add_crosshairs(output, pages = 2L, layout = "poker_3x3")
 rm_temp_pdfs()
@@ -113,7 +131,7 @@ rm_temp_pdfs()
 
 ### `pdf_create_wallet()`
 
-* I like to store my smaller print-and-play card games (i.e. up to 36 cards or so) in an origami card wallet.
+* I like to store my smaller print-and-play card games (i.e. up to 18 poker-sized cards plus rulebook) in an origami card wallet.
 * `pdf_create_wallet()` can create a customizable print-and-play layout for an origami card wallet.
 
 
@@ -122,24 +140,22 @@ library("bittermelon")
 library("grid")
 library("gridpattern")
 library("pnpmisc")
-# Download "A Nice Cuppa"
-# <https://www.pnparcade.com/collections/button-shy-games>
-input <- "A Nice Cuppa - PNP.pdf"
-output <- "a_nice_cuppa_wallet.pdf"
+# Download "Numbsters"
+# <https://www.pnparcade.com/products/numbsters-1>
+input <- "Numbsters_PNP_letter_v1.2.pdf"
+output <- "numbsters_wallet.pdf"
 bm_cover <- pdf_render_bm_pixmap(input, page = 1L) |>
   bm_crop_layout(layout = "button_shy_rules", row = 1L, col = 4L)
-bm_sip <- pdf_render_bm_pixmap(input, page = 4L) |>
-  bm_crop_layout(layout = "button_shy_cards", row = 1L, col = 1L) |>
-  bm_trim(bottom = 210, top = 290, left = 110, right = 80)
-bm_back <- pdf_render_bm_pixmap(input, page = 5L) |>
-  bm_crop_layout(layout = "button_shy_cards", row = 1L, col = 1L) |>
-  bm_rotate(90)
-basket <- patternGrob("weave", type = "basket",
-                      fill = "#8A624A", fill2 = "#8A624A",
-                      angle = 0, spacing = 0.1, density = 1.0)
-front <- gList(basket, rasterGrob(bm_cover, width = unit(1.8, "in")))
-back <- gList(basket, rasterGrob(bm_sip, width = unit(1.8, "in")))
-spine <- rasterGrob(bm_back, width = unit(8.25, "in"))
+bm_back <- pdf_render_bm_pixmap(input, page = 1L) |>
+  bm_crop_layout(layout = "button_shy_rules", row = 1L, col = 3L)
+bm_mouths <- pdf_render_bm_pixmap(input, page = 3L) |>
+  bm_crop_layout(layout = "button_shy_cards", row = 1L, col = 2L, bleed = TRUE) |>
+  bm_trim(bottom = 100, top = 100, left = 100, right = 100)
+
+pat <- rasterGrob(bm_mouths, height = unit(8.25, "in"))
+front <- gList(pat, rasterGrob(bm_cover, width = unit(1.8, "in")))
+back <- gList(pat, rasterGrob(bm_back, width = unit(1.8, "in")))
+spine <- rasterGrob(bm_rotate(bm_mouths, 90), width = unit(8.25, "in"))
 pdf_create_wallet(output, front = front, back = back, spine = spine, bleed = 0.125)
 ```
 
@@ -182,6 +198,7 @@ pdf_rm_crosshairs(input, output, pages = "odd")
 * [papersize](https://github.com/elipousson/papersize) has some functionality to create print-and-play playing card layouts.
 * [pdftools](https://github.com/ropensci/pdftools), [qpdf](https://github.com/ropensci/qpdf), [staplr](https://github.com/pridiltal/staplr), and [xmpdf](https://github.com/trevorld/r-xmpdf) are some pdf manipulation packages.
 * [piecepackr](https://github.com/piecepackr/piecepackr) has some graphical functionality for creating print-and-play layouts.
+* [sbgjackets](https://github.com/trevorld/sbgjackets) uses these functions to create jackets for small box games in a consistent style.
 
 ### Some print-and-play links
 

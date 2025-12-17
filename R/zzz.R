@@ -31,7 +31,7 @@ normalize_output <- function(output, input = NULL) {
 
 paper_width <- function(paper, orientation = "portrait") {
 	if (orientation == "portrait") {
-		switch(paper, letter = LETTER_WIDTH, a4 = A4_WIDTH)
+		switch(paper, letter = LETTER_WIDTH, a4 = A4_WIDTH, bridge = 2.25, poker = 2.5)
 	} else {
 		# landscape
 		paper_height(paper)
@@ -39,7 +39,7 @@ paper_width <- function(paper, orientation = "portrait") {
 }
 paper_height <- function(paper, orientation = "portrait") {
 	if (orientation == "portrait") {
-		switch(paper, letter = LETTER_HEIGHT, a4 = A4_HEIGHT)
+		switch(paper, letter = LETTER_HEIGHT, a4 = A4_HEIGHT, bridge = 3.5, poker = 3.5)
 	} else {
 		# landscape
 		paper_width(paper)
@@ -53,7 +53,7 @@ pnp_pdf <- function(
 	...,
 	width = 8.5,
 	height = 11,
-	paper = c("special", "letter", "a4"),
+	paper = c("special", "letter", "a4", "poker", "bridge"),
 	orientation = c("portrait", "landscape"),
 	bg = "white"
 ) {

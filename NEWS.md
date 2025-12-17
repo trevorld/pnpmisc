@@ -12,6 +12,7 @@ New features
 
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
+* `bm_create_pdf()` creates pdf documents from a list of (raster) images (#36).
 
 * `{bittermelon}` pixmap object functions:
 
