@@ -5,15 +5,17 @@
 \alias{layout_names}
 \title{Layout data frame for a named preset}
 \usage{
-layout_preset(name = "button_shy_cards")
+layout_preset(preset = "button_shy_cards", ...)
 
 layout_names()
 }
 \arguments{
-\item{name}{Preset name.  Must be in \code{layout_names()}.}
+\item{preset}{Preset name.  Must be in \code{layout_names()}.}
+
+\item{...}{Passed to \code{\link[=layout_grid]{layout_grid()}}}
 }
 \value{
-A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
+A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
 }
 \description{
 \code{layout_preset()} calculates a layout data frame

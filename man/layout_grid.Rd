@@ -13,7 +13,8 @@ layout_grid(
   paper = c("letter", "a4"),
   orientation = c("landscape", "portrait"),
   angle = 0,
-  name = NULL
+  name = layout_name_fn(),
+  direction = "left-to-right"
 )
 }
 \arguments{
@@ -23,12 +24,15 @@ layout_grid(
 
 \item{paper, orientation}{Print-and-play paper size and orientation}
 
-\item{angle}{Vector of angles of the pieces in degrees (counter-clockwise) (assigned left-to-right, top-to-bottom)}
+\item{angle}{Vector of angles of the pieces in degrees (counter-clockwise) (assigned \code{direction}, top-to-bottom)}
 
-\item{name}{Vector of names of each piece (assigned left-to-right, top-to-bottom)}
+\item{name}{Either a vector of names of each piece or a function with arguments \code{nrow} and \code{ncol} to be used to generate a vector of names for each piece.  These will be assigned \code{direction}, top-to-bottom.  \code{\link[=layout_name_fn]{layout_name_fn()}} can be used to generate such a function.}
+
+\item{direction}{Should \code{name} and \code{angle} be assigned "left-to-right" or "right-to-left".
+Also supports aliases "ltr", "lr", "rtl", and "rl".}
 }
 \value{
-A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
+A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
 }
 \description{
 \code{layout_grid()} calculates a layout data frame
