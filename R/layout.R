@@ -5,12 +5,14 @@
 #' @param nrow,ncol Number of rows and columns of print-and-play components (e.g. cards)
 #' @param width,height,bleed Width, height, and bleed for each print-and-play component (in inches)
 #' @param paper,orientation Print-and-play paper size and orientation
-#' @param angle Vector of angles of the pieces in degrees (counter-clockwise) (assigned left-to-right, top-to-bottom)
-#' @param name Vector of names of each piece (assigned left-to-right, top-to-bottom)
+#' @param angle Vector of angles of the pieces in degrees (counter-clockwise) (assigned `direction`, top-to-bottom)
+#' @param name Either a vector of names of each piece or a function with arguments `nrow` and `ncol` to be used to generate a vector of names for each piece.  These will be assigned `direction`, top-to-bottom.  [layout_name_fn()] can be used to generate such a function.
+#' @param direction Should `name` and `angle` be assigned "left-to-right" or "right-to-left".
+#'    Also supports aliases "ltr", "lr", "rtl", and "rl".
 #' @examples
 #' # Button Shy card layout
 #' layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
-#' @return A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
+#' @return A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
 #' @export
 layout_grid <- function(
 	nrow = 2L,
@@ -21,7 +23,8 @@ layout_grid <- function(
 	paper = c("letter", "a4"),
 	orientation = c("landscape", "portrait"),
 	angle = 0,
-	name = NULL
+	name = layout_name_fn(),
+	direction = "left-to-right"
 ) {
 	nrow <- as.integer(nrow)
 	ncol <- as.integer(ncol)
@@ -32,6 +35,10 @@ layout_grid <- function(
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)
+
+	is_ltr <- c(tolower(direction) %in% c("left-to-right", "ltr", "lr"))
+	is_rtl <- c(tolower(direction) %in% c("right-to-left", "rtl", "rl"))
+	stopifnot(is_ltr || is_rtl)
 
 	stopifnot(nrow > 0L, ncol > 0L)
 
@@ -72,6 +79,18 @@ layout_grid <- function(
 		yr <- seq(from = yc + 0.5 * (height + 2 * bleed), by = (height + 2 * bleed), length.out = m)
 		y <- c(yl, yr)
 	}
+	if (is.function(name)) {
+		name <- name(nrow, ncol)
+	} else {
+		stopifnot(length(name) == nrow * ncol, !anyDuplicated(name))
+	}
+	if (is_rtl) {
+		name <- assign_rtl(name, nrow)
+		if (length(angle) > 1L) {
+			stopifnot(length(angle) == nrow * ncol)
+			angle <- assign_rtl(angle, nrow)
+		}
+	}
 	df <- data.frame(
 		row = rep(seq.int(nrow), each = ncol),
 		col = rep(seq.int(ncol), nrow),
@@ -82,16 +101,35 @@ layout_grid <- function(
 		height = height,
 		bleed = bleed,
 		paper = paper,
-		orientation = orientation
+		orientation = orientation,
+		name = name
 	)
-	if (is.null(name)) {
-		df$name <- paste0("piece.", as.character(seq_len(nrow(df))))
-	} else if (!is.null(name)) {
-		stopifnot(length(name) == nrow(df), !anyDuplicated(name))
-		df$name <- name
-	}
 
 	df
+}
+
+#' Function to generate layout names
+#'
+#' `layout_name_fn()` returns a function that takes `nrow` and `ncol` arguments and generates a character vector of `nrow * ncol` names.  Intended for use with [layout_grid()].
+#' @param prefix Prefix for the generated names.
+#' @param from Starting number for the generated name suffix.
+#' @param width,flag Passed to [formatC()].
+#' @return A function with arguments `nrow` and `ncol` that would return a character vector of length `nrow * ncol`.
+#' @examples
+#' layout_name_fn()(nrow = 3, ncol = 3)
+#' layout_name_fn("back_", from = 97, width = 3L)(nrow = 2, ncol = 3)
+#' @export
+layout_name_fn <- function(prefix = "piece.", from = 1L, width = 1L, flag = "0") {
+	function(nrow, ncol) {
+		numbers <- seq(from = from, length.out = nrow * ncol)
+		numbers <- formatC(numbers, width = width, flag = flag)
+		name <- paste0(prefix, numbers)
+		name
+	}
+}
+
+assign_rtl <- function(x, nrow) {
+	matrix(x, nrow = nrow, byrow = TRUE) |> apply(1L, rev) |> as.vector()
 }
 
 #' Layout data frame for a named preset
@@ -112,38 +150,42 @@ layout_grid <- function(
 #' \item{poker_4x2}{Poker-sized cards (2.5" by 3.5") in 4 columns of 2 cards (landscape) with zero bleed around each card.  Examples of PnP games using this layout include the [Decktet](https://www.decktet.com/getit.php).}
 #' }
 #'
-#' @param name Preset name.  Must be in `layout_names()`.
+#' @param preset Preset name.  Must be in `layout_names()`.
+#' @param ... Passed to [layout_grid()]
 #' @examples
 #' layout_preset("button_shy_cards")
 #' layout_names()
-#' @return A data frame with columns "row", "col", "x", "y", "width", "height", "bleed", "paper", and "orientation".
+#' @return A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
 #' @export
-layout_preset <- function(name = "button_shy_cards") {
-	name <- match.arg(name, layout_names())
+layout_preset <- function(preset = "button_shy_cards", ...) {
+	preset <- match.arg(preset, layout_names())
 	df <- switch(
-		name,
+		preset,
 		button_shy_cards = layout_grid(
 			nrow = 2L,
 			ncol = 3L,
 			height = 3.447,
 			width = 2.469,
-			bleed = 0.125
+			bleed = 0.125,
+			...
 		),
 		button_shy_rules = layout_grid(
 			nrow = 2L,
 			ncol = 4L,
 			angle = rep(c(0, 180), each = 4L),
-			name = paste0("page_", as.character(c(6, 7, 8, 1, 5, 4, 3, 2)))
+			name = paste0("page_", as.character(c(6, 7, 8, 1, 5, 4, 3, 2))),
+			...
 		),
 		button_shy_rules_2x2 = layout_grid(
 			nrow = 2L,
 			ncol = 2L,
 			angle = rep(c(0, 180), each = 2L),
-			name = paste0("page_", as.character(c(4, 1, 3, 2)))
+			name = paste0("page_", as.character(c(4, 1, 3, 2))),
+			...
 		),
-		poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125),
-		poker_3x3 = layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait"),
-		poker_4x2 = layout_grid(nrow = 2L, ncol = 4L)
+		poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125, ...),
+		poker_3x3 = layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait", ...),
+		poker_4x2 = layout_grid(nrow = 2L, ncol = 4L, ...)
 	)
 
 	df
