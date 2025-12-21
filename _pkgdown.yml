@@ -53,5 +53,6 @@ reference:
       contents:
           - grid_add_cropmarks
           - grid_add_crosshairs
+          - grid_add_layout
           - grid_add_lines
           - grid_add_rects

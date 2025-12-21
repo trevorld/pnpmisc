@@ -53,7 +53,7 @@ bm_create_pdf <- function(
 	for (i in seq_along(pages)) {
 		grid.newpage()
 		grid.raster(
-			grDevices::as.raster(pages[[i]]),
+			as.raster(pages[[i]]),
 			interpolate = FALSE
 		)
 	}

@@ -24,6 +24,10 @@ New features
   + `bm_split_layout()` extracts all the components in a page of a print-and-play layout into a `bittermelon::bm_list()` of `bittermelon::bm_pixmap()` objects.
   * `pdf_render_bm_list()` renders all the pages in a pdf into bittermelon pixmap objects (#35).
 
+* `{grid}` functions:
+
+  + `grid_add_layout()` draws a list of images according to a layout object.
+
 * The following enhancements to `bm_crop_layout()`:
 
   + Adds `name` argument as an alternative to `row` and `col`.
