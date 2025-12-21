@@ -1,4 +1,4 @@
-#' @importFrom grDevices dev.cur dev.off dev.set
+#' @importFrom grDevices as.raster dev.cur dev.off dev.set
 #' @import grid
 #' @importFrom stats median quantile
 #' @importFrom utils head tail packageVersion hasName
