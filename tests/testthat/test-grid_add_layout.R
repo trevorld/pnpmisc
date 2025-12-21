@@ -8,7 +8,7 @@ test_that("layout functions", {
 	bml <- bm_split_layout(bm, layout = layout)
 	f2 <- normalize_output(NULL)
 	pnp_pdf(f2, paper = "letter", orientation = "landscape")
-	grid_add_layout(bml, layout)
+	grid_add_layout(bml, layout = layout)
 	invisible(dev.off())
 
 	expect_equal(qpdf::pdf_length(f2), 1L)

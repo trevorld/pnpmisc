@@ -13,6 +13,7 @@
 #' unlink(f)
 #' @export
 pdf_width <- function(input, ..., units = "inches", numeric = FALSE) {
+	chkDots(...)
 	width <- pdftools::pdf_pagesize(input)$width
 	if (units == "bigpts" && numeric) {
 		return(width)
@@ -27,6 +28,7 @@ pdf_width <- function(input, ..., units = "inches", numeric = FALSE) {
 #' @rdname pdf_width
 #' @export
 pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
+	chkDots(...)
 	height <- pdftools::pdf_pagesize(input)$height
 	if (units == "bigpts" && numeric) {
 		return(height)
@@ -55,6 +57,7 @@ pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
 #' unlink(f2)
 #' @export
 pdf_orientation <- function(input, ...) {
+	chkDots(...)
 	df <- pdftools::pdf_pagesize(input)
 	ifelse(df$width > df$height, "landscape", "portrait")
 }

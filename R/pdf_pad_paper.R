@@ -42,6 +42,7 @@ pdf_pad_paper <- function(
 	dpi = 300,
 	paper = c("letter", "a4")
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	output <- normalize_output(output, input)

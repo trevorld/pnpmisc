@@ -78,6 +78,7 @@ pdf_create_wallet <- function(
 	bleed = unit(0, "in"),
 	paper = c("letter", "a4")
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	output <- normalize_output(output)

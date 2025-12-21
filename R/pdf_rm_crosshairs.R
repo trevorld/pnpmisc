@@ -33,6 +33,7 @@ pdf_rm_crosshairs <- function(
 	pages = "odd",
 	dpi = 300
 ) {
+	chkDots(...)
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 	current_dev <- dev.cur()
 

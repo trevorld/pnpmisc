@@ -95,6 +95,7 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #' grid::popViewport()
 #' @export
 grid_add_lines <- function(..., layout = "poker_3x3", gp = gpar()) {
+	chkDots(...)
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}

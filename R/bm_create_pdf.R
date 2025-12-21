@@ -24,6 +24,7 @@ bm_create_pdf <- function(
 	height = 11,
 	bg = "white"
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)

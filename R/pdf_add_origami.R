@@ -14,6 +14,7 @@
 #' unlink(f2)
 #' @export
 pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
+	chkDots(...)
 	current_dev <- dev.cur()
 
 	output <- normalize_output(output, input)
@@ -74,6 +75,7 @@ grid_add_origami <- function(
 	height = unit(JACKET_4x6_HEIGHT, "inches"),
 	depth = unit(JACKET_4x6_SPINE_WIDTH, "inches")
 ) {
+	chkDots(...)
 	width_fb <- width
 	width_s <- depth
 

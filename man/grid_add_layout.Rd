@@ -4,10 +4,12 @@
 \alias{grid_add_layout}
 \title{Draw images to a layout with grid}
 \usage{
-grid_add_layout(images, layout)
+grid_add_layout(images, ..., layout = "poker_3x3")
 }
 \arguments{
-\item{images}{a named list of images with all the names in the \code{name} column of the \code{layout} argument.  Currently supports raster objects supported by \code{bittermelon} and grid grob objects.}
+\item{images}{A named list of images with all the names in the \code{name} column of the \code{layout} argument.  Currently supports raster objects supported by \code{bittermelon} and grid grob objects.}
+
+\item{...}{Ignored for now.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
 with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
