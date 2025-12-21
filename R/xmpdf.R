@@ -37,6 +37,7 @@
 #' @rdname xmpdf_wrappers
 #' @export
 pdf_set_bookmarks <- function(input, output = NULL, ..., bookmarks) {
+	chkDots(...)
 	stopifnot(requireNamespace("xmpdf", quietly = TRUE))
 	output <- normalize_output(output, input)
 	xmpdf::set_bookmarks(bookmarks, input, output)
@@ -47,6 +48,7 @@ pdf_set_bookmarks <- function(input, output = NULL, ..., bookmarks) {
 #' @rdname xmpdf_wrappers
 #' @export
 pdf_set_docinfo <- function(input, output = NULL, ..., docinfo) {
+	chkDots(...)
 	stopifnot(requireNamespace("xmpdf", quietly = TRUE))
 	output <- normalize_output(output, input)
 	xmpdf::set_docinfo(docinfo, input, output)
@@ -57,6 +59,7 @@ pdf_set_docinfo <- function(input, output = NULL, ..., docinfo) {
 #' @rdname xmpdf_wrappers
 #' @export
 pdf_set_xmp <- function(input, output = NULL, ..., xmp) {
+	chkDots(...)
 	stopifnot(requireNamespace("xmpdf", quietly = TRUE))
 	output <- normalize_output(output, input)
 	xmpdf::set_xmp(xmp, input, output)

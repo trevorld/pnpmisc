@@ -15,6 +15,7 @@
 #' }
 #' @export
 pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
+	chkDots(...)
 	input <- normalizePath(input)
 	output <- normalize_output(output, input)
 

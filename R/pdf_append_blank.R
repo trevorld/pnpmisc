@@ -15,6 +15,7 @@
 #' unlink(f2)
 #' @export
 pdf_append_blank <- function(input, output = NULL, ..., minimum = 1L, multiples_of = 1L) {
+	chkDots(...)
 	output <- normalize_output(output, input)
 	minimum <- as.integer(minimum)
 	multiples_of <- as.integer(multiples_of)

@@ -81,6 +81,7 @@ pdf_create_jacket <- function(
 	height = unit(JACKET_4x6_HEIGHT, "in"),
 	depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	output <- normalize_output(output)
@@ -218,6 +219,7 @@ pdf_create_4x6_jacket <- function(
 	inner = NULL,
 	paper = c("letter", "a4")
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	pdf_create_jacket(
@@ -246,6 +248,7 @@ pdf_create_poker_jacket <- function(
 	paper = c("letter", "a4"),
 	depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	stopifnot(is.unit(depth))

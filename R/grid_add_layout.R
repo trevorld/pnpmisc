@@ -2,13 +2,14 @@
 #'
 #' `grid_add_layout()` draws images to a layout in grid.
 #'
-#' @param images a named list of images with all the names in the `name` column of the `layout` argument.  Currently supports raster objects supported by `bittermelon` and grid grob objects.
+#' @param images A named list of images with all the names in the `name` column of the `layout` argument.  Currently supports raster objects supported by `bittermelon` and grid grob objects.
 #' @inheritParams bm_crop_layout
 #' @seealso [piecepackr::pmap_piece()] to draw pieces to a layout represented by a [piecepackr::pp_cfg()] object.
 #' @return `NULL` invisibly.
 #'         As a side effect draws images to the active graphics device.
 #' @export
-grid_add_layout <- function(images, layout) {
+grid_add_layout <- function(images, ..., layout = "poker_3x3") {
+	chkDots(...)
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}

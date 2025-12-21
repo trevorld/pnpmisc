@@ -30,6 +30,7 @@ bm_crop_layout <- function(
 	bleed = FALSE,
 	name = NULL
 ) {
+	chkDots(...)
 	stopifnot(
 		requireNamespace("bittermelon", quietly = TRUE),
 		bittermelon::is_bm_pixmap(page),

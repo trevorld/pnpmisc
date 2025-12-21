@@ -55,6 +55,7 @@ pdf_create_jacket_instructions <- function(
 	orientation = "landscape",
 	style = marquee::classic_style()
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	output <- normalize_output(output)

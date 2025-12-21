@@ -28,6 +28,7 @@ pdf_create_blank <- function(
 	bg = "white",
 	grob = NULL
 ) {
+	chkDots(...)
 	paper <- tolower(paper)
 	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)
