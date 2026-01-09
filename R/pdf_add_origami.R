@@ -61,7 +61,7 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
 			gp = gpar(col = NA, fill = "white")
 		)
 
-		grid_add_origami(xc, yc)
+		grid_add_origami(xc = xc, yc = yc)
 	}
 	invisible(dev.off())
 	invisible(output)

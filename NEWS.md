@@ -23,6 +23,7 @@ New features
   * `bm_create_pdf()` creates pdf documents from a list of (raster) images (#36).
   + `bm_split_layout()` extracts all the components in a page of a print-and-play layout into a `bittermelon::bm_list()` of `bittermelon::bm_pixmap()` objects.
   * `pdf_render_bm_list()` renders all the pages in a pdf into bittermelon pixmap objects (#35).
+  * `zip_extract_bm_pixmap()` extracts/renders an image from a zipfile into a bittermelon pixmap object.
 
 * `{grid}` functions:
 

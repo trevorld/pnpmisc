@@ -129,7 +129,8 @@ layout_name_fn <- function(prefix = "piece.", from = 1L, width = 1L, flag = "0")
 }
 
 assign_rtl <- function(x, nrow) {
-	matrix(x, nrow = nrow, byrow = TRUE) |> apply(1L, rev) |> as.vector()
+	m <- matrix(x, nrow = nrow, byrow = TRUE)
+	as.vector(apply(m, 1L, rev))
 }
 
 #' Layout data frame for a named preset
