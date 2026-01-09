@@ -48,6 +48,7 @@ reference:
           - bm_split_layout
           - pdf_render_bm_list
           - pdf_render_bm_pixmap
+          - zip_extract_bm_pixmap
     - title: "{grid} utilities"
       desc: ''
       contents:
