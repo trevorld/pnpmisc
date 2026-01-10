@@ -72,7 +72,7 @@ pnp_pdf <- function(
 }
 
 is_supported_bitmap <- function(x) {
-	if (requireNamespace("bittermelon") && packageVersion("bittermelon") >= "2.2.1") {
+	if (requireNamespace("bittermelon") && packageVersion("bittermelon") >= "2.2.0") {
 		bittermelon::is_supported_bitmap(x)
 	} else {
 		inherits(x, c("bm_bitmap", "bm_pixmap", "magick-image", "nativeRaster", "raster"))
