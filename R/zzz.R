@@ -70,3 +70,11 @@ pnp_pdf <- function(
 		grDevices::pdf(output, width = width, height = height, bg = bg, onefile = TRUE, ...)
 	}
 }
+
+is_supported_bitmap <- function(x) {
+	if (requireNamespace("bittermelon") && packageVersion("bittermelon") >= "2.2.1") {
+		bittermelon::is_supported_bitmap(x)
+	} else {
+		inherits(x, c("bm_bitmap", "bm_pixmap", "magick-image", "nativeRaster", "raster"))
+	}
+}

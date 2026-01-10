@@ -27,6 +27,10 @@ New features
 
 * `{grid}` functions:
 
+  + `as_fill()` converts bitmap or grob objects to a `grid::pattern()`
+    to be used as fills in grid grobs.
+  + `fillGrob()` is a wrapper around `grid::rectGrob()` for a single
+    rectangle grob filled with a color, bitmap, grob, or pattern.
   + `grid_add_layout()` draws a list of images according to a layout object.
 
 * The following enhancements to `bm_crop_layout()`:

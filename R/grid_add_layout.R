@@ -31,7 +31,7 @@ grid_add_layout <- function(images, ..., layout = "poker_3x3") {
 		vp <- viewport(x = x, y = y, height = height, width = width, angle = angle)
 
 		image <- images[[n]]
-		if (bittermelon:::is_supported_bitmap(image)) {
+		if (is_supported_bitmap(image)) {
 			raster <- as.raster(image)
 			grid.raster(raster, interpolate = FALSE, vp = vp)
 		} else if (inherits(image, c("grob", "gList"))) {
