@@ -32,7 +32,7 @@ bm_create_pdf <- function(
 
 	stopifnot(requireNamespace("bittermelon"))
 
-	if (bittermelon:::is_supported_bitmap(pages)) {
+	if (is_supported_bitmap(pages)) {
 		pages <- bittermelon::bm_list(pages)
 	}
 
