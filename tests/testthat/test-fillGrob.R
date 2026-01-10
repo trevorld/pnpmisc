@@ -5,9 +5,8 @@ test_that("`fillGrob()`", {
 	}
 	draw_fill <- function(fill) {
 		grid.newpage()
-		grob <- fillGrob(fill)
+		grob <- grid.fill(fill)
 		expect_s3_class(grob, c("rect", "grob"))
-		grid.draw(grob)
 	}
 	pdf(NULL)
 	on.exit(invisible(dev.off()), add = TRUE)
