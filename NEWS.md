@@ -15,7 +15,7 @@ New features
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
 
-* `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth` arguments.
+* `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
 
 * `{bittermelon}` pixmap object functions:
