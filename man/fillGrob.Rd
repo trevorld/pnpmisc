@@ -2,6 +2,7 @@
 % Please edit documentation in R/fillGrob.R
 \name{fillGrob}
 \alias{fillGrob}
+\alias{grid.fill}
 \alias{as_fill}
 \title{A rectangular grob filled with a color, image, or pattern.}
 \usage{
@@ -13,6 +14,8 @@ fillGrob(
   vp = NULL,
   name = NULL
 )
+
+grid.fill(...)
 
 as_fill(fill = "transparent", ..., width = NULL, height = NULL)
 }
@@ -26,12 +29,14 @@ as_fill(fill = "transparent", ..., width = NULL, height = NULL)
 \item{vp, name}{Passed to \code{\link[grid:grid.rect]{grid::rectGrob()}}.}
 }
 \value{
-A \code{\link[grid:grid.rect]{grid::rectGrob()}} object.
+\code{fillGrob()} and \code{grid.fill()} return \code{\link[grid:grid.rect]{grid::rectGrob()}} object.
+As a side effect \code{grid.fill()} draws to the active graphics device.  \code{as_fill()} returns a supported grid fill object such as a color string or a \code{grid::pattern()} object.
 }
 \description{
 \code{fillGrob()} is a wrapper around \code{\link[grid:grid.rect]{grid::rectGrob()}} for a single
 rectangle grob filled with a color, bitmap, grob, or pattern.
 In particular grob or bitmap fills will be automatically converted to a \code{\link[grid:patterns]{grid::pattern()}} fill by \code{as_fill()}.
+\code{grid.fill()} creates a \code{fillGrob()} and draws it to the screen.
 }
 \examples{
 grob <- fillGrob(grid::radialGradient())
