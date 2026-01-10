@@ -39,6 +39,8 @@
 #'              For a 4x6 photo storage box a good value is `r JACKET_4x6_HEIGHT` inches and for a poker deck storage box a good value is `r JACKET_POKER_HEIGHT` inches.
 #' @param depth Width of the spine as a grid unit.
 #'              For a 4x6 photo storage box a good value is `r JACKET_4x6_SPINE_WIDTH` inches and for a poker deck storage box a good value is `r JACKET_POKER_SPINE_WIDTH` inches.
+#' @param bg Background fill for the storage jacket.
+#'           Passed to [grid.fill()].
 #' @examples
 #' # Template `front`, `back`, and `spine`
 #' if (requireNamespace("piecepackr", quietlyr= TRUE)) {
@@ -79,7 +81,8 @@ pdf_create_jacket <- function(
 	orientation = "landscape",
 	width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
 	height = unit(JACKET_4x6_HEIGHT, "in"),
-	depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
+	depth = unit(JACKET_4x6_SPINE_WIDTH, "in"),
+	bg = "transparent"
 ) {
 	chkDots(...)
 	paper <- tolower(paper)
@@ -108,7 +111,8 @@ pdf_create_jacket <- function(
 		spine = spine,
 		width = width,
 		height = height,
-		depth = depth
+		depth = depth,
+		bg = bg
 	)
 
 	if (!is.null(inner)) {
@@ -149,9 +153,14 @@ grid_add_jacket_outer <- function(
 	spine = NULL,
 	width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
 	height = unit(JACKET_4x6_HEIGHT, "in"),
-	depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
+	depth = unit(JACKET_4x6_SPINE_WIDTH, "in"),
+	bg = "transparent"
 ) {
 	stopifnot(is.unit(width), is.unit(height), is.unit(depth))
+
+	# Background
+	vp_bg <- viewport(width = 2 * width + depth, height = height)
+	grid.fill(bg, vp = vp_bg)
 
 	# Front
 	vp_front <- viewport(
@@ -246,7 +255,8 @@ pdf_create_poker_jacket <- function(
 	spine = NULL,
 	inner = NULL,
 	paper = c("letter", "a4"),
-	depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
+	depth = unit(JACKET_POKER_SPINE_WIDTH, "in"),
+	bg = "transparent"
 ) {
 	chkDots(...)
 	paper <- tolower(paper)
@@ -310,7 +320,8 @@ pdf_create_poker_jacket <- function(
 				spine = spine[[i]],
 				width = width,
 				height = height,
-				depth = depth
+				depth = depth,
+				bg = bg
 			)
 			upViewport()
 		}
@@ -338,7 +349,8 @@ pdf_create_poker_jacket <- function(
 			paper = paper,
 			width = unit(JACKET_POKER_FRONT_WIDTH, "in"),
 			height = unit(JACKET_POKER_HEIGHT, "in"),
-			depth = depth
+			depth = depth,
+			bg
 		)
 	}
 }

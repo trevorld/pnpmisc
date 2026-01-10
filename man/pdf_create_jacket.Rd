@@ -19,7 +19,8 @@ pdf_create_jacket(
   orientation = "landscape",
   width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
   height = unit(JACKET_4x6_HEIGHT, "in"),
-  depth = unit(JACKET_4x6_SPINE_WIDTH, "in")
+  depth = unit(JACKET_4x6_SPINE_WIDTH, "in"),
+  bg = "transparent"
 )
 
 pdf_create_4x6_jacket(
@@ -40,7 +41,8 @@ pdf_create_poker_jacket(
   spine = NULL,
   inner = NULL,
   paper = c("letter", "a4"),
-  depth = unit(JACKET_POKER_SPINE_WIDTH, "in")
+  depth = unit(JACKET_POKER_SPINE_WIDTH, "in"),
+  bg = "transparent"
 )
 
 pdf_create_jacket_instructions(
@@ -92,6 +94,9 @@ For a 4x6 photo storage box a good value is 6.141 inches and for a poker deck st
 
 \item{depth}{Width of the spine as a grid unit.
 For a 4x6 photo storage box a good value is 1.052 inches and for a poker deck storage box a good value is 0.78 inches.}
+
+\item{bg}{Background fill for the storage jacket.
+Passed to \code{\link[=grid.fill]{grid.fill()}}.}
 
 \item{style}{A style set such as \code{\link[marquee:classic_style]{marquee::classic_style()}} to
 be passed to \code{\link[marquee:marquee_grob]{marquee::marquee_grob()}}.}
