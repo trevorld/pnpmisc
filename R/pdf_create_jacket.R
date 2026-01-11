@@ -40,7 +40,7 @@
 #' @param depth Width of the spine as a grid unit.
 #'              For a 4x6 photo storage box a good value is `r JACKET_4x6_SPINE_WIDTH` inches and for a poker deck storage box a good value is `r JACKET_POKER_SPINE_WIDTH` inches.
 #' @param bg Background fill for the storage jacket.
-#'           Passed to [grid.fill()].
+#'           Passed to [grid.full()].
 #' @examples
 #' # Template `front`, `back`, and `spine`
 #' if (requireNamespace("piecepackr", quietlyr= TRUE)) {
@@ -160,7 +160,7 @@ grid_add_jacket_outer <- function(
 
 	# Background
 	vp_bg <- viewport(width = 2 * width + depth, height = height)
-	grid.fill(bg, vp = vp_bg)
+	grid.full(bg, vp = vp_bg)
 
 	# Front
 	vp_front <- viewport(

@@ -96,7 +96,7 @@ For a 4x6 photo storage box a good value is 6.141 inches and for a poker deck st
 For a 4x6 photo storage box a good value is 1.052 inches and for a poker deck storage box a good value is 0.78 inches.}
 
 \item{bg}{Background fill for the storage jacket.
-Passed to \code{\link[=grid.fill]{grid.fill()}}.}
+Passed to \code{\link[=grid.full]{grid.full()}}.}
 
 \item{style}{A style set such as \code{\link[marquee:classic_style]{marquee::classic_style()}} to
 be passed to \code{\link[marquee:marquee_grob]{marquee::marquee_grob()}}.}

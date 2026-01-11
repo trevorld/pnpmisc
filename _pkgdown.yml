@@ -52,7 +52,7 @@ reference:
     - title: "{grid} utilities"
       desc: ''
       contents:
-          - fillGrob
+          - fullGrob
           - grid_add_cropmarks
           - grid_add_crosshairs
           - grid_add_layout

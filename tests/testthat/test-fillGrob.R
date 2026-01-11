@@ -1,11 +1,11 @@
-test_that("`fillGrob()`", {
+test_that("`grid.full()`", {
 	current_dev <- dev.cur()
 	if (current_dev > 1) {
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 	draw_fill <- function(fill) {
 		grid.newpage()
-		grob <- grid.fill(fill)
+		grob <- grid.full(fill)
 		expect_s3_class(grob, c("rect", "grob"))
 	}
 	pdf(NULL)
