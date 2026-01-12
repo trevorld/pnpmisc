@@ -350,7 +350,7 @@ pdf_create_poker_jacket <- function(
 			width = unit(JACKET_POKER_FRONT_WIDTH, "in"),
 			height = unit(JACKET_POKER_HEIGHT, "in"),
 			depth = depth,
-			bg
+			bg = bg
 		)
 	}
 }
