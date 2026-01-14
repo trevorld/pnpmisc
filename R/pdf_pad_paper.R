@@ -7,7 +7,7 @@
 #' @param ... Ignored.
 #' @param bg `output` pdf background color.
 #' @param dpi Dots per inch.  Passed to [pdftools::pdf_render_page()].
-#' @param paper Paper size.  Either "letter", "a4", or "special".
+#' @param paper Paper size.  One of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates padded pdf file.
 #' @examples
@@ -40,11 +40,9 @@ pdf_pad_paper <- function(
 	...,
 	bg = "white",
 	dpi = 300,
-	paper = c("letter", "a4")
+	paper = getOption("papersize", "letter")
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	output <- normalize_output(output, input)
 
 	current_dev <- dev.cur()

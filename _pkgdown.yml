@@ -32,6 +32,7 @@ reference:
           - ls_temp_pdfs
           - pdf_orientation
           - pdf_pages
+          - pdf_paper
           - pdf_render_raster
           - pdf_width
     - title: "Layout data frames"

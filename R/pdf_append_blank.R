@@ -39,8 +39,7 @@ pdf_append_blank <- function(input, output = NULL, ..., minimum = 1L, multiples_
 		new <- pdf_create_blank(
 			length = to_add,
 			width = pdf_width(input, numeric = TRUE)[1L],
-			height = pdf_height(input, numeric = TRUE)[1L],
-			paper = "special"
+			height = pdf_height(input, numeric = TRUE)[1L]
 		)
 		on.exit(unlink(new), add = TRUE)
 		qpdf::pdf_combine(c(input, new), output = output)

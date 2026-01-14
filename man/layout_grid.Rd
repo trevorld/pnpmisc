@@ -10,7 +10,7 @@ layout_grid(
   width = 2.5,
   height = 3.5,
   bleed = 0,
-  paper = c("letter", "a4"),
+  paper = getOption("papersize", "letter"),
   orientation = c("landscape", "portrait"),
   angle = 0,
   name = layout_name_fn(),
