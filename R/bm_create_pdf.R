@@ -3,8 +3,8 @@
 #' `bm_create_pdf()` creates a pdf from a list of images (each representing a page).
 #'
 #' @inheritParams pdf_pad_paper
-#' @param width,height Paper size in inches if `paper = "special"`.
-#' @param orientation Either "portrait" or "landscape".  Ignored if `paper = "special"`.
+#' @param width,height Paper size in inches.  Ignored if both are missing (in favor of `paper` and `orientation`).
+#' @param orientation Either "portrait" or "landscape".  Ignored if `width` and `height` are not missing.
 #' @param pages  A list of images (each representing a page).
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a blank pdf file.
@@ -18,15 +18,13 @@ bm_create_pdf <- function(
 	pages,
 	output = NULL,
 	...,
-	paper = c("special", "letter", "a4", "poker"),
+	paper = getOption("papersize", "letter"),
 	orientation = c("portrait", "landscape"),
 	width = 8.5,
 	height = 11,
 	bg = "white"
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
 
@@ -43,14 +41,21 @@ bm_create_pdf <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 
-	pnp_pdf(
-		output,
-		paper = paper,
-		orientation = orientation,
-		width = width,
-		height = height,
-		bg = bg
-	)
+	if (missing(width) && missing(height)) {
+		pnp_pdf(
+			output,
+			paper = paper,
+			orientation = orientation,
+			bg = bg
+		)
+	} else {
+		pnp_pdf(
+			output,
+			width = width,
+			height = height,
+			bg = bg
+		)
+	}
 	for (i in seq_along(pages)) {
 		grid.newpage()
 		grid.raster(

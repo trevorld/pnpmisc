@@ -1,4 +1,6 @@
 test_that("`pdf_pad_paper()`", {
+	op <- options(papersize = "letter")
+	on.exit(options(op), add = TRUE)
 	on.exit(rm_temp_pdfs(), add = TRUE)
 
 	# portrait

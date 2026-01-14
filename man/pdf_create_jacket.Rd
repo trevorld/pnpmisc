@@ -15,7 +15,7 @@ pdf_create_jacket(
   back = NULL,
   spine = NULL,
   inner = NULL,
-  paper = c("letter", "a4"),
+  paper = getOption("papersize", "letter"),
   orientation = "landscape",
   width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
   height = unit(JACKET_4x6_HEIGHT, "in"),
@@ -30,7 +30,7 @@ pdf_create_4x6_jacket(
   back = NULL,
   spine = NULL,
   inner = NULL,
-  paper = c("letter", "a4")
+  paper = getOption("papersize", "letter")
 )
 
 pdf_create_poker_jacket(
@@ -40,7 +40,7 @@ pdf_create_poker_jacket(
   back = NULL,
   spine = NULL,
   inner = NULL,
-  paper = c("letter", "a4"),
+  paper = getOption("papersize", "letter"),
   depth = unit(JACKET_POKER_SPINE_WIDTH, "in"),
   bg = "transparent"
 )
@@ -48,7 +48,7 @@ pdf_create_poker_jacket(
 pdf_create_jacket_instructions(
   output = NULL,
   ...,
-  paper = c("letter", "a4"),
+  paper = getOption("papersize", "letter"),
   orientation = "landscape",
   style = marquee::classic_style()
 )
@@ -82,9 +82,9 @@ and a height of \code{height} inches.
 If \code{NULL} (default) we do not create page for inner section.
 For \code{pdf_create_poker_jacket()} may also be a list with one or two of these values (in which case will generate two jackets).}
 
-\item{paper}{Paper size.  Either "letter", "a4", or "special".}
+\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 
-\item{orientation}{Either "portrait" or "landscape".  Ignored if \code{paper = "special"}.}
+\item{orientation}{Either "portrait" or "landscape".  Ignored if \code{width} and \code{height} are not missing.}
 
 \item{width}{Width of the jacket face as a grid unit.
 For a 4x6 photo storage box a good value is 4.139 inches and for a poker deck storage box a good value is 2.6 inches.}

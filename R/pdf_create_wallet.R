@@ -76,11 +76,9 @@ pdf_create_wallet <- function(
 	back = NULL,
 	spine = NULL,
 	bleed = unit(0, "in"),
-	paper = c("letter", "a4")
+	paper = getOption("papersize", "letter")
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	output <- normalize_output(output)
 
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))

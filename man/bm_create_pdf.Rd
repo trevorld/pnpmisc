@@ -8,7 +8,7 @@ bm_create_pdf(
   pages,
   output = NULL,
   ...,
-  paper = c("special", "letter", "a4", "poker"),
+  paper = getOption("papersize", "letter"),
   orientation = c("portrait", "landscape"),
   width = 8.5,
   height = 11,
@@ -22,11 +22,11 @@ bm_create_pdf(
 
 \item{...}{Ignored.}
 
-\item{paper}{Paper size.  Either "letter", "a4", or "special".}
+\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 
-\item{orientation}{Either "portrait" or "landscape".  Ignored if \code{paper = "special"}.}
+\item{orientation}{Either "portrait" or "landscape".  Ignored if \code{width} and \code{height} are not missing.}
 
-\item{width, height}{Paper size in inches if \code{paper = "special"}.}
+\item{width, height}{Paper size in inches.  Ignored if both are missing (in favor of \code{paper} and \code{orientation}).}
 
 \item{bg}{\code{output} pdf background color.}
 }

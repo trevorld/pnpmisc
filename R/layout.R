@@ -20,7 +20,7 @@ layout_grid <- function(
 	width = 2.5,
 	height = 3.5,
 	bleed = 0,
-	paper = c("letter", "a4"),
+	paper = getOption("papersize", "letter"),
 	orientation = c("landscape", "portrait"),
 	angle = 0,
 	name = layout_name_fn(),
@@ -32,8 +32,6 @@ layout_grid <- function(
 		angle <- as.numeric(angle, "degrees")
 	}
 	angle <- angle %% 360
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)
 
 	is_ltr <- c(tolower(direction) %in% c("left-to-right", "ltr", "lr"))

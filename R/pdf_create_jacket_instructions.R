@@ -51,13 +51,11 @@ jacket_instructions_md <- function(orientation = NULL) {
 pdf_create_jacket_instructions <- function(
 	output = NULL,
 	...,
-	paper = c("letter", "a4"),
+	paper = getOption("papersize", "letter"),
 	orientation = "landscape",
 	style = marquee::classic_style()
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	output <- normalize_output(output)
 
 	stopifnot(requireNamespace("marquee", quietly = TRUE))

@@ -1,5 +1,7 @@
 test_that("`pdf_add_origami()`", {
 	on.exit(rm_temp_pdfs(), add = TRUE)
+	op <- options(papersize = "letter")
+	on.exit(options(op), add = TRUE)
 
 	f1 <- pnpmisc:::pdf_create_mock_sbgj()
 	f2 <- pdf_add_origami(f1)

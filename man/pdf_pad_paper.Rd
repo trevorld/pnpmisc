@@ -10,7 +10,7 @@ pdf_pad_paper(
   ...,
   bg = "white",
   dpi = 300,
-  paper = c("letter", "a4")
+  paper = getOption("papersize", "letter")
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ pdf_pad_paper(
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
 
-\item{paper}{Paper size.  Either "letter", "a4", or "special".}
+\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 }
 \value{
 \code{output} pdf file name invisibly.

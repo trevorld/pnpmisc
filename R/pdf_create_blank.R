@@ -4,8 +4,8 @@
 #'
 #' @inheritParams pdf_pad_paper
 #' @param length Number of pages to create.
-#' @param width,height Paper size in inches if `paper = "special"`.
-#' @param orientation Either "portrait" or "landscape".  Ignored if `paper = "special"`.
+#' @param width,height Paper size in inches.  Ignored if both are missing (in favor of `paper` and `orientation`).
+#' @param orientation Either "portrait" or "landscape".  Ignored if `width` and `height` are not missing.
 #' @param grob A grid grob to draw on each page
 #'             (e.g. `grid::textGrob("This page intentionally left blank.")`).
 #'             Default `NULL` is to draw nothing.
@@ -21,7 +21,7 @@ pdf_create_blank <- function(
 	output = NULL,
 	...,
 	length = 1L,
-	paper = c("special", "letter", "a4", "poker"),
+	paper = getOption("papersize", "letter"),
 	orientation = c("portrait", "landscape"),
 	width = 8.5,
 	height = 11,
@@ -29,8 +29,6 @@ pdf_create_blank <- function(
 	grob = NULL
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
 
@@ -39,14 +37,21 @@ pdf_create_blank <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 
-	pnp_pdf(
-		output,
-		paper = paper,
-		orientation = orientation,
-		width = width,
-		height = height,
-		bg = bg
-	)
+	if (missing(width) && missing(height)) {
+		pnp_pdf(
+			output,
+			paper = paper,
+			orientation = orientation,
+			bg = bg
+		)
+	} else {
+		pnp_pdf(
+			output,
+			width = width,
+			height = height,
+			bg = bg
+		)
+	}
 	for (page in seq.int(length)) {
 		grid.newpage()
 		grid.draw(grob)

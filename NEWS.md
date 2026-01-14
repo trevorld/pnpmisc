@@ -5,6 +5,8 @@ Breaking changes
 ----------------
 
 * The first argument of `layout_preset()` is now `preset` instead of `name` (so we can now pass `layout_grid()`'s new `name` argument in the `...`).
+* The default argument for `paper` is now `getOption("papersize", "letter")` instead of (depending on the function) "letter" or "special".
+* `bm_create_pdf()` and `pdf_create_blank()` now follow the convention that paper size will be determined by `height` and `width` if either are non-missing otherwise solely by `paper` and `orientation`.
 
 New features
 ------------
@@ -17,6 +19,10 @@ New features
 
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
+
+* Other PDF utilities:
+
+ + `pdf_paper()` infers the paper size of a PDF document (#42).
 
 * `{bittermelon}` pixmap object functions:
 

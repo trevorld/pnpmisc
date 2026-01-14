@@ -77,7 +77,7 @@ pdf_create_jacket <- function(
 	back = NULL,
 	spine = NULL,
 	inner = NULL,
-	paper = c("letter", "a4"),
+	paper = getOption("papersize", "letter"),
 	orientation = "landscape",
 	width = unit(JACKET_4x6_FRONT_WIDTH, "in"),
 	height = unit(JACKET_4x6_HEIGHT, "in"),
@@ -85,8 +85,6 @@ pdf_create_jacket <- function(
 	bg = "transparent"
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	output <- normalize_output(output)
 
 	stopifnot(
@@ -226,11 +224,9 @@ pdf_create_4x6_jacket <- function(
 	back = NULL,
 	spine = NULL,
 	inner = NULL,
-	paper = c("letter", "a4")
+	paper = getOption("papersize", "letter")
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	pdf_create_jacket(
 		output,
 		front = front,
@@ -254,13 +250,11 @@ pdf_create_poker_jacket <- function(
 	back = NULL,
 	spine = NULL,
 	inner = NULL,
-	paper = c("letter", "a4"),
+	paper = getOption("papersize", "letter"),
 	depth = unit(JACKET_POKER_SPINE_WIDTH, "in"),
 	bg = "transparent"
 ) {
 	chkDots(...)
-	paper <- tolower(paper)
-	paper <- match.arg(paper)
 	stopifnot(is.unit(depth))
 
 	# Draw 2 jackets
