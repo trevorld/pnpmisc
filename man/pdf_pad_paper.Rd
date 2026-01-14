@@ -24,7 +24,7 @@ pdf_pad_paper(
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
 
-\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
+\item{paper}{Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 }
 \value{
 \code{output} pdf file name invisibly.

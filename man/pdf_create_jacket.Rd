@@ -82,7 +82,7 @@ and a height of \code{height} inches.
 If \code{NULL} (default) we do not create page for inner section.
 For \code{pdf_create_poker_jacket()} may also be a list with one or two of these values (in which case will generate two jackets).}
 
-\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
+\item{paper}{Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 
 \item{orientation}{Either "portrait" or "landscape".  Ignored if \code{width} and \code{height} are not missing.}
 

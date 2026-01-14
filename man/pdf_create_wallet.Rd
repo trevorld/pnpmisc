@@ -45,7 +45,7 @@ If \code{NULL} (default) we draw a template.}
 \item{If \code{bleed} is \code{FALSE} assume 0 inch bleed zone size}
 }}
 
-\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
+\item{paper}{Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 }
 \value{
 \code{output} pdf file name invisibly.

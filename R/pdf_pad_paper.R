@@ -7,7 +7,7 @@
 #' @param ... Ignored.
 #' @param bg `output` pdf background color.
 #' @param dpi Dots per inch.  Passed to [pdftools::pdf_render_page()].
-#' @param paper Paper size.  One of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
+#' @param paper Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates padded pdf file.
 #' @examples

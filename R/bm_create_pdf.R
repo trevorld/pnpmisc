@@ -41,7 +41,7 @@ bm_create_pdf <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 
-	if (missing(width) && missing(height)) {
+	if (missing(width) && missing(height) && paper != "special") {
 		pnp_pdf(
 			output,
 			paper = paper,

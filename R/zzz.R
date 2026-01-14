@@ -81,7 +81,7 @@ pnp_pdf <- function(
 ) {
 	paper <- tolower(paper)
 	stopifnot(paper %in% SUPPORTED_PAPER)
-	if (missing(width) && missing(height)) {
+	if (missing(width) && missing(height) && paper != "special") {
 		orientation <- match.arg(orientation)
 		width <- paper_width(paper, orientation)
 		height <- paper_height(paper, orientation)

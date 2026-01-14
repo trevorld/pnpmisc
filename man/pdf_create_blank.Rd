@@ -23,7 +23,7 @@ pdf_create_blank(
 
 \item{length}{Number of pages to create.}
 
-\item{paper}{Paper size.  One of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
+\item{paper}{Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 
 \item{orientation}{Either "portrait" or "landscape".  Ignored if \code{width} and \code{height} are not missing.}
 
