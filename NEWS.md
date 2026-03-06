@@ -14,6 +14,7 @@ New features
 * The following PDF creation functions:
 
   + `pdf_add_lines()` adds lines along the components of a print-and-play layout.
+  + `pdf_add_overlay()` renders each page of a pdf as a raster image and overlays custom graphics drawn by `fn` on selected pages.
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
 

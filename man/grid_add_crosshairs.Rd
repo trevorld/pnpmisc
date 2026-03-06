@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_add_crosshairs.R
 \name{grid_add_crosshairs}
 \alias{grid_add_crosshairs}
-\title{Draw (rounded) rectangles around components}
+\title{Draw crosshairs at component corners}
 \usage{
 grid_add_crosshairs(..., layout = "poker_3x3")
 }
@@ -17,7 +17,7 @@ with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
 As a side effect draws crosshairs to the active graphics device.
 }
 \description{
-\code{grid_add_rects()} draws (rounded) rectangles around components of a print-and-play layout.
+\code{grid_add_crosshairs()} draws crosshairs at the corners of components of a print-and-play layout.
 }
 \details{
 \itemize{

@@ -31,50 +31,17 @@ pdf_add_crosshairs <- function(
 ) {
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
 	stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
-	current_dev <- dev.cur()
-
-	pages <- pdf_pages(input, pages = pages)
-
-	output <- normalize_output(output, input)
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}
-
-	df_size_orig <- pdftools::pdf_pagesize(input)
-	stopifnot(nrow(df_size_orig) > 0L)
-	width <- unit(df_size_orig$width[1L], "bigpts")
-	height <- unit(df_size_orig$height[1L], "bigpts")
-	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
-
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	} else {
-		invisible(dev.off())
-	} # `convertWidth()` opened device
-
-	pnp_pdf(output, width = width_in, height = height_in)
-	for (i in seq_len(nrow(df_size_orig))) {
-		grid.newpage()
-
-		width <- unit(df_size_orig$width[i], "bigpts")
-		height <- unit(df_size_orig$height[i], "bigpts")
-		vp <- viewport(width = width, height = height)
-
-		r <- pdf_render_raster(input, page = i, dpi = dpi)
-		grid.raster(r, interpolate = FALSE, vp = vp)
-
-		if (i %in% pages) {
-			grid_add_crosshairs(..., layout = layout)
-		}
-	}
-	invisible(dev.off())
-	invisible(output)
+	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
+		grid_add_crosshairs(..., layout = layout)
+	})
 }
 
-#' Draw (rounded) rectangles around components
+#' Draw crosshairs at component corners
 #'
-#' `grid_add_rects()` draws (rounded) rectangles around components of a print-and-play layout.
+#' `grid_add_crosshairs()` draws crosshairs at the corners of components of a print-and-play layout.
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'

@@ -16,7 +16,7 @@ with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
 }
 \value{
 \code{NULL} invisibly.
-As a side effect draws rectangles to the active graphics device.
+As a side effect draws lines to the active graphics device.
 }
 \description{
 \code{grid_add_lines()} draws lines along the components of a print-and-play layout.
