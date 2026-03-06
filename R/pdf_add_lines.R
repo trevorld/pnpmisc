@@ -24,45 +24,12 @@ pdf_add_lines <- function(
 	dpi = 300,
 	gp = gpar()
 ) {
-	current_dev <- dev.cur()
-
-	pages <- pdf_pages(input, pages = pages)
-
-	output <- normalize_output(output, input)
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}
-
-	df_size_orig <- pdftools::pdf_pagesize(input)
-	stopifnot(nrow(df_size_orig) > 0L)
-	width <- unit(df_size_orig$width[1L], "bigpts")
-	height <- unit(df_size_orig$height[1L], "bigpts")
-	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
-
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	} else {
-		invisible(dev.off())
-	} # `convertWidth()` opened device
-
-	pnp_pdf(output, width = width_in, height = height_in)
-	for (i in seq_len(nrow(df_size_orig))) {
-		grid.newpage()
-
-		width <- unit(df_size_orig$width[i], "bigpts")
-		height <- unit(df_size_orig$height[i], "bigpts")
-		vp <- viewport(width = width, height = height)
-
-		raster <- pdf_render_raster(input, page = i, dpi = dpi)
-		grid.raster(raster, interpolate = FALSE, vp = vp)
-
-		if (i %in% pages) {
-			grid_add_lines(..., layout = layout, gp = gp)
-		}
-	}
-	invisible(dev.off())
-	invisible(output)
+	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
+		grid_add_lines(..., layout = layout, gp = gp)
+	})
 }
 
 draw_hline <- function(y = unit(0.5, "npc"), ...) {
@@ -83,7 +50,7 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #' @param gp Passed to [grid::grid.segments()].
 #' @param ... Ignored for now.
 #' @return `NULL` invisibly.
-#'         As a side effect draws rectangles to the active graphics device.
+#'         As a side effect draws lines to the active graphics device.
 #' @seealso [grid::grid.segments()]
 #' @examples
 #' grid::grid.newpage()

@@ -34,8 +34,8 @@ layout_grid <- function(
 	angle <- angle %% 360
 	orientation <- match.arg(orientation)
 
-	is_ltr <- c(tolower(direction) %in% c("left-to-right", "ltr", "lr"))
-	is_rtl <- c(tolower(direction) %in% c("right-to-left", "rtl", "rl"))
+	is_ltr <- tolower(direction) %in% c("left-to-right", "ltr", "lr")
+	is_rtl <- tolower(direction) %in% c("right-to-left", "rtl", "rl")
 	stopifnot(is_ltr || is_rtl)
 
 	stopifnot(nrow > 0L, ncol > 0L)

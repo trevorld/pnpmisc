@@ -12,6 +12,7 @@ reference:
           - pdf_add_crosshairs
           - pdf_add_lines
           - pdf_add_origami
+          - pdf_add_overlay
           - pdf_add_rects
           - pdf_append_blank
           - pdf_clean

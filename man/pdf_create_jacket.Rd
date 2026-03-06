@@ -147,7 +147,7 @@ as guide to where to make these cuts).
 }
 \examples{
 # Template `front`, `back`, and `spine`
-if (requireNamespace("piecepackr", quietlyr= TRUE)) {
+if (requireNamespace("piecepackr", quietly = TRUE)) {
   f1 <- pdf_create_4x6_jacket()
   unlink(f1)
 }
