@@ -49,6 +49,7 @@ reference:
       contents:
           - bm_create_pdf
           - bm_crop_layout
+          - bm_rm_crosshairs
           - bm_split_layout
           - pdf_render_bm_list
           - pdf_render_bm_pixmap
