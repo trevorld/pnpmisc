@@ -35,47 +35,16 @@ pdf_rm_crosshairs <- function(
 ) {
 	chkDots(...)
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-	current_dev <- dev.cur()
-
-	pages <- pdf_pages(input, pages = pages)
-
-	output <- normalize_output(output, input)
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}
-
-	df_size_orig <- pdftools::pdf_pagesize(input)
-	stopifnot(nrow(df_size_orig) > 0L)
-	width <- unit(df_size_orig$width[1L], "bigpts")
-	height <- unit(df_size_orig$height[1L], "bigpts")
-	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
-
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	} else {
-		invisible(dev.off())
-	} # `convertWidth()` opened device
-
-	pnp_pdf(output, width = width_in, height = height_in)
-	for (i in seq_len(nrow(df_size_orig))) {
-		grid.newpage()
-
-		pixmap <- pdf_render_bm_pixmap(input, page = i, dpi = dpi)
-		if (i %in% pages) {
-			pixmap <- bm_rm_crosshairs_layout(pixmap, layout)
-		}
-
-		width <- unit(df_size_orig$width[i], "bigpts")
-		height <- unit(df_size_orig$height[i], "bigpts")
-		vp <- viewport(width = width, height = height)
-		grid.raster(pixmap, interpolate = FALSE, vp = vp)
-	}
-	invisible(dev.off())
-	invisible(output)
+	pdf_apply(input, output, pages = pages, dpi = dpi, bm_fn = \(r) {
+		bm_rm_crosshairs_layout(r, layout)
+	})
 }
 
-bm_rm_crosshairs_layout <- function(pixmap, layout = layout_preset("poker_3x2_bleed")) {
+bm_rm_crosshairs_layout <- function(x, layout = layout_preset("poker_3x2_bleed")) {
+	pixmap <- bittermelon::as_bm_pixmap(x)
 	dpi <- get_dpi(pixmap, layout$paper[1L], layout$orientation[1L])
 	for (i in seq_len(nrow(layout))) {
 		x <- layout$x[i]
