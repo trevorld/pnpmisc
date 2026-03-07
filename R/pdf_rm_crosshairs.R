@@ -39,11 +39,36 @@ pdf_rm_crosshairs <- function(
 		layout <- layout_preset(layout)
 	}
 	pdf_apply(input, output, pages = pages, dpi = dpi, bm_fn = \(r) {
-		bm_rm_crosshairs_layout(r, layout)
+		bm_rm_crosshairs(r, layout)
 	})
 }
 
-bm_rm_crosshairs_layout <- function(x, layout = layout_preset("poker_3x2_bleed")) {
+#' Remove crosshairs from a raster object
+#'
+#' `bm_rm_crosshairs()` removes crosshairs from a raster object.
+#'
+#' * In order to work the PnP layout needs a solid color bleed.
+#' * The default layout supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
+#'
+#' @param x A raster object coercible to a [bittermelon::bm_pixmap()] object.
+#' @inheritParams bm_crop_layout
+#' @return A [bittermelon::bm_pixmap()] object.
+#' @seealso [pdf_rm_crosshairs()] to remove crosshairs from a pdf.
+#' @examples
+#' if (requireNamespace("bittermelon", quietly = TRUE) &&
+#'     requireNamespace("piecepackr", quietly = TRUE) &&
+#'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
+#'   f1 <- pdf_create_blank(length = 1L, width = 11, height = 8.5)
+#'   f2 <- pdf_add_crosshairs(f1, pages = "all",
+#'                            layout = "poker_3x2_bleed", dpi = 75)
+#'   page <- pdf_render_bm_pixmap(f2, page = 1L, dpi = 75)
+#'   page2 <- bm_rm_crosshairs(page, layout = "poker_3x2_bleed")
+#'   unlink(f1)
+#'   unlink(f2)
+#' }
+#' @export
+bm_rm_crosshairs <- function(x, ..., layout = layout_preset("poker_3x2_bleed")) {
+	chkDots(...)
 	pixmap <- bittermelon::as_bm_pixmap(x)
 	dpi <- get_dpi(pixmap, layout$paper[1L], layout$orientation[1L])
 	for (i in seq_len(nrow(layout))) {

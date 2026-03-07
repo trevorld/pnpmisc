@@ -3,6 +3,7 @@
 export(as_fill)
 export(bm_create_pdf)
 export(bm_crop_layout)
+export(bm_rm_crosshairs)
 export(bm_split_layout)
 export(fullGrob)
 export(grid.full)
