@@ -1,7 +1,7 @@
 #' Overlay custom graphics on a pdf
 #'
 #' `pdf_add_overlay()` renders each page of a pdf as a raster image and calls
-#' `fn` on selected pages to draw custom graphics on top.
+#' `grid_fn` on selected pages to draw custom graphics on top.
 #'
 #' * The original pdf document will be rasterized.
 #'

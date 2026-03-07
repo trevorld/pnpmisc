@@ -40,7 +40,7 @@ As a side effect creates a pdf with overlaid graphics.
 }
 \description{
 \code{pdf_add_overlay()} renders each page of a pdf as a raster image and calls
-\code{fn} on selected pages to draw custom graphics on top.
+\code{grid_fn} on selected pages to draw custom graphics on top.
 }
 \details{
 \itemize{

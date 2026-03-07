@@ -15,56 +15,32 @@
 #' @export
 pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
 	chkDots(...)
-	current_dev <- dev.cur()
+	pdf_add_overlay(input, output, pages = "all", dpi = dpi, grid_fn = grid_add_origami_bb)
+}
 
-	output <- normalize_output(output, input)
+# Optimized for Boardgame Barrio's SBG Jackets
+grid_add_origami_bb <- function() {
+	xc <- unit(0.5, "npc") - unit(0.7, "mm")
+	yc <- unit(0.5, "npc") - unit(1.45, "mm")
 
-	df_size_orig <- pdftools::pdf_pagesize(input)
-	stopifnot(nrow(df_size_orig) > 0L)
-	width <- unit(df_size_orig$width[1L], "bigpts")
-	height <- unit(df_size_orig$height[1L], "bigpts")
-	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
+	# Cover up the "fold here" text
+	yo_edge <- 0.5 * unit(JACKET_4x6_HEIGHT, "inches")
+	grid.rect(
+		x = xc,
+		y = yc + yo_edge + unit(1.1, "cm"),
+		width = unit(2, "in"),
+		height = unit(2, "cm"),
+		gp = gpar(col = NA, fill = "white")
+	)
+	grid.rect(
+		x = xc,
+		y = yc - yo_edge - unit(1.1, "cm"),
+		width = unit(2, "in"),
+		height = unit(2, "cm"),
+		gp = gpar(col = NA, fill = "white")
+	)
 
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	} else {
-		invisible(dev.off())
-	} # `convertWidth()` opened device
-
-	pnp_pdf(output, width = width_in, height = height_in)
-	for (i in seq_len(nrow(df_size_orig))) {
-		grid.newpage()
-		width <- unit(df_size_orig$width[i], "bigpts")
-		height <- unit(df_size_orig$height[i], "bigpts")
-		vp <- viewport(width = width, height = height)
-		r <- pdf_render_raster(input, page = i, dpi = dpi)
-		grid.raster(r, interpolate = FALSE, vp = vp)
-
-		xc <- unit(0.5, "npc") - unit(0.7, "mm")
-		yc <- unit(0.5, "npc") - unit(1.45, "mm")
-
-		# Cover up the "fold here" text
-		yo_edge <- 0.5 * unit(JACKET_4x6_HEIGHT, "inches")
-		grid.rect(
-			x = xc,
-			y = yc + yo_edge + unit(1.1, "cm"),
-			width = unit(2, "in"),
-			height = unit(2, "cm"),
-			gp = gpar(col = NA, fill = "white")
-		)
-		grid.rect(
-			x = xc,
-			y = yc - yo_edge - unit(1.1, "cm"),
-			width = unit(2, "in"),
-			height = unit(2, "cm"),
-			gp = gpar(col = NA, fill = "white")
-		)
-
-		grid_add_origami(xc = xc, yc = yc)
-	}
-	invisible(dev.off())
-	invisible(output)
+	grid_add_origami(xc = xc, yc = yc)
 }
 
 grid_add_origami <- function(
