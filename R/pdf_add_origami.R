@@ -18,7 +18,8 @@ pdf_add_origami <- function(input, output = NULL, ..., dpi = 300) {
 	pdf_add_overlay(input, output, pages = "all", dpi = dpi, grid_fn = grid_add_origami_bb)
 }
 
-# Optimized for Boardgame Barrio's SBG Jackets
+#' @rdname grid_add_origami
+#' @export
 grid_add_origami_bb <- function() {
 	xc <- unit(0.5, "npc") - unit(0.7, "mm")
 	yc <- unit(0.5, "npc") - unit(1.45, "mm")
@@ -43,6 +44,25 @@ grid_add_origami_bb <- function() {
 	grid_add_origami(xc = xc, yc = yc)
 }
 
+#' Draw origami fold symbols
+#'
+#' `grid_add_origami()` draws origami fold symbols for a box jacket.
+#' `grid_add_origami_bb()` draws origami fold symbols optimized for
+#' [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
+#'
+#' @param ... Ignored.
+#' @param xc,yc Center of the jacket as [grid::unit()] objects.
+#' @param width Front/back panel width as a [grid::unit()] object.
+#' @param height Jacket height as a [grid::unit()] object.
+#' @param depth Spine width as a [grid::unit()] object.
+#' @return `NULL` invisibly. As a side effect draws origami fold symbols
+#'         on the active graphics device.
+#' @seealso [pdf_add_origami()]
+#' @examples
+#' grid::grid.newpage()
+#' pnpmisc:::grid_add_jacket_outer()
+#' grid_add_origami()
+#' @export
 grid_add_origami <- function(
 	...,
 	xc = unit(0.5, "npc"),

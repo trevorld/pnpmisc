@@ -43,6 +43,7 @@ New features
     rectangle grob filled with a color, bitmap, grob, or pattern.
     `grid.full()` creates a `fullGrob()` and draws it to the active graphics device.
   + `grid_add_layout()` draws a list of images according to a layout object.
+  + `grid_add_origami()` draws origami fold symbols for a box jacket. `grid_add_origami_bb()` draws origami fold symbols optimized for Boardgame Barrio's Small Board Game Jackets.
 
 * The following enhancements to `bm_crop_layout()`:
 
