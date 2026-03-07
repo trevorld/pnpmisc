@@ -15,10 +15,12 @@ reference:
           - pdf_add_overlay
           - pdf_add_rects
           - pdf_append_blank
+          - pdf_apply
           - pdf_clean
           - pdf_compress
           - pdf_gs
           - pdf_pad_paper
+          - pdf_rasterize
           - pdf_rm_crosshairs
           - pdf_set_bookmarks
     - title: "Create PDF files"

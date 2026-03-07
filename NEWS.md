@@ -15,8 +15,10 @@ New features
 
   + `pdf_add_lines()` adds lines along the components of a print-and-play layout.
   + `pdf_add_overlay()` renders each page of a pdf as a raster image and overlays custom graphics on selected pages.
+  + `pdf_apply()` renders each page of a pdf as a raster image and on selected pages applies a `bm_fn()` to modify the raster image and/or a `grid_fn()` to draw custom graphics on top.
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
+  + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
 
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
