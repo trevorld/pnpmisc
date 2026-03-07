@@ -59,6 +59,7 @@ reference:
       contents:
           - fullGrob
           - grid_add_cropmarks
+          - grid_add_origami
           - grid_add_crosshairs
           - grid_add_layout
           - grid_add_lines
