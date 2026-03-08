@@ -32,9 +32,6 @@ pdf_add_rects <- function(
 	r = unit(0, "in"),
 	gp = gpar(col = "black", fill = NA, lwd = 1)
 ) {
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
 		grid_add_rects(..., layout = layout, r = r, gp = gp)
 	})

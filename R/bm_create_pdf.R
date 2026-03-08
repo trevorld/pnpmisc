@@ -28,7 +28,7 @@ bm_create_pdf <- function(
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
 
-	stopifnot(requireNamespace("bittermelon"))
+	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 
 	if (is_supported_bitmap(pages)) {
 		pages <- bittermelon::bm_list(pages)
