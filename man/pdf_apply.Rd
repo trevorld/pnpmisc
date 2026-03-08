@@ -12,6 +12,7 @@ pdf_apply(
   dpi = 300,
   paper = NULL,
   bg = "white",
+  scale = 1,
   bm_fn = identity,
   grid_fn = grid::grid.null
 )
@@ -40,6 +41,11 @@ Otherwise the output pdf will be created with this paper size
 
 \item{bg}{\code{output} pdf background color.}
 
+\item{scale}{A numeric scalar to scale the content by.
+Values less than 1 shrink the content within the page; values greater than 1 enlarge it.
+By default the original content is \strong{not} rescaled.
+Note this also adjusts the size of the \code{\link[grid:viewport]{grid::viewport()}} the \code{grid_fn} will draw in.}
+
 \item{bm_fn}{A one-argument function called to edit the selected pages rasterized.  The input will be a "raster" object and the output must be an object coercible to a "raster" object by \code{\link[grDevices:as.raster]{grDevices::as.raster()}}}
 
 \item{grid_fn}{A zero-argument function called to draw graphics on selected pages.
@@ -51,7 +57,7 @@ As a side effect creates a pdf with overlaid graphics.
 }
 \description{
 \code{pdf_apply()} renders each page of a pdf as a raster image and
-on selected pages calls \code{bm_fn()} to modify those raster images
+on selected \code{pages} additionally calls \code{bm_fn()} to modify those raster images
 as well as \code{grid_fn} overlay custom graphics on top.
 }
 \details{

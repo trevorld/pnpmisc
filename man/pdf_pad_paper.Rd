@@ -10,6 +10,7 @@ pdf_pad_paper(
   ...,
   bg = "white",
   dpi = 300,
+  scale = 1,
   paper = getOption("papersize", "letter")
 )
 }
@@ -24,6 +25,11 @@ pdf_pad_paper(
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
 
+\item{scale}{A numeric scalar to scale the content by.
+Values less than 1 shrink the content within the page; values greater than 1 enlarge it.
+By default the original content is \strong{not} rescaled.
+Note this also adjusts the size of the \code{\link[grid:viewport]{grid::viewport()}} the \code{grid_fn} will draw in.}
+
 \item{paper}{Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 }
 \value{
@@ -32,7 +38,7 @@ As a side effect creates padded pdf file.
 }
 \description{
 \code{pdf_pad_paper()} makes a pdf file larger by padding it (i.e. adding space to the outside margins).
-The original images are \strong{not} rescaled.
+By default the original content is \strong{not} rescaled.
 }
 \examples{
 # Some PnP files' size is the intersection of A4/letter page sizes
