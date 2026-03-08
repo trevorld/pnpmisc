@@ -10,6 +10,8 @@ pdf_apply(
   ...,
   pages = "all",
   dpi = 300,
+  paper = NULL,
+  bg = "white",
   bm_fn = identity,
   grid_fn = grid::grid.null
 )
@@ -32,6 +34,12 @@ or a string:\describe{
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
 
+\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
+Otherwise the output pdf will be created with this paper size
+(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
+
+\item{bg}{\code{output} pdf background color.}
+
 \item{bm_fn}{A one-argument function called to edit the selected pages rasterized.  The input will be a "raster" object and the output must be an object coercible to a "raster" object by \code{\link[grDevices:as.raster]{grDevices::as.raster()}}}
 
 \item{grid_fn}{A zero-argument function called to draw graphics on selected pages.
@@ -52,15 +60,15 @@ as well as \code{grid_fn} overlay custom graphics on top.
 }
 }
 \examples{
-f1 <- pdf_create_blank(length = 2L, paper = "letter")
+f1 <- pdf_create_blank(length = 2L, paper = "letter", bg = "magenta")
 if (requireNamespace("bittermelon", quietly = TRUE)) {
-  f2 <- pdf_apply(f1, pages = "all", dpi = 75,
-                      bm_fn = bittermelon::bm_invert)
+  f2 <- pdf_apply(f1, pages = "even", dpi = 75,
+                  bm_fn = bittermelon::bm_invert,
+                  grid_fn = function() {
+                      grid::grid.text("DRAFT", gp = grid::gpar(col = "red",
+                                      fontsize = 72, alpha = 0.3))
+                  })
   unlink(f2)
 }
 unlink(f1)
-}
-\seealso{
-\code{\link[=pdf_add_cropmarks]{pdf_add_cropmarks()}}, \code{\link[=pdf_add_crosshairs]{pdf_add_crosshairs()}},
-\code{\link[=pdf_add_lines]{pdf_add_lines()}}, \code{\link[=pdf_add_rects]{pdf_add_rects()}}
 }
