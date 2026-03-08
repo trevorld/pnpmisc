@@ -1,12 +1,8 @@
 #' Pad pdf file (to a larger paper size)
 #'
 #' `pdf_pad_paper()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
-#' The original images are **not** rescaled.
-#' @param input Input pdf filename.
-#' @param output Output pdf filename.  `NULL` defaults to `tempfile(fileext = ".pdf")`.
-#' @param ... Ignored.
-#' @param bg `output` pdf background color.
-#' @param dpi Dots per inch.  Passed to [pdftools::pdf_render_page()].
+#' By default the original content is **not** rescaled.
+#' @inheritParams pdf_apply
 #' @param paper Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates padded pdf file.
@@ -40,8 +36,9 @@ pdf_pad_paper <- function(
 	...,
 	bg = "white",
 	dpi = 300,
+	scale = 1,
 	paper = getOption("papersize", "letter")
 ) {
 	chkDots(...)
-	pdf_apply(input, output, dpi = dpi, paper = paper, bg = bg)
+	pdf_apply(input, output, dpi = dpi, paper = paper, bg = bg, scale = scale)
 }
