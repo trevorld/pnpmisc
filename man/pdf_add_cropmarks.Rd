@@ -11,6 +11,7 @@ pdf_add_cropmarks(
   layout = "poker_3x3",
   pages = "even",
   dpi = 300,
+  paper = NULL,
   bleed = NULL
 )
 }
@@ -34,6 +35,10 @@ or a string:\describe{
 }}
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+
+\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
+Otherwise the output pdf will be created with this paper size
+(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 
 \item{bleed}{Passed to \code{\link[piecepackr:grid.cropmark]{piecepackr::grid.cropmark()}}.
 If \code{NULL} defaults to \code{max(max(layout$bleed), 0.125)}.}

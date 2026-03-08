@@ -4,8 +4,7 @@
 #'
 #' * The original pdf document will be rasterized.
 #'
-#' @inheritParams pdf_pad_paper
-#' @inheritParams pdf_pages
+#' @inheritParams pdf_apply
 #' @inheritParams bm_crop_layout
 #' @inheritParams piecepackr::grid.cropmark
 #' @param bleed Passed to [piecepackr::grid.cropmark()].
@@ -30,9 +29,10 @@ pdf_add_cropmarks <- function(
 	layout = "poker_3x3",
 	pages = "even",
 	dpi = 300,
+	paper = NULL,
 	bleed = NULL
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
+	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
 		grid_add_cropmarks(..., layout = layout, bleed = bleed)
 	})
 }
@@ -43,8 +43,6 @@ pdf_add_cropmarks <- function(
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
-#' @inheritParams pdf_pad_paper
-#' @inheritParams pdf_pages
 #' @inheritParams bm_crop_layout
 #' @inheritParams piecepackr::grid.cropmark
 #' @param bleed Passed to [piecepackr::grid.cropmark()].

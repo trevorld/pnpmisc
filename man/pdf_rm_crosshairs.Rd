@@ -10,7 +10,8 @@ pdf_rm_crosshairs(
   ...,
   layout = "poker_3x2_bleed",
   pages = "odd",
-  dpi = 300
+  dpi = 300,
+  paper = NULL
 )
 }
 \arguments{
@@ -33,6 +34,10 @@ or a string:\describe{
 }}
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+
+\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
+Otherwise the output pdf will be created with this paper size
+(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 }
 \value{
 \code{output} pdf file name invisibly.

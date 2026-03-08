@@ -11,6 +11,7 @@ pdf_add_rects(
   layout = "poker_3x3",
   pages = "all",
   dpi = 300,
+  paper = NULL,
   r = unit(0, "in"),
   gp = gpar(col = "black", fill = NA, lwd = 1)
 )
@@ -35,6 +36,10 @@ or a string:\describe{
 }}
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+
+\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
+Otherwise the output pdf will be created with this paper size
+(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 
 \item{r, gp}{Passed to \code{\link[grid:grid.roundrect]{grid::grid.roundrect()}}.}
 }

@@ -10,6 +10,7 @@ pdf_add_overlay(
   ...,
   pages = "all",
   dpi = 300,
+  paper = NULL,
   grid_fn = grid::grid.null
 )
 }
@@ -30,6 +31,10 @@ or a string:\describe{
 }}
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+
+\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
+Otherwise the output pdf will be created with this paper size
+(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 
 \item{grid_fn}{A zero-argument function called to draw graphics on selected pages.
 Defaults to \code{\link[grid:grid.null]{grid::grid.null()}}.}

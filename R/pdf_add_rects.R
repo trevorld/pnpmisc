@@ -5,7 +5,7 @@
 #' * Sometimes if you use the same color as a solid background color
 #'   this can be used to effectively "remove" unwanted card outlines.
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
 #' @param r,gp Passed to [grid::grid.roundrect()].
 #' @param ... Ignored for now.
@@ -29,10 +29,11 @@ pdf_add_rects <- function(
 	layout = "poker_3x3",
 	pages = "all",
 	dpi = 300,
+	paper = NULL,
 	r = unit(0, "in"),
 	gp = gpar(col = "black", fill = NA, lwd = 1)
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
+	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
 		grid_add_rects(..., layout = layout, r = r, gp = gp)
 	})
 }
@@ -45,7 +46,6 @@ pdf_add_rects <- function(
 #' * Sometimes if you use the same color as a solid background color
 #'   this can be used to effectively "remove" unwanted card outlines.
 #'
-#' @inheritParams pdf_pad_paper
 #' @inheritParams pdf_add_crosshairs
 #' @param r,gp Passed to [grid::grid.roundrect()].
 #' @param ... Ignored for now.

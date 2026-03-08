@@ -4,7 +4,7 @@
 \alias{pdf_rasterize}
 \title{Rasterize a pdf}
 \usage{
-pdf_rasterize(input, output = NULL, ..., dpi = 300)
+pdf_rasterize(input, output = NULL, ..., dpi = 300, paper = NULL)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -14,6 +14,10 @@ pdf_rasterize(input, output = NULL, ..., dpi = 300)
 \item{...}{Ignored.}
 
 \item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+
+\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
+Otherwise the output pdf will be created with this paper size
+(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 }
 \value{
 \code{output} pdf file name invisibly.
