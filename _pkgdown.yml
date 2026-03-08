@@ -21,6 +21,7 @@ reference:
           - pdf_gs
           - pdf_pad_paper
           - pdf_rasterize
+          - pdf_rep
           - pdf_rm_crosshairs
           - pdf_set_bookmarks
     - title: "Create PDF files"
