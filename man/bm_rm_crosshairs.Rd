@@ -4,7 +4,7 @@
 \alias{bm_rm_crosshairs}
 \title{Remove crosshairs from a raster object}
 \usage{
-bm_rm_crosshairs(x, ..., layout = layout_preset("poker_3x2_bleed"))
+bm_rm_crosshairs(x, ..., layout = "poker_3x2_bleed")
 }
 \arguments{
 \item{x}{A raster object coercible to a \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} object.}
