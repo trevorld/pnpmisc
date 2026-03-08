@@ -8,18 +8,23 @@
 #'
 #' @inheritParams pdf_pad_paper
 #' @inheritParams pdf_pages
+#' @param paper If `NULL` (default) the output pdf will be the same size as the input pdf.
+#'              Otherwise the output pdf will be created with this paper size
+#'              (see [pdf_pad_paper()] for supported values but most commonly "letter" or "a4").
 #' @param bm_fn A one-argument function called to edit the selected pages rasterized.  The input will be a "raster" object and the output must be an object coercible to a "raster" object by [grDevices::as.raster()]
 #' @param grid_fn A zero-argument function called to draw graphics on selected pages.
 #'               Defaults to [grid::grid.null()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a pdf with overlaid graphics.
-#' @seealso [pdf_add_cropmarks()], [pdf_add_crosshairs()],
-#'          [pdf_add_lines()], [pdf_add_rects()]
 #' @examples
-#' f1 <- pdf_create_blank(length = 2L, paper = "letter")
+#' f1 <- pdf_create_blank(length = 2L, paper = "letter", bg = "magenta")
 #' if (requireNamespace("bittermelon", quietly = TRUE)) {
-#'   f2 <- pdf_apply(f1, pages = "all", dpi = 75,
-#'                       bm_fn = bittermelon::bm_invert)
+#'   f2 <- pdf_apply(f1, pages = "even", dpi = 75,
+#'                   bm_fn = bittermelon::bm_invert,
+#'                   grid_fn = function() {
+#'                       grid::grid.text("DRAFT", gp = grid::gpar(col = "red",
+#'                                       fontsize = 72, alpha = 0.3))
+#'                   })
 #'   unlink(f2)
 #' }
 #' unlink(f1)
@@ -30,28 +35,34 @@ pdf_apply <- function(
 	...,
 	pages = "all",
 	dpi = 300,
+	paper = NULL,
+	bg = "white",
 	bm_fn = identity,
 	grid_fn = grid::grid.null
 ) {
 	chkDots(...)
 	current_dev <- dev.cur()
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	}
 	pages <- pdf_pages(input, pages = pages)
 	output <- normalize_output(output, input)
 
 	df_size_orig <- pdftools::pdf_pagesize(input)
 	stopifnot(nrow(df_size_orig) > 0L)
-	width <- unit(df_size_orig$width[1L], "bigpts")
-	height <- unit(df_size_orig$height[1L], "bigpts")
-	width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-	height_in <- convertHeight(height, "inches", valueOnly = TRUE)
 
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
+	if (is.null(paper)) {
+		width <- unit(df_size_orig$width[1L], "bigpts")
+		height <- unit(df_size_orig$height[1L], "bigpts")
+		width_in <- convertWidth(width, "inches", valueOnly = TRUE)
+		height_in <- convertHeight(height, "inches", valueOnly = TRUE)
+		if (current_dev == 1L) {
+			invisible(dev.off()) # `convertWidth()` opened device
+		}
+		pnp_pdf(output, width = width_in, height = height_in, bg = bg)
 	} else {
-		invisible(dev.off())
-	} # `convertWidth()` opened device
-
-	pnp_pdf(output, width = width_in, height = height_in)
+		pnp_pdf(output, paper = paper, orientation = pdf_orientation(input)[1L], bg = bg)
+	}
 	for (i in seq_len(nrow(df_size_orig))) {
 		grid.newpage()
 
