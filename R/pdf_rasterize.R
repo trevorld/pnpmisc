@@ -4,7 +4,7 @@
 #'
 #' * The original pdf document will be rasterized.
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a rasterized pdf.
 #' @seealso [pdf_apply()] which this function wraps.
@@ -14,7 +14,7 @@
 #' unlink(f1)
 #' unlink(f2)
 #' @export
-pdf_rasterize <- function(input, output = NULL, ..., dpi = 300) {
+pdf_rasterize <- function(input, output = NULL, ..., dpi = 300, paper = NULL) {
 	chkDots(...)
-	pdf_apply(input, output, dpi = dpi)
+	pdf_apply(input, output, dpi = dpi, paper = paper)
 }

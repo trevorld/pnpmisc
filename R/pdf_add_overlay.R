@@ -5,8 +5,7 @@
 #'
 #' * The original pdf document will be rasterized.
 #'
-#' @inheritParams pdf_pad_paper
-#' @inheritParams pdf_pages
+#' @inheritParams pdf_apply
 #' @param grid_fn A zero-argument function called to draw graphics on selected pages.
 #'               Defaults to [grid::grid.null()].
 #' @return `output` pdf file name invisibly.
@@ -30,8 +29,9 @@ pdf_add_overlay <- function(
 	...,
 	pages = "all",
 	dpi = 300,
+	paper = NULL,
 	grid_fn = grid::grid.null
 ) {
 	chkDots(...)
-	pdf_apply(input, output, pages = pages, dpi = dpi, grid_fn = grid_fn)
+	pdf_apply(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = grid_fn)
 }

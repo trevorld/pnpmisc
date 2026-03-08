@@ -5,8 +5,7 @@
 #' * The default layout supports Button Shy games.
 #' * The original pdf document will be rasterized.
 #'
-#' @inheritParams pdf_pad_paper
-#' @inheritParams pdf_pages
+#' @inheritParams pdf_apply
 #' @inheritParams bm_crop_layout
 #' @param ... Passed to [piecepackr::grid.crosshair()].
 #' @return `output` pdf file name invisibly.
@@ -27,9 +26,10 @@ pdf_add_crosshairs <- function(
 	...,
 	layout = "button_shy_cards",
 	pages = "even",
-	dpi = 300
+	dpi = 300,
+	paper = NULL
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
+	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
 		grid_add_crosshairs(..., layout = layout)
 	})
 }
@@ -40,8 +40,6 @@ pdf_add_crosshairs <- function(
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
-#' @inheritParams pdf_pad_paper
-#' @inheritParams pdf_pages
 #' @inheritParams bm_crop_layout
 #' @param ... Passed to [piecepackr::grid.crosshair()].
 #' @return `NULL` invisibly.

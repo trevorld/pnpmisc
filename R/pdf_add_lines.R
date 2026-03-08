@@ -2,7 +2,7 @@
 #'
 #' `pdf_add_lines()` adds lines along the components of a print-and-play layout.
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].
 #' @param ... Ignored for now.
@@ -22,9 +22,10 @@ pdf_add_lines <- function(
 	layout = "poker_3x3",
 	pages = "all",
 	dpi = 300,
+	paper = NULL,
 	gp = gpar()
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
+	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
 		grid_add_lines(..., layout = layout, gp = gp)
 	})
 }
@@ -42,7 +43,6 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
-#' @inheritParams pdf_pad_paper
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].
 #' @param ... Ignored for now.
