@@ -14,7 +14,7 @@ Imports:
     grid,
     grDevices,
     pdftools,
-    qpdf,
+    qpdf (>= 1.4.1),
     stats,
     tools,
     utils
