@@ -61,9 +61,7 @@ pdf_apply <- function(
 
 		r <- pdf_render_raster(input, page = i, dpi = dpi)
 		if (i %in% pages) {
-			if (!missing(bm_fn)) {
-				r <- bm_fn(r)
-			}
+			r <- bm_fn(r)
 			grid.raster(r, interpolate = FALSE, vp = vp)
 			grid_fn()
 		} else {

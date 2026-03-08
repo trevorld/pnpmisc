@@ -34,12 +34,8 @@ pdf_rm_crosshairs <- function(
 	dpi = 300
 ) {
 	chkDots(...)
-	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	pdf_apply(input, output, pages = pages, dpi = dpi, bm_fn = \(r) {
-		bm_rm_crosshairs(r, layout)
+		bm_rm_crosshairs(r, layout = layout)
 	})
 }
 
@@ -67,8 +63,12 @@ pdf_rm_crosshairs <- function(
 #'   unlink(f2)
 #' }
 #' @export
-bm_rm_crosshairs <- function(x, ..., layout = layout_preset("poker_3x2_bleed")) {
+bm_rm_crosshairs <- function(x, ..., layout = "poker_3x2_bleed") {
 	chkDots(...)
+	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+	if (is.character(layout)) {
+		layout <- layout_preset(layout)
+	}
 	pixmap <- bittermelon::as_bm_pixmap(x)
 	dpi <- get_dpi(pixmap, layout$paper[1L], layout$orientation[1L])
 	for (i in seq_len(nrow(layout))) {

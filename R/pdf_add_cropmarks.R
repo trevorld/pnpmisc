@@ -32,11 +32,6 @@ pdf_add_cropmarks <- function(
 	dpi = 300,
 	bleed = NULL
 ) {
-	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-	stopifnot(packageVersion("piecepackr") >= "1.14.0-6")
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
 		grid_add_cropmarks(..., layout = layout, bleed = bleed)
 	})

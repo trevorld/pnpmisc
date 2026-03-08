@@ -24,9 +24,6 @@ pdf_add_lines <- function(
 	dpi = 300,
 	gp = gpar()
 ) {
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
 		grid_add_lines(..., layout = layout, gp = gp)
 	})

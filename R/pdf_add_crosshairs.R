@@ -29,11 +29,6 @@ pdf_add_crosshairs <- function(
 	pages = "even",
 	dpi = 300
 ) {
-	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-	stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	pdf_add_overlay(input, output, pages = pages, dpi = dpi, grid_fn = \() {
 		grid_add_crosshairs(..., layout = layout)
 	})
