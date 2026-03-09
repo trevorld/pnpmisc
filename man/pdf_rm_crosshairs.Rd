@@ -30,10 +30,13 @@ or a string:\describe{
 \item{all}{Include all the pages.}
 \item{even}{Include just the even pages.}
 \item{odd}{Include just the odd pages.}
+}
+The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
 \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
 }}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size

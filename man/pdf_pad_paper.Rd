@@ -9,9 +9,11 @@ pdf_pad_paper(
   output = NULL,
   ...,
   bg = "white",
+  rasterize = rasterise,
   dpi = 300,
   scale = 1,
-  paper = getOption("papersize", "letter")
+  paper = getOption("papersize", "letter"),
+  rasterise = NULL
 )
 }
 \arguments{
@@ -23,7 +25,20 @@ pdf_pad_paper(
 
 \item{bg}{\code{output} pdf background color.}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
+If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
+If \code{NULL} only rasterize if a requested feature requires it.
+Currently requires rasterization in the following cases:
+\enumerate{
+\item \code{!is.null(paper)} or \code{scale != 1}
+\item \code{any(pages != "all")}
+\item \code{!missing(bm_fn)}
+}
+
+\code{rasterise} is an alias for \code{rasterize}.}
+
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 
 \item{scale}{A numeric scalar to scale the content by.
 Values less than 1 shrink the content within the page; values greater than 1 enlarge it.
@@ -39,6 +54,12 @@ As a side effect creates padded pdf file.
 \description{
 \code{pdf_pad_paper()} makes a pdf file larger by padding it (i.e. adding space to the outside margins).
 By default the original content is \strong{not} rescaled.
+}
+\details{
+\itemize{
+\item The original pdf document may be rasterized depending on the value of
+\code{rasterize} and/or \code{paper}.
+}
 }
 \examples{
 # Some PnP files' size is the intersection of A4/letter page sizes

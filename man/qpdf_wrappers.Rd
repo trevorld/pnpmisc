@@ -18,15 +18,6 @@ pdf_subset(input, output = NULL, ..., pages = 1L)
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
 \item{...}{Passed to the underlying qpdf functions.}
-
-\item{pages}{A positive numeric vector of pages to include,
-a negative numeric vector of pages to exclude,
-or a string:\describe{
-\item{all}{Include all the pages.}
-\item{even}{Include just the even pages.}
-\item{odd}{Include just the odd pages.}
-\item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
-}}
 }
 \value{
 \code{output} filename of new pdf file invisibly.

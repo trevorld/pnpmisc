@@ -3,6 +3,10 @@
 #' `pdf_add_origami()` adds origami symbols to the pdf.
 #' Currently only supports adding origami symbols to
 #' [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
+#'
+#' * The original pdf document may be rasterized depending on the value of
+#'   `rasterize` and/or `paper`.
+#'
 #' @inheritParams pdf_apply
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added origami symbols.
@@ -13,12 +17,21 @@
 #' unlink(f1)
 #' unlink(f2)
 #' @export
-pdf_add_origami <- function(input, output = NULL, ..., dpi = 300, paper = NULL) {
+pdf_add_origami <- function(
+	input,
+	output = NULL,
+	...,
+	rasterize = rasterise,
+	dpi = 300,
+	paper = NULL,
+	rasterise = NULL
+) {
 	chkDots(...)
 	pdf_add_overlay(
 		input,
 		output,
 		pages = "all",
+		rasterize = rasterize,
 		dpi = dpi,
 		paper = paper,
 		grid_fn = grid_add_origami_bb

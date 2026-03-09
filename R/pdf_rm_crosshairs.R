@@ -34,9 +34,16 @@ pdf_rm_crosshairs <- function(
 	paper = NULL
 ) {
 	chkDots(...)
-	pdf_apply(input, output, pages = pages, dpi = dpi, paper = paper, bm_fn = \(r) {
-		bm_rm_crosshairs(r, layout = layout)
-	})
+	pdf_apply(
+		input,
+		output,
+		pages = pages,
+		dpi = dpi,
+		paper = paper,
+		bm_fn = \(r) {
+			bm_rm_crosshairs(r, layout = layout)
+		}
+	)
 }
 
 #' Remove crosshairs from a raster object

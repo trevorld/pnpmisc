@@ -3,7 +3,8 @@
 #' `pdf_add_crosshairs()` adds crosshairs to the corners of components of a print-and-play layout.
 #'
 #' * The default layout supports Button Shy games.
-#' * The original pdf document will be rasterized.
+#' * The original pdf document may be rasterized depending on the value of
+#'   `rasterize`, `pages`, and/or `paper`.
 #'
 #' @inheritParams pdf_apply
 #' @inheritParams bm_crop_layout
@@ -26,12 +27,22 @@ pdf_add_crosshairs <- function(
 	...,
 	layout = "button_shy_cards",
 	pages = "even",
+	rasterize = rasterise,
 	dpi = 300,
-	paper = NULL
+	paper = NULL,
+	rasterise = NULL
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
-		grid_add_crosshairs(..., layout = layout)
-	})
+	pdf_add_overlay(
+		input,
+		output,
+		pages = pages,
+		rasterize = rasterize,
+		dpi = dpi,
+		paper = paper,
+		grid_fn = \() {
+			grid_add_crosshairs(..., layout = layout)
+		}
+	)
 }
 
 #' Draw crosshairs at component corners

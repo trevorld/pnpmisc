@@ -4,12 +4,14 @@
 #'  on selected `pages` additionally calls `bm_fn()` to modify those raster images
 #'  as well as `grid_fn` overlay custom graphics on top.
 #'
-#' * The original pdf document will be rasterized.
+#' * The original pdf document may be rasterized depending on the value of
+#'   `rasterize`, `bm_fn`, `pages`, and/or `paper`.
 #'
 #' @param input Input pdf filename.
 #' @param output Output pdf filename.  `NULL` defaults to `tempfile(fileext = ".pdf")`.
 #' @param ... Ignored.
-#' @param dpi Dots per inch.  Passed to [pdftools::pdf_render_page()].
+#' @param dpi Dots per inch.
+#'   Passed to [pdftools::pdf_render_page()] when we rasterize the original content.
 #' @param bg `output` pdf background color.
 #' @param pages A positive numeric vector of pages to include,
 #'              a negative numeric vector of pages to exclude,
@@ -17,8 +19,20 @@
 #'              \item{all}{Include all the pages.}
 #'              \item{even}{Include just the even pages.}
 #'              \item{odd}{Include just the odd pages.}
+#'              }
+#'              The functions [pdf_pages()] and [pdf_subset()] also support the string:\describe{
 #'              \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
 #'              }
+#' @param rasterize,rasterise If `TRUE` rasterize the original content using [pdftools::pdf_render_page()].
+#'   If `FALSE` don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
+#'   If `NULL` only rasterize if a requested feature requires it.
+#'   Currently requires rasterization in the following cases:
+#'
+#'   1. `!is.null(paper)` or `scale != 1`
+#'   2. `any(pages != "all")`
+#'   3. `!missing(bm_fn)`
+#'
+#'   `rasterise` is an alias for `rasterize`.
 #' @param paper If `NULL` (default) the output pdf will be the same size as the input pdf.
 #'              Otherwise the output pdf will be created with this paper size
 #'              (see [pdf_pad_paper()] for supported values but most commonly "letter" or "a4").
@@ -49,6 +63,78 @@ pdf_apply <- function(
 	output = NULL,
 	...,
 	pages = "all",
+	rasterize = rasterise,
+	dpi = 300,
+	paper = NULL,
+	bg = "white",
+	scale = 1,
+	bm_fn = identity,
+	grid_fn = grid::grid.null,
+	rasterise = NULL
+) {
+	chkDots(...)
+	current_dev <- dev.cur()
+	if (current_dev > 1) {
+		on.exit(dev.set(current_dev), add = TRUE)
+	}
+	output <- normalize_output(output, input)
+	rasterize <- rasterize %||%
+		(any(pages != "all") ||
+			!is.null(paper) ||
+			scale != 1 ||
+			!missing(bm_fn))
+	if (isFALSE(rasterize)) {
+		if (any(pages != "all")) {
+			stop(r"(We can't yet combine `isFALSE(rasterize)` and `any(pages != "all")`)")
+		}
+		if (scale != 1) {
+			stop(r"(We can't yet combine `isFALSE(rasterize)` and `scale != 1`)")
+		}
+		if (!is.null(paper)) {
+			stop(r"(We can't yet combine `isFALSE(rasterize)` and `!is.null(paper)`)")
+		}
+		if (!is.null(paper)) {
+			stop(r"(We can't yet combine `isFALSE(rasterize)` and `!is.null(paper)`)")
+		}
+
+		pdf_apply_vector(input, output, grid_fn = grid_fn)
+	} else {
+		#### If `rasterize` was missing then emit a message?
+		pages <- pdf_pages(input, pages = pages)
+		pdf_apply_raster(
+			input,
+			output,
+			pages = pages,
+			dpi = dpi,
+			paper = paper,
+			bg = bg,
+			scale = scale,
+			bm_fn = bm_fn,
+			grid_fn = grid_fn
+		)
+	}
+}
+
+# Currently can only use if pages = "all", `scale = 1`, and no `bm_fn`
+pdf_apply_vector <- function(input, output, ..., grid_fn = grid::grid.null) {
+	df_size <- pdftools::pdf_pagesize(input)
+	width_in <- df_size$width[1L] / 72
+	height_in <- df_size$height[1L] / 72
+	stamp <- tempfile(fileext = ".pdf")
+	on.exit(unlink(stamp), add = TRUE)
+	pnp_pdf(stamp, width = width_in, height = height_in, bg = "transparent")
+	grid.newpage()
+	grid_fn()
+	invisible(dev.off())
+	qpdf::pdf_overlay_stamp(input, stamp = stamp, output = output)
+	return(invisible(output))
+}
+
+pdf_apply_raster <- function(
+	input,
+	output,
+	...,
+	pages = "all",
 	dpi = 300,
 	paper = NULL,
 	bg = "white",
@@ -57,24 +143,13 @@ pdf_apply <- function(
 	grid_fn = grid::grid.null
 ) {
 	chkDots(...)
-	current_dev <- dev.cur()
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	}
-	pages <- pdf_pages(input, pages = pages)
-	output <- normalize_output(output, input)
-
 	df_size_orig <- pdftools::pdf_pagesize(input)
 	stopifnot(nrow(df_size_orig) > 0L)
 
 	if (is.null(paper)) {
-		width <- unit(df_size_orig$width[1L], "bigpts")
-		height <- unit(df_size_orig$height[1L], "bigpts")
-		width_in <- convertWidth(width, "inches", valueOnly = TRUE)
-		height_in <- convertHeight(height, "inches", valueOnly = TRUE)
-		if (current_dev == 1L) {
-			invisible(dev.off()) # `convertWidth()` opened device
-		}
+		# size is in "bigpts" units where 72pts = 1"
+		width_in <- df_size_orig$width[1L] / 72
+		height_in <- df_size_orig$height[1L] / 72
 		pnp_pdf(output, width = width_in, height = height_in, bg = bg)
 	} else {
 		pnp_pdf(output, paper = paper, orientation = pdf_orientation(input)[1L], bg = bg)

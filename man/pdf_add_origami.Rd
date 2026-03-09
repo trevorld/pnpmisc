@@ -4,7 +4,15 @@
 \alias{pdf_add_origami}
 \title{Add origami symbols to a pdf}
 \usage{
-pdf_add_origami(input, output = NULL, ..., dpi = 300, paper = NULL)
+pdf_add_origami(
+  input,
+  output = NULL,
+  ...,
+  rasterize = rasterise,
+  dpi = 300,
+  paper = NULL,
+  rasterise = NULL
+)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -13,7 +21,20 @@ pdf_add_origami(input, output = NULL, ..., dpi = 300, paper = NULL)
 
 \item{...}{Ignored.}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
+If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
+If \code{NULL} only rasterize if a requested feature requires it.
+Currently requires rasterization in the following cases:
+\enumerate{
+\item \code{!is.null(paper)} or \code{scale != 1}
+\item \code{any(pages != "all")}
+\item \code{!missing(bm_fn)}
+}
+
+\code{rasterise} is an alias for \code{rasterize}.}
+
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size
@@ -27,6 +48,12 @@ As a side effect creates pdf file with added origami symbols.
 \code{pdf_add_origami()} adds origami symbols to the pdf.
 Currently only supports adding origami symbols to
 \href{https://sites.google.com/view/boardgamebarrio/home}{Boardgame Barrio's Small Board Game Jackets}.
+}
+\details{
+\itemize{
+\item The original pdf document may be rasterized depending on the value of
+\code{rasterize} and/or \code{paper}.
+}
 }
 \examples{
 f1 <- pnpmisc:::pdf_create_mock_sbgj()
