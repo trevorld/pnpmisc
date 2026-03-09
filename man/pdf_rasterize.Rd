@@ -13,7 +13,8 @@ pdf_rasterize(input, output = NULL, ..., dpi = 300, paper = NULL)
 
 \item{...}{Ignored.}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size
@@ -25,11 +26,6 @@ As a side effect creates a rasterized pdf.
 }
 \description{
 \code{pdf_rasterize()} re-renders a pdf by rasterizing each page.
-}
-\details{
-\itemize{
-\item The original pdf document will be rasterized.
-}
 }
 \examples{
 f1 <- pdf_create_blank(length = 2L, paper = "letter")

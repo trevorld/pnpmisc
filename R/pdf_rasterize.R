@@ -2,8 +2,6 @@
 #'
 #' `pdf_rasterize()` re-renders a pdf by rasterizing each page.
 #'
-#' * The original pdf document will be rasterized.
-#'
 #' @inheritParams pdf_apply
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a rasterized pdf.
@@ -14,7 +12,13 @@
 #' unlink(f1)
 #' unlink(f2)
 #' @export
-pdf_rasterize <- function(input, output = NULL, ..., dpi = 300, paper = NULL) {
+pdf_rasterize <- function(
+	input,
+	output = NULL,
+	...,
+	dpi = 300,
+	paper = NULL
+) {
 	chkDots(...)
-	pdf_apply(input, output, dpi = dpi, paper = paper)
+	pdf_apply(input, output, rasterize = TRUE, dpi = dpi, paper = paper)
 }

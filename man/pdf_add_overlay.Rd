@@ -9,9 +9,11 @@ pdf_add_overlay(
   output = NULL,
   ...,
   pages = "all",
+  rasterize = rasterise,
   dpi = 300,
   paper = NULL,
-  grid_fn = grid::grid.null
+  grid_fn = grid::grid.null,
+  rasterise = NULL
 )
 }
 \arguments{
@@ -27,10 +29,25 @@ or a string:\describe{
 \item{all}{Include all the pages.}
 \item{even}{Include just the even pages.}
 \item{odd}{Include just the odd pages.}
+}
+The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
 \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
 }}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
+If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
+If \code{NULL} only rasterize if a requested feature requires it.
+Currently requires rasterization in the following cases:
+\enumerate{
+\item \code{!is.null(paper)} or \code{scale != 1}
+\item \code{any(pages != "all")}
+\item \code{!missing(bm_fn)}
+}
+
+\code{rasterise} is an alias for \code{rasterize}.}
+
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size
@@ -44,12 +61,13 @@ Defaults to \code{\link[grid:grid.null]{grid::grid.null()}}.}
 As a side effect creates a pdf with overlaid graphics.
 }
 \description{
-\code{pdf_add_overlay()} renders each page of a pdf as a raster image and calls
-\code{grid_fn} on selected pages to draw custom graphics on top.
+\code{pdf_add_overlay()} calls \code{grid_fn} on selected pages to draw custom
+graphics on top.
 }
 \details{
 \itemize{
-\item The original pdf document will be rasterized.
+\item The original pdf document may be rasterized depending on the value of
+\code{rasterize}, \code{pages}, and/or \code{paper}.
 }
 }
 \examples{

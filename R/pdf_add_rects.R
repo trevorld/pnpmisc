@@ -4,6 +4,8 @@
 #'
 #' * Sometimes if you use the same color as a solid background color
 #'   this can be used to effectively "remove" unwanted card outlines.
+#' * The original pdf document may be rasterized depending on the value of
+#'   `rasterize`, `pages`, and/or `paper`.
 #'
 #' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
@@ -28,14 +30,24 @@ pdf_add_rects <- function(
 	...,
 	layout = "poker_3x3",
 	pages = "all",
+	rasterize = rasterise,
 	dpi = 300,
 	paper = NULL,
 	r = unit(0, "in"),
-	gp = gpar(col = "black", fill = NA, lwd = 1)
+	gp = gpar(col = "black", fill = NA, lwd = 1),
+	rasterise = NULL
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
-		grid_add_rects(..., layout = layout, r = r, gp = gp)
-	})
+	pdf_add_overlay(
+		input,
+		output,
+		pages = pages,
+		rasterize = rasterize,
+		dpi = dpi,
+		paper = paper,
+		grid_fn = \() {
+			grid_add_rects(..., layout = layout, r = r, gp = gp)
+		}
+	)
 }
 
 #' Draw (rounded) rectangles around components

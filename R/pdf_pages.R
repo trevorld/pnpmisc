@@ -3,14 +3,6 @@
 #' `pdf_pages()` calculates an integer vector of subset of pdf pages.
 #'
 #' @inheritParams pdf_pad_paper
-#' @param pages A positive numeric vector of pages to include,
-#'              a negative numeric vector of pages to exclude,
-#'              or a string:\describe{
-#'              \item{all}{Include all the pages.}
-#'              \item{even}{Include just the even pages.}
-#'              \item{odd}{Include just the odd pages.}
-#'              \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
-#'              }
 #' @examples
 #' f <- pdf_create_blank(length = 8L)
 #' pdf_pages(f, pages = 1:4)

@@ -21,15 +21,6 @@ pdf_rep(
 
 \item{...}{Ignored.}
 
-\item{pages}{A positive numeric vector of pages to include,
-a negative numeric vector of pages to exclude,
-or a string:\describe{
-\item{all}{Include all the pages.}
-\item{even}{Include just the even pages.}
-\item{odd}{Include just the odd pages.}
-\item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
-}}
-
 \item{times, length.out, each}{Passed to \code{\link[base:rep]{base::rep()}}.}
 }
 \value{

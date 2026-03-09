@@ -10,9 +10,11 @@ pdf_add_cropmarks(
   ...,
   layout = "poker_3x3",
   pages = "even",
+  rasterize = rasterise,
   dpi = 300,
   paper = NULL,
-  bleed = NULL
+  bleed = NULL,
+  rasterise = NULL
 )
 }
 \arguments{
@@ -31,10 +33,25 @@ or a string:\describe{
 \item{all}{Include all the pages.}
 \item{even}{Include just the even pages.}
 \item{odd}{Include just the odd pages.}
+}
+The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
 \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
 }}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
+If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
+If \code{NULL} only rasterize if a requested feature requires it.
+Currently requires rasterization in the following cases:
+\enumerate{
+\item \code{!is.null(paper)} or \code{scale != 1}
+\item \code{any(pages != "all")}
+\item \code{!missing(bm_fn)}
+}
+
+\code{rasterise} is an alias for \code{rasterize}.}
+
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size
@@ -52,7 +69,8 @@ As a side effect adds crop marks to a pdf.
 }
 \details{
 \itemize{
-\item The original pdf document will be rasterized.
+\item The original pdf document may be rasterized depending on the value of
+\code{rasterize}, \code{pages}, and/or \code{paper}.
 }
 }
 \examples{

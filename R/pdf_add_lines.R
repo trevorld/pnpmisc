@@ -2,6 +2,9 @@
 #'
 #' `pdf_add_lines()` adds lines along the components of a print-and-play layout.
 #'
+#' * The original pdf document may be rasterized depending on the value of
+#'   `rasterize`, `pages`, and/or `paper`.
+#'
 #' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].
@@ -21,13 +24,23 @@ pdf_add_lines <- function(
 	...,
 	layout = "poker_3x3",
 	pages = "all",
+	rasterize = rasterise,
 	dpi = 300,
 	paper = NULL,
-	gp = gpar()
+	gp = gpar(),
+	rasterise = NULL
 ) {
-	pdf_add_overlay(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = \() {
-		grid_add_lines(..., layout = layout, gp = gp)
-	})
+	pdf_add_overlay(
+		input,
+		output,
+		pages = pages,
+		rasterize = rasterize,
+		dpi = dpi,
+		paper = paper,
+		grid_fn = \() {
+			grid_add_lines(..., layout = layout, gp = gp)
+		}
+	)
 }
 
 draw_hline <- function(y = unit(0.5, "npc"), ...) {

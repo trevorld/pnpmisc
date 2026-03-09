@@ -1,9 +1,10 @@
 #' Overlay custom graphics on a pdf
 #'
-#' `pdf_add_overlay()` renders each page of a pdf as a raster image and calls
-#' `grid_fn` on selected pages to draw custom graphics on top.
+#' `pdf_add_overlay()` calls `grid_fn` on selected pages to draw custom
+#' graphics on top.
 #'
-#' * The original pdf document will be rasterized.
+#' * The original pdf document may be rasterized depending on the value of
+#'   `rasterize`, `pages`, and/or `paper`.
 #'
 #' @inheritParams pdf_apply
 #' @param grid_fn A zero-argument function called to draw graphics on selected pages.
@@ -28,10 +29,20 @@ pdf_add_overlay <- function(
 	output = NULL,
 	...,
 	pages = "all",
+	rasterize = rasterise,
 	dpi = 300,
 	paper = NULL,
-	grid_fn = grid::grid.null
+	grid_fn = grid::grid.null,
+	rasterise = NULL
 ) {
 	chkDots(...)
-	pdf_apply(input, output, pages = pages, dpi = dpi, paper = paper, grid_fn = grid_fn)
+	pdf_apply(
+		input,
+		output,
+		pages = pages,
+		rasterize = rasterize,
+		dpi = dpi,
+		paper = paper,
+		grid_fn = grid_fn
+	)
 }

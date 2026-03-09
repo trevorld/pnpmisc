@@ -11,7 +11,8 @@ pdf_render_bm_list(input, ..., dpi = 300)
 
 \item{...}{Ignored.}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 }
 \value{
 A \code{\link[bittermelon:bm_list]{bittermelon::bm_list()}} of \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} objects.

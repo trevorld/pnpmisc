@@ -13,7 +13,8 @@ pdf_render_bm_pixmap(input, ..., page = 1L, dpi = 300)
 
 \item{page}{Integer of page to render.}
 
-\item{dpi}{Dots per inch.  Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.}
+\item{dpi}{Dots per inch.
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
 }
 \value{
 A \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} object.
