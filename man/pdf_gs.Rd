@@ -14,18 +14,21 @@ pdf_gs(input, output = NULL, ..., args = character(0L))
 \item{...}{Ignored.}
 
 \item{args}{Arguments to pass to ghostscript.
-Automatically adds \code{-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}}.}
+We automatically add \code{-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}}.}
 }
 \description{
 \code{pdf_gs()} processes the pdf file with ghostscript.
 This may prevent issues with other pdf processing functions like \code{\link[pdftools:pdftools]{pdftools::pdf_pagesize()}}.
 }
 \examples{
-if (tools::find_gs_cmd()[[1L]] != "") {
+if (nzchar(tools::find_gs_cmd())) {
   f1 <- pdf_create_blank()
   f2 <- pdf_gs(f1)
 
   unlink(f1)
   unlink(f2)
 }
+}
+\seealso{
+\code{\link[tools:find_gs_cmd]{tools::find_gs_cmd()}}
 }

@@ -23,6 +23,7 @@ New features
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
   + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
   + `pdf_rep()` repeats pages of a pdf similar to `rep()`.
+  + `pdf_scale()` scales pdf contents centered within the page.
 
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.

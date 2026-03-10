@@ -5,7 +5,8 @@
 #'  as well as `grid_fn` overlay custom graphics on top.
 #'
 #' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize`, `bm_fn`, `pages`, and/or `paper`.
+#'   `bm_fn`, `pages`, `paper`, `scale`, and/or `rasterize` as well as
+#'   whether ghostscript is available (see [pdf_gs()]).
 #'
 #' @param input Input pdf filename.
 #' @param output Output pdf filename.  `NULL` defaults to `tempfile(fileext = ".pdf")`.
@@ -29,7 +30,7 @@
 #'   If `NULL` only rasterize if a requested feature requires it.
 #'   Currently requires rasterization in the following cases:
 #'
-#'   1. `!is.null(paper)` or `scale != 1`
+#'   1. (`!is.null(paper)` or `scale != 1`) and ghostscript is unavailable (see [pdf_gs()])
 #'   2. `any(pages != "all")`
 #'   3. `!missing(bm_fn)`
 #'
@@ -79,26 +80,25 @@ pdf_apply <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 	output <- normalize_output(output, input)
+	gs <- nzchar(tools::find_gs_cmd())
 	rasterize <- rasterize %||%
 		(any(pages != "all") ||
-			!is.null(paper) ||
-			scale != 1 ||
+			((!is.null(paper) || scale != 1) && !gs) ||
 			!missing(bm_fn))
 	if (isFALSE(rasterize)) {
 		if (any(pages != "all")) {
 			stop(r"(We can't yet combine `isFALSE(rasterize)` and `any(pages != "all")`)")
 		}
-		if (scale != 1) {
-			stop(r"(We can't yet combine `isFALSE(rasterize)` and `scale != 1`)")
+		if ((!is.null(paper) || scale != 1) && !gs) {
+			stop(
+				r"(We can't yet combine `isFALSE(rasterize)` and `(!is.null(paper) || scale != 1)` without ghostscript)"
+			)
 		}
-		if (!is.null(paper)) {
-			stop(r"(We can't yet combine `isFALSE(rasterize)` and `!is.null(paper)`)")
-		}
-		if (!is.null(paper)) {
-			stop(r"(We can't yet combine `isFALSE(rasterize)` and `!is.null(paper)`)")
+		if (!missing(bm_fn)) {
+			stop(r"(We can't combine `isFALSE(rasterize)` and `!missing(bm_fn)`)")
 		}
 
-		pdf_apply_vector(input, output, grid_fn = grid_fn)
+		pdf_apply_vector(input, output, paper = paper, scale = scale, bg = bg, grid_fn = grid_fn)
 	} else {
 		#### If `rasterize` was missing then emit a message?
 		pages <- pdf_pages(input, pages = pages)
@@ -116,8 +116,28 @@ pdf_apply <- function(
 	}
 }
 
-# Currently can only use if pages = "all", `scale = 1`, and no `bm_fn`
-pdf_apply_vector <- function(input, output, ..., grid_fn = grid::grid.null) {
+# Currently can only use if pages = "all" and no `bm_fn`
+pdf_apply_vector <- function(
+	input,
+	output,
+	...,
+	paper = NULL,
+	scale = 1,
+	bg = "transparent",
+	grid_fn = grid::grid.null
+) {
+	resize <- (!is.null(paper) || scale != 1) && nzchar(tools::find_gs_cmd())
+	overlay <- !identical(grid_fn, grid::grid.null)
+
+	if (!resize && !overlay) {
+		file.copy(input, output, overwrite = TRUE)
+		return(invisible(output))
+	}
+	if (resize && !overlay) {
+		pdf_resize_vector(input, output, scale = scale, paper = paper, bg = bg)
+		return(invisible(output))
+	}
+
 	df_size <- pdftools::pdf_pagesize(input)
 	width_in <- df_size$width[1L] / 72
 	height_in <- df_size$height[1L] / 72
@@ -127,8 +147,72 @@ pdf_apply_vector <- function(input, output, ..., grid_fn = grid::grid.null) {
 	grid.newpage()
 	grid_fn()
 	invisible(dev.off())
-	qpdf::pdf_overlay_stamp(input, stamp = stamp, output = output)
-	return(invisible(output))
+	if (resize) {
+		overlaid <- tempfile(fileext = ".pdf")
+		on.exit(unlink(overlaid), add = TRUE)
+		qpdf::pdf_overlay_stamp(input, stamp = stamp, output = overlaid)
+		pdf_resize_vector(overlaid, output, scale = scale, paper = paper, bg = bg)
+	} else {
+		qpdf::pdf_overlay_stamp(input, stamp = stamp, output = output)
+	}
+	invisible(output)
+}
+
+pdf_resize_vector <- function(input, output, scale = 1, paper = NULL, bg = "transparent") {
+	if (!is.null(paper)) {
+		paper <- tolower(paper)
+	}
+	df_size <- pdftools::pdf_pagesize(input)
+	old_w <- df_size$width[1L] # bigpts
+	old_h <- df_size$height[1L] # bigpts
+
+	if (is.null(paper)) {
+		new_w <- old_w
+		new_h <- old_h
+		extra_args <- NULL
+	} else {
+		orientation <- pdf_orientation(input)[1L]
+		new_w <- paper_width(paper, orientation) * 72 # bigpts
+		new_h <- paper_height(paper, orientation) * 72 # bigpts
+		extra_args <- c(
+			"-dFIXEDMEDIA",
+			paste0("-dDEVICEWIDTHPOINTS=", new_w),
+			paste0("-dDEVICEHEIGHTPOINTS=", new_h)
+		)
+	}
+
+	tx <- new_w / 2 - scale * old_w / 2
+	ty <- new_h / 2 - scale * old_h / 2
+
+	rgba <- grDevices::col2rgb(bg, alpha = TRUE) / 255
+	alpha <- rgba[4L]
+	bg_ps <- if (alpha == 0) {
+		NULL
+	} else if (alpha == 1) {
+		sprintf("%g %g %g setrgbcolor clippath fill", rgba[1L], rgba[2L], rgba[3L])
+	} else {
+		sprintf(
+			"<< /ca %g >> setgraphicsstate %g %g %g setrgbcolor clippath fill",
+			alpha,
+			rgba[1L],
+			rgba[2L],
+			rgba[3L]
+		)
+	}
+
+	if (is.null(bg_ps) && scale == 1) {
+		ps_code <- sprintf("<</PageOffset [%g %g]>> setpagedevice", tx, ty)
+	} else {
+		transform_ps <- if (scale == 1) {
+			sprintf("%g %g translate", tx, ty)
+		} else {
+			sprintf("%g %g translate %g %g scale", tx, ty, scale, scale)
+		}
+		inner_ps <- paste(c(bg_ps, transform_ps), collapse = " ")
+		ps_code <- sprintf("<</BeginPage {pop %s}>> setpagedevice", inner_ps)
+	}
+	args <- c(extra_args, "-c", shQuote(ps_code))
+	pdf_gs(input, output, args = args)
 }
 
 pdf_apply_raster <- function(
@@ -155,6 +239,15 @@ pdf_apply_raster <- function(
 	} else {
 		pnp_pdf(output, paper = paper, orientation = pdf_orientation(input)[1L], bg = bg)
 	}
+	if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
+		old_w <- df_size_orig$width[1L]
+		old_h <- df_size_orig$height[1L]
+		overlay_grob <- recordGrob(
+			grid_fn(),
+			list(grid_fn = grid_fn),
+			vp = viewport(width = unit(old_w, "bigpts"), height = unit(old_h, "bigpts"))
+		)
+	}
 	for (i in seq_len(nrow(df_size_orig))) {
 		grid.newpage()
 
@@ -166,7 +259,14 @@ pdf_apply_raster <- function(
 		if (i %in% pages) {
 			r <- bm_fn(r)
 			grid.raster(r, interpolate = FALSE, vp = vp)
-			grid_fn()
+			if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
+				grid.define(overlay_grob, name = "pnpmisc_overlay")
+				pushViewport(vp)
+				grid.use("pnpmisc_overlay", transform = viewportTransform)
+				popViewport()
+			} else {
+				grid_fn()
+			}
 		} else {
 			grid.raster(r, interpolate = FALSE, vp = vp)
 		}

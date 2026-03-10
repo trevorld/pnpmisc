@@ -30,7 +30,7 @@ If \code{FALSE} don't rasterize the original content and throw an error if a req
 If \code{NULL} only rasterize if a requested feature requires it.
 Currently requires rasterization in the following cases:
 \enumerate{
-\item \code{!is.null(paper)} or \code{scale != 1}
+\item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
 \item \code{any(pages != "all")}
 \item \code{!missing(bm_fn)}
 }
@@ -59,7 +59,8 @@ By default the original content is \strong{not} rescaled.
 \details{
 \itemize{
 \item The original pdf document may be rasterized depending on the value of
-\code{rasterize} and/or \code{paper}.
+\code{rasterize} as well as whether ghostscript is available
+(see \code{\link[=pdf_gs]{pdf_gs()}}).
 }
 }
 \examples{

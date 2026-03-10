@@ -4,9 +4,10 @@
 #' This may prevent issues with other pdf processing functions like [pdftools::pdf_pagesize()].
 #' @inheritParams pdf_pad_paper
 #' @param args Arguments to pass to ghostscript.
-#'             Automatically adds `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
+#'             We automatically add `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
+#' @seealso [tools::find_gs_cmd()]
 #' @examples
-#' if (tools::find_gs_cmd()[[1L]] != "") {
+#' if (nzchar(tools::find_gs_cmd())) {
 #'   f1 <- pdf_create_blank()
 #'   f2 <- pdf_gs(f1)
 #'
@@ -16,6 +17,7 @@
 #' @export
 pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
 	chkDots(...)
+	stopifnot(nzchar(tools::find_gs_cmd()))
 	input <- normalizePath(input)
 	output <- normalize_output(output, input)
 
@@ -26,6 +28,7 @@ pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
 		"-sAutoRotatePages=None",
 		paste0("-sOutputFile=", shQuote(output)),
 		args,
+		"-f",
 		shQuote(input)
 	)
 
