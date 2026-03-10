@@ -25,7 +25,7 @@ pdf_add_lines <- function(
 	layout = "poker_3x3",
 	pages = "all",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	gp = gpar(),
 	rasterise = NULL

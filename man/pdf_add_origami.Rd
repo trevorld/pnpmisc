@@ -9,7 +9,7 @@ pdf_add_origami(
   output = NULL,
   ...,
   rasterize = rasterise,
-  dpi = 300,
+  dpi = getOption("pnpmisc.dpi", 300),
   paper = NULL,
   rasterise = NULL
 )
@@ -34,7 +34,8 @@ Currently requires rasterization in the following cases:
 \code{rasterise} is an alias for \code{rasterize}.}
 
 \item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
+Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size

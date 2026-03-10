@@ -30,7 +30,7 @@ pdf_add_overlay <- function(
 	...,
 	pages = "all",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	grid_fn = grid::grid.null,
 	rasterise = NULL

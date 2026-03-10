@@ -10,7 +10,7 @@ pdf_rm_crosshairs(
   ...,
   layout = "poker_3x2_bleed",
   pages = "odd",
-  dpi = 300,
+  dpi = getOption("pnpmisc.dpi", 300),
   paper = NULL
 )
 }
@@ -36,7 +36,8 @@ The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]
 }}
 
 \item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
+Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size

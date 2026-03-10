@@ -40,7 +40,7 @@ pdf_pad_paper <- function(
 	...,
 	bg = "white",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	scale = 1,
 	paper = getOption("papersize", "letter"),
 	rasterise = NULL

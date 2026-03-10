@@ -14,7 +14,8 @@ pdf_render_raster(input, ..., page = 1L, dpi = 300, native = FALSE)
 \item{page}{Integer of page to render.}
 
 \item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
+Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 
 \item{native}{If \code{TRUE} return a \code{nativeRaster} object else a \code{raster} object.}
 }

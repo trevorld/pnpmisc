@@ -4,7 +4,7 @@
 \alias{pdf_render_bm_list}
 \title{Render all pages of a pdf into bittermelon pixmap objects}
 \usage{
-pdf_render_bm_list(input, ..., dpi = 300)
+pdf_render_bm_list(input, ..., dpi = getOption("pnpmisc.dpi", 300))
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -12,7 +12,8 @@ pdf_render_bm_list(input, ..., dpi = 300)
 \item{...}{Ignored.}
 
 \item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
+Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 }
 \value{
 A \code{\link[bittermelon:bm_list]{bittermelon::bm_list()}} of \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} objects.

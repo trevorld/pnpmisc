@@ -65,3 +65,7 @@ reference:
           - grid_add_layout
           - grid_add_lines
           - grid_add_rects
+    - title: "Package options"
+      desc: ''
+      contents:
+          - pnpmisc
