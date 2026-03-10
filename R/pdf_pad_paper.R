@@ -4,7 +4,8 @@
 #' By default the original content is **not** rescaled.
 #'
 #' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize` and/or `paper`.
+#'   `rasterize` as well as whether ghostscript is available
+#'   (see [pdf_gs()]).
 #'
 #' @inheritParams pdf_apply
 #' @param paper Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.

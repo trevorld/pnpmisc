@@ -3,7 +3,7 @@ test_that("miscellaneous functions", {
 	on.exit(options(op), add = TRUE)
 	on.exit(rm_temp_pdfs(), add = TRUE)
 
-	skip_if(tools::find_gs_cmd()[[1L]] == "")
+	skip_if_not(nzchar(tools::find_gs_cmd()))
 
 	f1 <- pdf_create_blank()
 	f2 <- pdf_gs(f1)
