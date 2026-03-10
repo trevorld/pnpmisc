@@ -12,6 +12,7 @@
 #' @param ... Ignored.
 #' @param dpi Dots per inch.
 #'   Passed to [pdftools::pdf_render_page()] when we rasterize the original content.
+#'   Defaults to `getOption("pnpmisc.dpi", 300)`.
 #' @param bg `output` pdf background color.
 #' @param pages A positive numeric vector of pages to include,
 #'              a negative numeric vector of pages to exclude,
@@ -64,7 +65,7 @@ pdf_apply <- function(
 	...,
 	pages = "all",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	bg = "white",
 	scale = 1,

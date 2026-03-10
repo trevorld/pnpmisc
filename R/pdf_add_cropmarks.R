@@ -30,7 +30,7 @@ pdf_add_cropmarks <- function(
 	layout = "poker_3x3",
 	pages = "even",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	bleed = NULL,
 	rasterise = NULL

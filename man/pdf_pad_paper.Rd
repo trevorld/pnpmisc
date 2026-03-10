@@ -10,7 +10,7 @@ pdf_pad_paper(
   ...,
   bg = "white",
   rasterize = rasterise,
-  dpi = 300,
+  dpi = getOption("pnpmisc.dpi", 300),
   scale = 1,
   paper = getOption("papersize", "letter"),
   rasterise = NULL
@@ -38,7 +38,8 @@ Currently requires rasterization in the following cases:
 \code{rasterise} is an alias for \code{rasterize}.}
 
 \item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
+Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 
 \item{scale}{A numeric scalar to scale the content by.
 Values less than 1 shrink the content within the page; values greater than 1 enlarge it.

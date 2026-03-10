@@ -22,7 +22,7 @@ pdf_add_origami <- function(
 	output = NULL,
 	...,
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	rasterise = NULL
 ) {

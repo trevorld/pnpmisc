@@ -13,7 +13,7 @@
 #'   unlink(f)
 #' }
 #' @export
-pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = 300) {
+pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
 	chkDots(...)
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 
@@ -35,7 +35,7 @@ pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = 300) {
 #'   unlink(f)
 #' }
 #' @export
-pdf_render_bm_list <- function(input, ..., dpi = 300) {
+pdf_render_bm_list <- function(input, ..., dpi = getOption("pnpmisc.dpi", 300)) {
 	chkDots(...)
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 

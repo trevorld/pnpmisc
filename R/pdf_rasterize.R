@@ -16,7 +16,7 @@ pdf_rasterize <- function(
 	input,
 	output = NULL,
 	...,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL
 ) {
 	chkDots(...)

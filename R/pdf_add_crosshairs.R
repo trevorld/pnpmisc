@@ -28,7 +28,7 @@ pdf_add_crosshairs <- function(
 	layout = "button_shy_cards",
 	pages = "even",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	rasterise = NULL
 ) {

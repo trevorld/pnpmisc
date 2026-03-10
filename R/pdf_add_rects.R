@@ -31,7 +31,7 @@ pdf_add_rects <- function(
 	layout = "poker_3x3",
 	pages = "all",
 	rasterize = rasterise,
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL,
 	r = unit(0, "in"),
 	gp = gpar(col = "black", fill = NA, lwd = 1),

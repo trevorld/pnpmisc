@@ -4,7 +4,13 @@
 \alias{pdf_rasterize}
 \title{Rasterize a pdf}
 \usage{
-pdf_rasterize(input, output = NULL, ..., dpi = 300, paper = NULL)
+pdf_rasterize(
+  input,
+  output = NULL,
+  ...,
+  dpi = getOption("pnpmisc.dpi", 300),
+  paper = NULL
+)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -14,7 +20,8 @@ pdf_rasterize(input, output = NULL, ..., dpi = 300, paper = NULL)
 \item{...}{Ignored.}
 
 \item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.}
+Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
+Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 
 \item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
 Otherwise the output pdf will be created with this paper size

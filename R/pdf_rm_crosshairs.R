@@ -30,7 +30,7 @@ pdf_rm_crosshairs <- function(
 	...,
 	layout = "poker_3x2_bleed",
 	pages = "odd",
-	dpi = 300,
+	dpi = getOption("pnpmisc.dpi", 300),
 	paper = NULL
 ) {
 	chkDots(...)
