@@ -27,7 +27,7 @@ pdf_compress <- function(input, output = NULL, ...) {
 	invisible(output)
 }
 
-#' @inheritParams pdf_pages
+#' @inheritParams pdf_apply
 #' @rdname qpdf_wrappers
 #' @export
 pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
@@ -37,6 +37,7 @@ pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
 	invisible(output)
 }
 
+#' @inheritParams pdf_apply
 #' @rdname qpdf_wrappers
 #' @export
 pdf_subset <- function(input, output = NULL, ..., pages = 1L) {
