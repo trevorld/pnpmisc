@@ -1,5 +1,6 @@
 #' @importFrom grDevices as.raster dev.cur dev.off dev.set
 #' @import grid
+#' @importFrom rlang abort check_dots_empty inform
 #' @importFrom stats median quantile
 #' @importFrom utils head tail packageVersion hasName
 NULL

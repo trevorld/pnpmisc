@@ -55,7 +55,7 @@ pdf_create_jacket_instructions <- function(
 	orientation = "landscape",
 	style = marquee::classic_style()
 ) {
-	chkDots(...)
+	check_dots_empty()
 	output <- normalize_output(output)
 
 	stopifnot(requireNamespace("marquee", quietly = TRUE))

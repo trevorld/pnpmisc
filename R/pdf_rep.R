@@ -24,7 +24,7 @@ pdf_rep <- function(
 	length.out = NA_integer_,
 	each = 1L
 ) {
-	chkDots(...)
+	check_dots_empty()
 	pages <- pdf_pages(input, pages = pages)
 	pages <- rep(pages, times = times, length.out = length.out, each = each)
 	pdf_subset(input, output, pages = pages)

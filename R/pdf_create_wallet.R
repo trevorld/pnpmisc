@@ -79,7 +79,7 @@ pdf_create_wallet <- function(
 	bleed = unit(0, "in"),
 	paper = getOption("papersize", "letter")
 ) {
-	chkDots(...)
+	check_dots_empty()
 	output <- normalize_output(output)
 
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))

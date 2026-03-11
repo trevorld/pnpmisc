@@ -92,7 +92,7 @@ pdf_apply <- function(
 	if (isFALSE(rasterize)) {
 		if (must_rasterize) {
 			reasons <- must_rasterize_reasons(must_grid_a_subset, must_resize_wo_gs, must_bm)
-			rlang::abort(
+			abort(
 				c(
 					"`isFALSE(rasterize)` but the original pdf contents must be rasterized.",
 					reasons
@@ -105,7 +105,7 @@ pdf_apply <- function(
 	} else {
 		if (missing_rasterize) {
 			reasons <- must_rasterize_reasons(must_grid_a_subset, must_resize_wo_gs, must_bm)
-			rlang::inform(
+			inform(
 				c(
 					"The original pdf contents were rasterized.",
 					reasons,

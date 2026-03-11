@@ -9,7 +9,7 @@
 #'         As a side effect draws images to the active graphics device.
 #' @export
 grid_add_layout <- function(images, ..., layout = "poker_3x3") {
-	chkDots(...)
+	check_dots_empty()
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}

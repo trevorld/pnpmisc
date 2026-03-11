@@ -65,7 +65,7 @@
 #'   pythagorean <- patternGrob("polygon_tiling", type = "pythagorean",
 #'                              fill = pal[4], spacing = 0.1)
 #'   f3 <- pdf_create_4x6_jacket(front = herringbone, back = pythagorean,
-#'                           spine = rhombille, bleed = TRUE)
+#'                               spine = rhombille)
 #'   unlink(f3)
 #' }
 #' @seealso [pdf_add_origami()] to add origami symbols to pre-existing [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
@@ -84,7 +84,7 @@ pdf_create_jacket <- function(
 	depth = unit(JACKET_4x6_SPINE_WIDTH, "in"),
 	bg = "transparent"
 ) {
-	chkDots(...)
+	check_dots_empty()
 	output <- normalize_output(output)
 
 	stopifnot(
@@ -226,7 +226,7 @@ pdf_create_4x6_jacket <- function(
 	inner = NULL,
 	paper = getOption("papersize", "letter")
 ) {
-	chkDots(...)
+	check_dots_empty()
 	pdf_create_jacket(
 		output,
 		front = front,
@@ -254,7 +254,7 @@ pdf_create_poker_jacket <- function(
 	depth = unit(JACKET_POKER_SPINE_WIDTH, "in"),
 	bg = "transparent"
 ) {
-	chkDots(...)
+	check_dots_empty()
 	stopifnot(is.unit(depth))
 
 	# Draw 2 jackets

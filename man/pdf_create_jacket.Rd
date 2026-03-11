@@ -169,7 +169,7 @@ if (requireNamespace("piecepackr", quietly = TRUE) &&
   pythagorean <- patternGrob("polygon_tiling", type = "pythagorean",
                              fill = pal[4], spacing = 0.1)
   f3 <- pdf_create_4x6_jacket(front = herringbone, back = pythagorean,
-                          spine = rhombille, bleed = TRUE)
+                              spine = rhombille)
   unlink(f3)
 }
 }

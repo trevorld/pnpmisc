@@ -15,7 +15,7 @@
 #' unlink(f2)
 #' @export
 pdf_orientation <- function(input, ...) {
-	chkDots(...)
+	check_dots_empty()
 	df <- pdftools::pdf_pagesize(input)
 	ifelse(df$width > df$height, "landscape", "portrait")
 }
