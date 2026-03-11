@@ -9,13 +9,8 @@ pdf_add_rects(
   output = NULL,
   ...,
   layout = "poker_3x3",
-  pages = "all",
-  rasterize = rasterise,
-  dpi = getOption("pnpmisc.dpi", 300),
-  paper = NULL,
   r = unit(0, "in"),
-  gp = gpar(col = "black", fill = NA, lwd = 1),
-  rasterise = NULL
+  gp = gpar(col = "black", fill = NA, lwd = 1)
 )
 }
 \arguments{
@@ -23,41 +18,10 @@ pdf_add_rects(
 
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
-\item{...}{Ignored for now.}
+\item{...}{Passed to \code{\link[=pdf_add_overlay]{pdf_add_overlay()}}.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
 with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
-
-\item{pages}{A positive numeric vector of pages to include,
-a negative numeric vector of pages to exclude,
-or a string:\describe{
-\item{all}{Include all the pages.}
-\item{even}{Include just the even pages.}
-\item{odd}{Include just the odd pages.}
-}
-The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
-\item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
-}}
-
-\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
-If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
-If \code{NULL} only rasterize if a requested feature requires it.
-Currently requires rasterization in the following cases:
-\enumerate{
-\item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
-\item \code{!identical(bm_fn, identity)}
-}
-
-\code{rasterise} is an alias for \code{rasterize}.}
-
-\item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
-Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
-
-\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
-Otherwise the output pdf will be created with this paper size
-(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 
 \item{r, gp}{Passed to \code{\link[grid:grid.roundrect]{grid::grid.roundrect()}}.}
 }
