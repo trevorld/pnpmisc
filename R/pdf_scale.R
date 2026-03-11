@@ -2,10 +2,8 @@
 #'
 #' `pdf_scale()` scales the contents of a pdf centered within the page.
 #'
-#' * The original pdf document will be rasterized.
-#'   See [pdf_apply()] for details.
-#'
 #' @inheritParams pdf_apply
+#' @param ... Passed to [pdf_apply()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a scaled pdf file.
 #' @examples
@@ -16,23 +14,6 @@
 #' unlink(input)
 #' unlink(output)
 #' @export
-pdf_scale <- function(
-	input,
-	output = NULL,
-	...,
-	scale,
-	bg = "white",
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	rasterise = NULL
-) {
-	chkDots(...)
-	pdf_apply(
-		input,
-		output,
-		rasterize = rasterize,
-		dpi = dpi,
-		bg = bg,
-		scale = scale
-	)
+pdf_scale <- function(input, output = NULL, ..., scale) {
+	pdf_apply(input, output, ..., scale = scale)
 }
