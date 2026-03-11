@@ -5,6 +5,7 @@
 #' [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
 #'
 #' @inheritParams pdf_apply
+#' @param ... Passed to [pdf_add_overlay()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added origami symbols.
 #' @examples
@@ -14,23 +15,11 @@
 #' unlink(f1)
 #' unlink(f2)
 #' @export
-pdf_add_origami <- function(
-	input,
-	output = NULL,
-	...,
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL,
-	rasterise = NULL
-) {
-	chkDots(...)
+pdf_add_origami <- function(input, output = NULL, ...) {
 	pdf_add_overlay(
 		input,
 		output,
-		pages = "all",
-		rasterize = rasterize,
-		dpi = dpi,
-		paper = paper,
+		...,
 		grid_fn = grid_add_origami_bb
 	)
 }

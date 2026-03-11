@@ -4,42 +4,14 @@
 \alias{pdf_add_origami}
 \title{Add origami symbols to a pdf}
 \usage{
-pdf_add_origami(
-  input,
-  output = NULL,
-  ...,
-  rasterize = rasterise,
-  dpi = getOption("pnpmisc.dpi", 300),
-  paper = NULL,
-  rasterise = NULL
-)
+pdf_add_origami(input, output = NULL, ...)
 }
 \arguments{
 \item{input}{Input pdf filename.}
 
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
-\item{...}{Ignored.}
-
-\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
-If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
-If \code{NULL} only rasterize if a requested feature requires it.
-Currently requires rasterization in the following cases:
-\enumerate{
-\item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
-\item \code{!identical(bm_fn, identity)}
-}
-
-\code{rasterise} is an alias for \code{rasterize}.}
-
-\item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
-Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
-
-\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
-Otherwise the output pdf will be created with this paper size
-(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
+\item{...}{Passed to \code{\link[=pdf_add_overlay]{pdf_add_overlay()}}.}
 }
 \value{
 \code{output} pdf file name invisibly.
