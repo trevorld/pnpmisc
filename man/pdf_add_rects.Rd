@@ -40,9 +40,9 @@ this can be used to effectively "remove" unwanted card outlines.
 }
 \examples{
 f1 <- pdf_create_blank(length = 2L, paper = "letter")
-f2 <- pdf_add_rects(f1, layout = "poker_3x3", dpi = 75)
+f2 <- pdf_add_rects(f1, layout = "poker_3x3")
 # "Remove" unwanted card border lines by covering up with white
-f3 <- pdf_add_rects(f2, layout = "poker_3x3", dpi = 75,
+f3 <- pdf_add_rects(f2, layout = "poker_3x3",
                     gp = grid::gpar(col = "white", fill = NA, lwd = 2))
 unlink(f1)
 unlink(f2)

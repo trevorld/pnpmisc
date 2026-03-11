@@ -17,9 +17,9 @@
 #'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
 #'   f1 <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
 #'   f2 <- pdf_add_crosshairs(f1, pages = "all",
-#'                            layout = "poker_3x2_bleed", dpi = 75)
+#'                            layout = "poker_3x2_bleed")
 #'   f3 <- pdf_rm_crosshairs(f2, pages = "odd",
-#'                           layout = "poker_3x2_bleed", dpi = 75)
+#'                           layout = "poker_3x2_bleed")
 #'   unlink(f1)
 #'   unlink(f2)
 #'   unlink(f3)
@@ -58,7 +58,7 @@ pdf_rm_crosshairs <- function(
 #'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
 #'   f1 <- pdf_create_blank(length = 1L, width = 11, height = 8.5)
 #'   f2 <- pdf_add_crosshairs(f1, pages = "all",
-#'                            layout = "poker_3x2_bleed", dpi = 75)
+#'                            layout = "poker_3x2_bleed")
 #'   page <- pdf_render_bm_pixmap(f2, page = 1L, dpi = 75)
 #'   page2 <- bm_rm_crosshairs(page, layout = "poker_3x2_bleed")
 #'   unlink(f1)
