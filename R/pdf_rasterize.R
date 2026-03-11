@@ -3,6 +3,7 @@
 #' `pdf_rasterize()` re-renders a pdf by rasterizing each page.
 #'
 #' @inheritParams pdf_apply
+#' @param ... Passed to [pdf_apply()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a rasterized pdf.
 #' @seealso [pdf_apply()] which this function wraps.
@@ -16,9 +17,7 @@ pdf_rasterize <- function(
 	input,
 	output = NULL,
 	...,
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL
+	dpi = getOption("pnpmisc.dpi", 300)
 ) {
-	chkDots(...)
-	pdf_apply(input, output, rasterize = TRUE, dpi = dpi, paper = paper)
+	pdf_apply(input, output, ..., rasterize = TRUE, dpi = dpi)
 }

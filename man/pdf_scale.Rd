@@ -4,46 +4,19 @@
 \alias{pdf_scale}
 \title{Scale pdf contents centered within the page}
 \usage{
-pdf_scale(
-  input,
-  output = NULL,
-  ...,
-  scale,
-  bg = "white",
-  rasterize = rasterise,
-  dpi = getOption("pnpmisc.dpi", 300),
-  rasterise = NULL
-)
+pdf_scale(input, output = NULL, ..., scale)
 }
 \arguments{
 \item{input}{Input pdf filename.}
 
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
-\item{...}{Ignored.}
+\item{...}{Passed to \code{\link[=pdf_apply]{pdf_apply()}}.}
 
 \item{scale}{A numeric scalar to scale the content by.
 Values less than 1 shrink the content within the page; values greater than 1 enlarge it.
 By default the original content is \strong{not} rescaled.
 Note this also adjusts the size of the \code{\link[grid:viewport]{grid::viewport()}} the \code{grid_fn} will draw in.}
-
-\item{bg}{\code{output} pdf background color.}
-
-\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
-If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
-If \code{NULL} only rasterize if a requested feature requires it.
-Currently requires rasterization in the following cases:
-\enumerate{
-\item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
-\item \code{!identical(bm_fn, identity)}
-}
-
-\code{rasterise} is an alias for \code{rasterize}.}
-
-\item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
-Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
 }
 \value{
 \code{output} pdf file name invisibly.
@@ -51,12 +24,6 @@ As a side effect creates a scaled pdf file.
 }
 \description{
 \code{pdf_scale()} scales the contents of a pdf centered within the page.
-}
-\details{
-\itemize{
-\item The original pdf document will be rasterized.
-See \code{\link[=pdf_apply]{pdf_apply()}} for details.
-}
 }
 \examples{
 input <- pdf_create_blank(paper = "letter", bg = "blue")
