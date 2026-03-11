@@ -11,19 +11,6 @@ Breaking changes
 New features
 ------------
 
-* All functions with a `dpi` argument now default to `getOption("pnpmisc.dpi", 300)` to allow setting a global default dpi.
-* Several functions gain a `rasterize`/`rasterise` argument to control whether the original pdf content is rasterized.
-* `pdf_add_cropmarks()` now passes `...` to `pdf_add_overlay()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments. Gains `gp`, `cm_width`, and `cm_length` arguments (#47).
-* `pdf_add_crosshairs()` now passes `...` to `pdf_add_overlay()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments. Both `pdf_add_crosshairs()` and `grid_add_crosshairs()` gain `gp`, `ch_width`, and `ch_grob` arguments (#48).
-* `pdf_add_origami()` now passes `...` to `pdf_add_overlay()`, removing the need for explicit `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#50).
-* `pdf_add_lines()` now passes `...` to `pdf_add_overlay()` instead of `grid_add_lines()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#49).
-* `pdf_add_rects()` now passes `...` to `pdf_add_overlay()` instead of `grid_add_rects()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#51).
-* `pdf_add_overlay()` now passes `...` to `pdf_apply()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#52).
-* `pdf_rm_crosshairs()` now passes `...` to `pdf_apply()`, removing the need for explicit `pages`, `dpi`, and `paper` arguments (#52).
-* `pdf_pad_paper()` now passes `...` to `pdf_apply()`, removing the need for explicit `bg`, `rasterize`, `dpi`, `scale`, and `rasterise` arguments (#52).
-* `pdf_rasterize()` now passes `...` to `pdf_apply()`, removing the need for explicit `paper` argument (#52).
-* `pdf_scale()` now passes `...` to `pdf_apply()`, removing the need for explicit `bg`, `rasterize`, `dpi`, and `rasterise` arguments (#52).
-
 * The following PDF creation functions:
 
   + `pdf_add_lines()` adds lines along the components of a print-and-play layout.
@@ -77,6 +64,8 @@ New features
   + Adds `angle` and `name` columns to returned data frames.
 
 * `layout_name_fn()` can be used to return a function to generate layout names in `layout_grid()`'s `name` argument.
+
+* All functions with a `dpi` argument now default to `getOption("pnpmisc.dpi", 300)` to allow setting a global default dpi.
 
 pnpmisc v0.1.1
 ==============
