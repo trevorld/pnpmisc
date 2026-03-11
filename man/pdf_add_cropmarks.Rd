@@ -37,7 +37,7 @@ As a side effect adds crop marks to a pdf.
 if (requireNamespace("piecepackr", quietly = TRUE)) {
   input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
   output <- pdf_add_cropmarks(input, pages = "odd",
-                              layout = "button_shy_cards", dpi = 75)
+                              layout = "button_shy_cards")
   unlink(input)
   unlink(output)
 }

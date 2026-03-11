@@ -10,7 +10,7 @@
 #' @seealso [grid_add_lines()], [pdf_add_rects()]
 #' @examples
 #' f1 <- pdf_create_blank(length = 2L, paper = "letter")
-#' f2 <- pdf_add_lines(f1, layout = "poker_3x3", dpi = 75)
+#' f2 <- pdf_add_lines(f1, layout = "poker_3x3")
 #' unlink(f1)
 #' unlink(f2)
 #' @export
