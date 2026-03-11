@@ -2,12 +2,9 @@
 #'
 #' `pdf_add_cropmarks()` adds crop marks to the edges of components of a print-and-play layout.
 #'
-#' @inheritParams pdf_apply
-#' @inheritParams bm_crop_layout
-#' @inheritParams piecepackr::grid.cropmark
-#' @param bleed Passed to [piecepackr::grid.cropmark()].
-#'              If `NULL` defaults to `max(max(layout$bleed), 0.125)`.
-#' @param ... Passed to [piecepackr::grid.cropmark()].
+#' @inheritParams pdf_add_crosshairs
+#' @param gp,cm_width,cm_length Passed to [piecepackr::grid.cropmark()].
+#' @param ... Passed to [pdf_add_overlay()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect adds crop marks to a pdf.
 #' @seealso [grid_add_cropmarks()], [piecepackr::grid.cropmark()]
@@ -25,22 +22,16 @@ pdf_add_cropmarks <- function(
 	output = NULL,
 	...,
 	layout = "poker_3x3",
-	pages = "even",
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL,
-	bleed = NULL,
-	rasterise = NULL
+	gp = gpar(),
+	cm_width = unit(0.25, "mm"),
+	cm_length = unit(0.125, "in")
 ) {
 	pdf_add_overlay(
 		input,
 		output,
-		pages = pages,
-		rasterize = rasterize,
-		dpi = dpi,
-		paper = paper,
+		...,
 		grid_fn = \() {
-			grid_add_cropmarks(..., layout = layout, bleed = bleed)
+			grid_add_cropmarks(layout = layout, gp = gp, cm_width = cm_width, cm_length = cm_length)
 		}
 	)
 }
@@ -52,7 +43,7 @@ pdf_add_cropmarks <- function(
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
 #' @inheritParams bm_crop_layout
-#' @inheritParams piecepackr::grid.cropmark
+#' @param gp,cm_width,cm_length Passed to [piecepackr::grid.cropmark()].
 #' @param bleed Passed to [piecepackr::grid.cropmark()].
 #'              If `NULL` defaults to `max(max(layout$bleed), 0.125)`.
 #' @param ... Passed to [piecepackr::grid.cropmark()].
@@ -71,7 +62,14 @@ pdf_add_cropmarks <- function(
 #'   grid::popViewport()
 #' }
 #' @export
-grid_add_cropmarks <- function(..., layout = "poker_3x3", bleed = NULL) {
+grid_add_cropmarks <- function(
+	...,
+	layout = "poker_3x3",
+	bleed = NULL,
+	gp = gpar(),
+	cm_width = unit(0.25, "mm"),
+	cm_length = unit(0.125, "in")
+) {
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
 	stopifnot(packageVersion("piecepackr") >= "1.14.0-6")
 	if (is.character(layout)) {
@@ -91,6 +89,9 @@ grid_add_cropmarks <- function(..., layout = "poker_3x3", bleed = NULL) {
 		default.units = "in",
 		cm_select = "67",
 		bleed = bleed,
+		gp = gp,
+		cm_width = cm_width,
+		cm_length = cm_length,
 		...
 	)
 
@@ -103,6 +104,9 @@ grid_add_cropmarks <- function(..., layout = "poker_3x3", bleed = NULL) {
 		default.units = "in",
 		cm_select = "23",
 		bleed = bleed,
+		gp = gp,
+		cm_width = cm_width,
+		cm_length = cm_length,
 		...
 	)
 
@@ -115,6 +119,9 @@ grid_add_cropmarks <- function(..., layout = "poker_3x3", bleed = NULL) {
 		default.units = "in",
 		cm_select = "18",
 		bleed = bleed,
+		gp = gp,
+		cm_width = cm_width,
+		cm_length = cm_length,
 		...
 	)
 
@@ -127,6 +134,9 @@ grid_add_cropmarks <- function(..., layout = "poker_3x3", bleed = NULL) {
 		default.units = "in",
 		cm_select = "45",
 		bleed = bleed,
+		gp = gp,
+		cm_width = cm_width,
+		cm_length = cm_length,
 		...
 	)
 
