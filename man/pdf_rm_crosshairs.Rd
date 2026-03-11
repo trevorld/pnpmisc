@@ -4,44 +4,17 @@
 \alias{pdf_rm_crosshairs}
 \title{Remove crosshairs}
 \usage{
-pdf_rm_crosshairs(
-  input,
-  output = NULL,
-  ...,
-  layout = "poker_3x2_bleed",
-  pages = "odd",
-  dpi = getOption("pnpmisc.dpi", 300),
-  paper = NULL
-)
+pdf_rm_crosshairs(input, output = NULL, ..., layout = "poker_3x2_bleed")
 }
 \arguments{
 \item{input}{Input pdf filename.}
 
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
-\item{...}{Ignored.}
+\item{...}{Passed to \code{\link[=pdf_apply]{pdf_apply()}}.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
 with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
-
-\item{pages}{A positive numeric vector of pages to include,
-a negative numeric vector of pages to exclude,
-or a string:\describe{
-\item{all}{Include all the pages.}
-\item{even}{Include just the even pages.}
-\item{odd}{Include just the odd pages.}
-}
-The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
-\item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
-}}
-
-\item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
-Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
-
-\item{paper}{If \code{NULL} (default) the output pdf will be the same size as the input pdf.
-Otherwise the output pdf will be created with this paper size
-(see \code{\link[=pdf_pad_paper]{pdf_pad_paper()}} for supported values but most commonly "letter" or "a4").}
 }
 \value{
 \code{output} pdf file name invisibly.
