@@ -4,7 +4,14 @@
 \alias{grid_add_cropmarks}
 \title{Draw crop marks around components}
 \usage{
-grid_add_cropmarks(..., layout = "poker_3x3", bleed = NULL)
+grid_add_cropmarks(
+  ...,
+  layout = "poker_3x3",
+  bleed = NULL,
+  gp = gpar(),
+  cm_width = unit(0.25, "mm"),
+  cm_length = unit(0.125, "in")
+)
 }
 \arguments{
 \item{...}{Passed to \code{\link[piecepackr:grid.cropmark]{piecepackr::grid.cropmark()}}.}
@@ -14,6 +21,8 @@ with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
 
 \item{bleed}{Passed to \code{\link[piecepackr:grid.cropmark]{piecepackr::grid.cropmark()}}.
 If \code{NULL} defaults to \code{max(max(layout$bleed), 0.125)}.}
+
+\item{gp, cm_width, cm_length}{Passed to \code{\link[piecepackr:grid.cropmark]{piecepackr::grid.cropmark()}}.}
 }
 \value{
 \code{NULL} invisibly.

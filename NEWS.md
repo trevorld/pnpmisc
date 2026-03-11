@@ -13,6 +13,7 @@ New features
 
 * All functions with a `dpi` argument now default to `getOption("pnpmisc.dpi", 300)` to allow setting a global default dpi.
 * Several functions gain a `rasterize`/`rasterise` argument to control whether the original pdf content is rasterized.
+* `pdf_add_cropmarks()` now passes `...` to `pdf_add_overlay()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments. Gains `gp`, `cm_width`, and `cm_length` arguments (#47).
 * `pdf_add_lines()` now passes `...` to `pdf_add_overlay()` instead of `grid_add_lines()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#49).
 * `pdf_add_rects()` now passes `...` to `pdf_add_overlay()` instead of `grid_add_rects()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#51).
 
