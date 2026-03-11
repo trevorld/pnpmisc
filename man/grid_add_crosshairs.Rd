@@ -4,13 +4,22 @@
 \alias{grid_add_crosshairs}
 \title{Draw crosshairs at component corners}
 \usage{
-grid_add_crosshairs(..., layout = "poker_3x3")
+grid_add_crosshairs(
+  ...,
+  layout = "poker_3x3",
+  gp = gpar(),
+  ch_width = unit(1/6, "in"),
+  ch_grob = NULL
+)
 }
 \arguments{
 \item{...}{Passed to \code{\link[piecepackr:grid.crosshair]{piecepackr::grid.crosshair()}}.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
 with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
+
+\item{gp, ch_width, ch_grob}{Passed to \code{\link[piecepackr:grid.crosshair]{piecepackr::grid.crosshair()}}.
+\code{ch_grob} defaults to \code{\link[piecepackr:grid.crosshair]{piecepackr::squaresCrosshairGrob()}}.}
 }
 \value{
 \code{NULL} invisibly.

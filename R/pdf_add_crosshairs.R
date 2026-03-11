@@ -4,8 +4,8 @@
 #'
 #' * The default layout supports Button Shy games.
 #' @inheritParams pdf_apply
-#' @inheritParams bm_crop_layout
-#' @param ... Passed to [piecepackr::grid.crosshair()].
+#' @param ... Passed to [pdf_add_overlay()].
+#' @inheritParams grid_add_crosshairs
 #' @return `output` pdf file name invisibly.
 #'         As a side effect adds crosshairs to a pdf.
 #' @examples
@@ -23,21 +23,16 @@ pdf_add_crosshairs <- function(
 	output = NULL,
 	...,
 	layout = "button_shy_cards",
-	pages = "even",
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL,
-	rasterise = NULL
+	gp = gpar(),
+	ch_width = unit(1 / 6, "in"),
+	ch_grob = NULL
 ) {
 	pdf_add_overlay(
 		input,
 		output,
-		pages = pages,
-		rasterize = rasterize,
-		dpi = dpi,
-		paper = paper,
+		...,
 		grid_fn = \() {
-			grid_add_crosshairs(..., layout = layout)
+			grid_add_crosshairs(layout = layout, gp = gp, ch_width = ch_width, ch_grob = ch_grob)
 		}
 	)
 }
@@ -49,6 +44,8 @@ pdf_add_crosshairs <- function(
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
 #' @inheritParams bm_crop_layout
+#' @param gp,ch_width,ch_grob Passed to [piecepackr::grid.crosshair()].
+#'   `ch_grob` defaults to [piecepackr::squaresCrosshairGrob()].
 #' @param ... Passed to [piecepackr::grid.crosshair()].
 #' @return `NULL` invisibly.
 #'         As a side effect draws crosshairs to the active graphics device.
@@ -63,9 +60,16 @@ pdf_add_crosshairs <- function(
 #'   grid::popViewport()
 #' }
 #' @export
-grid_add_crosshairs <- function(..., layout = "poker_3x3") {
+grid_add_crosshairs <- function(
+	...,
+	layout = "poker_3x3",
+	gp = gpar(),
+	ch_width = unit(1 / 6, "in"),
+	ch_grob = NULL
+) {
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
 	stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
+	ch_grob <- ch_grob %||% piecepackr::squaresCrosshairGrob()
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}
@@ -76,6 +80,9 @@ grid_add_crosshairs <- function(..., layout = "poker_3x3") {
 			width = layout$width[j],
 			height = layout$height[j],
 			default.units = "in",
+			gp = gp,
+			ch_width = ch_width,
+			ch_grob = ch_grob,
 			...
 		)
 	}
