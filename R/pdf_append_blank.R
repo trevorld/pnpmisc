@@ -2,7 +2,7 @@
 #'
 #' `pdf_append_blank()` appends blank pages to a pdf.
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @param minimum Final number of pages should be at least this integer.
 #' @param multiples_of Final number of pages should be a multiple of this integer.
 #' @examples

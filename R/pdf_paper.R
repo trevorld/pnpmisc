@@ -2,7 +2,7 @@
 #'
 #' `pdf_paper()` infers the paper size of a PDF document
 #' @return A character vector.
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @examples
 #' f <- pdf_create_blank(width = 8.5, height = 11)
 #' pdf_paper(f)

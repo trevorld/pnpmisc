@@ -2,7 +2,8 @@
 #'
 #' `pdf_create_blank()` creates blank pdf pages.
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pnp_pdf
+#' @inheritParams pdf_apply
 #' @param length Number of pages to create.
 #' @param width,height Paper size in inches.  Ignored if both are missing (in favor of `paper` and `orientation`).
 #' @param orientation Either "portrait" or "landscape".  Ignored if `width` and `height` are not missing.

@@ -2,7 +2,6 @@
 #'
 #' `pdf_rep()` repeats pages of a pdf similar to [base::rep()].
 #'
-#' @inheritParams pdf_pad_paper
 #' @inheritParams pdf_apply
 #' @param times,length.out,each Passed to [base::rep()].
 #' @return `output` pdf file name invisibly.
