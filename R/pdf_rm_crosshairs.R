@@ -4,7 +4,6 @@
 #'
 #' * In order to work the PnP layout needs a solid color bleed.
 #' * The default layout supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
-#' * The original pdf document will be rasterized.
 #'
 #' @inheritParams bm_crop_layout
 #' @inheritParams pdf_apply

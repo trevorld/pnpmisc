@@ -27,7 +27,6 @@ As a side effect removes from crosshairs from a pdf.
 \itemize{
 \item In order to work the PnP layout needs a solid color bleed.
 \item The default layout supports \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip} (PnP letter size v1).
-\item The original pdf document will be rasterized.
 }
 }
 \examples{
