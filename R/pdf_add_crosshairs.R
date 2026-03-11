@@ -3,9 +3,6 @@
 #' `pdf_add_crosshairs()` adds crosshairs to the corners of components of a print-and-play layout.
 #'
 #' * The default layout supports Button Shy games.
-#' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize`, `pages`, and/or `paper`.
-#'
 #' @inheritParams pdf_apply
 #' @inheritParams bm_crop_layout
 #' @param ... Passed to [piecepackr::grid.crosshair()].

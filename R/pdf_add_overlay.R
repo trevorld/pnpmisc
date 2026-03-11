@@ -3,9 +3,6 @@
 #' `pdf_add_overlay()` calls `grid_fn` on selected pages to draw custom
 #' graphics on top.
 #'
-#' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize`, `pages`, and/or `paper`.
-#'
 #' @inheritParams pdf_apply
 #' @param grid_fn A zero-argument function called to draw graphics on selected pages.
 #'               Defaults to [grid::grid.null()].

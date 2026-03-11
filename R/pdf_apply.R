@@ -31,8 +31,8 @@
 #'   Currently requires rasterization in the following cases:
 #'
 #'   1. (`!is.null(paper)` or `scale != 1`) and ghostscript is unavailable (see [pdf_gs()])
-#'   2. `any(pages != "all")`
-#'   3. `!missing(bm_fn)`
+#'   2. `any(pages != "all")` and `!identical(grid_fn, grid::grid.null)`
+#'   3. `!identical(bm_fn, identity)`
 #'
 #'   `rasterise` is an alias for `rasterize`.
 #' @param paper If `NULL` (default) the output pdf will be the same size as the input pdf.
@@ -80,27 +80,40 @@ pdf_apply <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 	output <- normalize_output(output, input)
-	gs <- nzchar(tools::find_gs_cmd())
-	rasterize <- rasterize %||%
-		(any(pages != "all") ||
-			((!is.null(paper) || scale != 1) && !gs) ||
-			!missing(bm_fn))
+
+	must_grid_a_subset <- any(pages != "all") && !identical(grid_fn, grid::grid.null)
+	must_resize_wo_gs <- (!is.null(paper) || scale != 1) && !nzchar(tools::find_gs_cmd())
+	must_bm <- !identical(bm_fn, identity)
+	must_rasterize <- must_grid_a_subset || must_resize_wo_gs || must_bm
+
+	missing_rasterize <- missing(rasterize) && missing(rasterise)
+	rasterize <- rasterize %||% must_rasterize
+
 	if (isFALSE(rasterize)) {
-		if (any(pages != "all")) {
-			stop(r"(We can't yet combine `isFALSE(rasterize)` and `any(pages != "all")`)")
-		}
-		if ((!is.null(paper) || scale != 1) && !gs) {
-			stop(
-				r"(We can't yet combine `isFALSE(rasterize)` and `(!is.null(paper) || scale != 1)` without ghostscript)"
+		if (must_rasterize) {
+			reasons <- must_rasterize_reasons(must_grid_a_subset, must_resize_wo_gs, must_bm)
+			rlang::abort(
+				c(
+					"`isFALSE(rasterize)` but the original pdf contents must be rasterized.",
+					reasons
+				),
+				class = "pnpmisc_error_rasterized"
 			)
-		}
-		if (!missing(bm_fn)) {
-			stop(r"(We can't combine `isFALSE(rasterize)` and `!missing(bm_fn)`)")
 		}
 
 		pdf_apply_vector(input, output, paper = paper, scale = scale, bg = bg, grid_fn = grid_fn)
 	} else {
-		#### If `rasterize` was missing then emit a message?
+		if (missing_rasterize) {
+			reasons <- must_rasterize_reasons(must_grid_a_subset, must_resize_wo_gs, must_bm)
+			rlang::inform(
+				c(
+					"The original pdf contents were rasterized.",
+					reasons,
+					i = 'Suppress this message with `suppressMessages(expr, classes = "pnpmisc_message_rasterized")`.'
+				),
+				class = "pnpmisc_message_rasterized"
+			)
+		}
 		pages <- pdf_pages(input, pages = pages)
 		pdf_apply_raster(
 			input,
@@ -273,4 +286,27 @@ pdf_apply_raster <- function(
 	}
 	invisible(dev.off())
 	invisible(output)
+}
+
+must_rasterize_reasons <- function(must_grid_a_subset, must_resize_wo_gs, must_bm) {
+	reasons <- character(0L)
+	if (must_grid_a_subset) {
+		reasons <- c(
+			reasons,
+			i = '`any(pages != "all")` but `qpdf::pdf_overlay_stamp()` does not support a `pages` argument as of v1.4.1.'
+		)
+	}
+	if (must_resize_wo_gs) {
+		reasons <- c(
+			reasons,
+			i = "`tools::find_gs_cmd())` couldn't find a suitable `ghostscript`."
+		)
+	}
+	if (must_bm) {
+		reasons <- c(
+			reasons,
+			i = 'We needed to rasterize the contents to edit them.`'
+		)
+	}
+	reasons
 }
