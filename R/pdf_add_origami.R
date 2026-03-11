@@ -77,7 +77,7 @@ grid_add_origami <- function(
 	height = unit(JACKET_4x6_HEIGHT, "inches"),
 	depth = unit(JACKET_4x6_SPINE_WIDTH, "inches")
 ) {
-	chkDots(...)
+	check_dots_empty()
 	width_fb <- width
 	width_s <- depth
 

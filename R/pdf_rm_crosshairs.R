@@ -66,7 +66,7 @@ pdf_rm_crosshairs <- function(
 #' }
 #' @export
 bm_rm_crosshairs <- function(x, ..., layout = "poker_3x2_bleed") {
-	chkDots(...)
+	check_dots_empty()
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)

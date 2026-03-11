@@ -16,7 +16,7 @@
 #' @return An integer vector.
 #' @export
 pdf_pages <- function(input, ..., pages = c("all", "even", "odd", "2-up saddle stitch")) {
-	chkDots(...)
+	check_dots_empty()
 	stopifnot(is.numeric(pages) || is.character(pages))
 	n <- qpdf::pdf_length(input)
 	if (is.numeric(pages)) {

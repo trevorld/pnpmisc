@@ -25,7 +25,7 @@ bm_create_pdf <- function(
 	height = 11,
 	bg = "white"
 ) {
-	chkDots(...)
+	check_dots_empty()
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
 

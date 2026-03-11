@@ -14,7 +14,7 @@
 #' }
 #' @export
 pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
-	chkDots(...)
+	check_dots_empty()
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 
 	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
@@ -36,7 +36,7 @@ pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = getOption("pnpmisc
 #' }
 #' @export
 pdf_render_bm_list <- function(input, ..., dpi = getOption("pnpmisc.dpi", 300)) {
-	chkDots(...)
+	check_dots_empty()
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 
 	pages <- pdf_pages(input, pages = "all")
@@ -66,7 +66,7 @@ pdf_render_bm_list <- function(input, ..., dpi = getOption("pnpmisc.dpi", 300)) 
 #' }
 #' @export
 pdf_render_raster <- function(input, ..., page = 1L, dpi = 300, native = FALSE) {
-	chkDots(...)
+	check_dots_empty()
 	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
 	if (native) {
 		stopifnot(requireNamespace("bittermelon", quietly = TRUE))

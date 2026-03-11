@@ -25,7 +25,7 @@ bm_split_layout <- function(
 	layout = "button_shy_cards",
 	bleed = FALSE
 ) {
-	chkDots(...)
+	check_dots_empty()
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}

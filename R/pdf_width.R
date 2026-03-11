@@ -13,7 +13,7 @@
 #' unlink(f)
 #' @export
 pdf_width <- function(input, ..., units = "inches", numeric = FALSE) {
-	chkDots(...)
+	check_dots_empty()
 	width <- pdftools::pdf_pagesize(input)$width
 	if (units == "bigpts" && numeric) {
 		return(width)
@@ -28,7 +28,7 @@ pdf_width <- function(input, ..., units = "inches", numeric = FALSE) {
 #' @rdname pdf_width
 #' @export
 pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
-	chkDots(...)
+	check_dots_empty()
 	height <- pdftools::pdf_pagesize(input)$height
 	if (units == "bigpts" && numeric) {
 		return(height)

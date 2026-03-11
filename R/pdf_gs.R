@@ -16,7 +16,7 @@
 #' }
 #' @export
 pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
-	chkDots(...)
+	check_dots_empty()
 	stopifnot(nzchar(tools::find_gs_cmd()))
 	input <- normalizePath(input)
 	output <- normalize_output(output, input)
@@ -42,8 +42,7 @@ system2_gs <- function(args) {
 	cmd <- tools::find_gs_cmd()
 	output <- system2(cmd, args, stdout = TRUE)
 	if (!is.null(attr(output, "status"))) {
-		msg <- c(paste(sQuote("system2()"), "command failed."))
-		stop(msg)
+		abort(paste(sQuote("system2()"), "command failed."))
 	}
 	invisible(output)
 }

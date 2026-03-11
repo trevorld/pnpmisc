@@ -22,7 +22,7 @@ fullGrob <- function(
 	vp = NULL,
 	name = NULL
 ) {
-	chkDots(...)
+	check_dots_empty()
 	fill <- as_fill(fill, width = width, height = height)
 	rectGrob(gp = gpar(col = "transparent", fill = fill), vp = vp, name = name)
 }

@@ -45,6 +45,6 @@ zip_extract_bm_pixmap <- function(zipfile, filename, ...) {
 			stopifnot(requireNamespace("jpeg", quietly = TRUE))
 			bittermelon::as_bm_pixmap(jpeg::readJPEG(vec_raw))
 		},
-		stop(paste("Don't know how to handle file extension", dQuote(ext)))
+		abort(paste("Don't know how to handle file extension", dQuote(ext)))
 	)
 }

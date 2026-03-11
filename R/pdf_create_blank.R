@@ -29,7 +29,7 @@ pdf_create_blank <- function(
 	bg = "white",
 	grob = NULL
 ) {
-	chkDots(...)
+	check_dots_empty()
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
 

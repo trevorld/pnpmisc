@@ -16,7 +16,7 @@
 #' }
 #' @export
 pdf_clean <- function(input, output = NULL, ...) {
-	chkDots(...)
+	check_dots_empty()
 	output <- normalize_output(output, input)
 	file.copy(to = output, from = input, overwrite = TRUE)
 	rm_temp_pdfs(output)
