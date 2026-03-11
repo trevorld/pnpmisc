@@ -2,10 +2,9 @@
 #'
 #' `pdf_add_lines()` adds lines along the components of a print-and-play layout.
 #'
-#' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].
-#' @param ... Ignored for now.
+#' @param ... Passed to [pdf_add_overlay()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added line segments.
 #' @seealso [grid_add_lines()], [pdf_add_rects()]
@@ -20,22 +19,14 @@ pdf_add_lines <- function(
 	output = NULL,
 	...,
 	layout = "poker_3x3",
-	pages = "all",
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL,
-	gp = gpar(),
-	rasterise = NULL
+	gp = gpar()
 ) {
 	pdf_add_overlay(
 		input,
 		output,
-		pages = pages,
-		rasterize = rasterize,
-		dpi = dpi,
-		paper = paper,
+		...,
 		grid_fn = \() {
-			grid_add_lines(..., layout = layout, gp = gp)
+			grid_add_lines(layout = layout, gp = gp)
 		}
 	)
 }
