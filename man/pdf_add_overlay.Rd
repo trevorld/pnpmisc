@@ -40,8 +40,8 @@ If \code{NULL} only rasterize if a requested feature requires it.
 Currently requires rasterization in the following cases:
 \enumerate{
 \item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")}
-\item \code{!missing(bm_fn)}
+\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
+\item \code{!identical(bm_fn, identity)}
 }
 
 \code{rasterise} is an alias for \code{rasterize}.}
@@ -64,12 +64,6 @@ As a side effect creates a pdf with overlaid graphics.
 \description{
 \code{pdf_add_overlay()} calls \code{grid_fn} on selected pages to draw custom
 graphics on top.
-}
-\details{
-\itemize{
-\item The original pdf document may be rasterized depending on the value of
-\code{rasterize}, \code{pages}, and/or \code{paper}.
-}
 }
 \examples{
 f1 <- pdf_create_blank(length = 2L, paper = "letter")

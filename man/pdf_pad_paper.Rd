@@ -31,8 +31,8 @@ If \code{NULL} only rasterize if a requested feature requires it.
 Currently requires rasterization in the following cases:
 \enumerate{
 \item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")}
-\item \code{!missing(bm_fn)}
+\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
+\item \code{!identical(bm_fn, identity)}
 }
 
 \code{rasterise} is an alias for \code{rasterize}.}
@@ -55,13 +55,6 @@ As a side effect creates padded pdf file.
 \description{
 \code{pdf_pad_paper()} makes a pdf file larger by padding it (i.e. adding space to the outside margins).
 By default the original content is \strong{not} rescaled.
-}
-\details{
-\itemize{
-\item The original pdf document may be rasterized depending on the value of
-\code{rasterize} as well as whether ghostscript is available
-(see \code{\link[=pdf_gs]{pdf_gs()}}).
-}
 }
 \examples{
 # Some PnP files' size is the intersection of A4/letter page sizes

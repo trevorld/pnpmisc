@@ -4,9 +4,6 @@
 #'
 #' * Sometimes if you use the same color as a solid background color
 #'   this can be used to effectively "remove" unwanted card outlines.
-#' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize`, `pages`, and/or `paper`.
-#'
 #' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
 #' @param r,gp Passed to [grid::grid.roundrect()].

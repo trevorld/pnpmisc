@@ -2,9 +2,6 @@
 #'
 #' `pdf_add_lines()` adds lines along the components of a print-and-play layout.
 #'
-#' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize`, `pages`, and/or `paper`.
-#'
 #' @inheritParams pdf_apply
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].

@@ -43,8 +43,8 @@ If \code{NULL} only rasterize if a requested feature requires it.
 Currently requires rasterization in the following cases:
 \enumerate{
 \item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")}
-\item \code{!missing(bm_fn)}
+\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
+\item \code{!identical(bm_fn, identity)}
 }
 
 \code{rasterise} is an alias for \code{rasterize}.}

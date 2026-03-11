@@ -4,9 +4,6 @@
 #' Currently only supports adding origami symbols to
 #' [Boardgame Barrio's Small Board Game Jackets](https://sites.google.com/view/boardgamebarrio/home).
 #'
-#' * The original pdf document may be rasterized depending on the value of
-#'   `rasterize` and/or `paper`.
-#'
 #' @inheritParams pdf_apply
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates pdf file with added origami symbols.
