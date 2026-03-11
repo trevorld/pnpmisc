@@ -2,7 +2,7 @@
 #'
 #' [pdf_width()] and [pdf_height()] get the dimensions of the pdf file pages.
 #' @return If `numeric = TRUE` a numeric vector else a [grid::unit()] object.
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @param units Units to use.  See [grid::unit()].
 #' @param numeric If `TRUE` return numeric else a [grid::unit()] object.
 #' @examples

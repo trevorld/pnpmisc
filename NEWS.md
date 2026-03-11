@@ -18,6 +18,7 @@ New features
 * `pdf_add_origami()` now passes `...` to `pdf_add_overlay()`, removing the need for explicit `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#50).
 * `pdf_add_lines()` now passes `...` to `pdf_add_overlay()` instead of `grid_add_lines()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#49).
 * `pdf_add_rects()` now passes `...` to `pdf_add_overlay()` instead of `grid_add_rects()`, removing the need for explicit `pages`, `rasterize`, `dpi`, `paper`, and `rasterise` arguments (#51).
+* `pdf_pad_paper()` now passes `...` to `pdf_apply()`, removing the need for explicit `bg`, `rasterize`, `dpi`, `scale`, and `rasterise` arguments (#52).
 
 * The following PDF creation functions:
 

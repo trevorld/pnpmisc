@@ -8,12 +8,7 @@ pdf_pad_paper(
   input,
   output = NULL,
   ...,
-  bg = "white",
-  rasterize = rasterise,
-  dpi = getOption("pnpmisc.dpi", 300),
-  scale = 1,
-  paper = getOption("papersize", "letter"),
-  rasterise = NULL
+  paper = getOption("papersize", "letter")
 )
 }
 \arguments{
@@ -21,30 +16,7 @@ pdf_pad_paper(
 
 \item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
 
-\item{...}{Ignored.}
-
-\item{bg}{\code{output} pdf background color.}
-
-\item{rasterize, rasterise}{If \code{TRUE} rasterize the original content using \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}.
-If \code{FALSE} don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.
-If \code{NULL} only rasterize if a requested feature requires it.
-Currently requires rasterization in the following cases:
-\enumerate{
-\item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
-\item \code{!identical(bm_fn, identity)}
-}
-
-\code{rasterise} is an alias for \code{rasterize}.}
-
-\item{dpi}{Dots per inch.
-Passed to \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}} when we rasterize the original content.
-Defaults to \code{getOption("pnpmisc.dpi", 300)}.}
-
-\item{scale}{A numeric scalar to scale the content by.
-Values less than 1 shrink the content within the page; values greater than 1 enlarge it.
-By default the original content is \strong{not} rescaled.
-Note this also adjusts the size of the \code{\link[grid:viewport]{grid::viewport()}} the \code{grid_fn} will draw in.}
+\item{...}{Passed to \code{\link[=pdf_apply]{pdf_apply()}}.}
 
 \item{paper}{Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of "letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special".}
 }

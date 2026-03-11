@@ -68,8 +68,16 @@ paper_height <- function(paper, orientation = "portrait") {
 	}
 }
 
-# Handle both `paper`/`orientation` or `width`/`height`
-# Prefer `cairo_pdf()` if available since better pattern fill support (e.g. wallets)
+#' Create a pdf device
+#'
+#' `pnp_pdf()` creates a pdf device preferring [grDevices::cairo_pdf()]
+#' when supported but falling back to [grDevices::pdf()] when not.
+#'
+#' @inheritParams pdf_apply
+#' @param paper Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
+#' @param width,height Passed to underlying graphics device.
+#' @param orientation Either "portrait" or "landscape".
+#' @keywords internal
 pnp_pdf <- function(
 	output,
 	...,

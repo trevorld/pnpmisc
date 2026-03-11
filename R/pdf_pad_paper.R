@@ -3,8 +3,9 @@
 #' `pdf_pad_paper()` makes a pdf file larger by padding it (i.e. adding space to the outside margins).
 #' By default the original content is **not** rescaled.
 #'
+#' @inheritParams pnp_pdf
 #' @inheritParams pdf_apply
-#' @param paper Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
+#' @param ... Passed to [pdf_apply()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates padded pdf file.
 #' @examples
@@ -35,21 +36,7 @@ pdf_pad_paper <- function(
 	input,
 	output = NULL,
 	...,
-	bg = "white",
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	scale = 1,
-	paper = getOption("papersize", "letter"),
-	rasterise = NULL
+	paper = getOption("papersize", "letter")
 ) {
-	chkDots(...)
-	pdf_apply(
-		input,
-		output,
-		rasterize = rasterize,
-		dpi = dpi,
-		paper = paper,
-		bg = bg,
-		scale = scale
-	)
+	pdf_apply(input, output, ..., paper = paper)
 }

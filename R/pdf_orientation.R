@@ -2,7 +2,7 @@
 #'
 #' `pdf_orientation()` tells whether a pdf is in portrait
 #' or landscape mode.
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @return A character vector with a length equal to the number of pages in `input`.
 #' @examples
 #' f1 <- pdf_create_blank(width = 8.5, height = 11)

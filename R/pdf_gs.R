@@ -2,7 +2,7 @@
 #'
 #' `pdf_gs()` processes the pdf file with ghostscript.
 #' This may prevent issues with other pdf processing functions like [pdftools::pdf_pagesize()].
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @param args Arguments to pass to ghostscript.
 #'             We automatically add `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
 #' @seealso [tools::find_gs_cmd()]

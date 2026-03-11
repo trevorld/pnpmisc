@@ -2,7 +2,7 @@
 #'
 #' `pdf_render_bm_pixmap()` renders a pdf page into a bittermelon pixmap object.
 #' @return A [bittermelon::bm_pixmap()] object.
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @param page Integer of page to render.
 #' @seealso [pdftools::pdf_render_page()], [pdf_render_raster()], [pdf_render_bm_list()]
 #' @examples
@@ -53,7 +53,7 @@ pdf_render_bm_list <- function(input, ..., dpi = getOption("pnpmisc.dpi", 300)) 
 #'
 #' `pdf_render_raster()` renders a pdf page into a raster object.
 #' @return If `native = TRUE` returns a `nativeRaster` object else a `raster` object.
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @param page Integer of page to render.
 #' @param native If `TRUE` return a `nativeRaster` object else a `raster` object.
 #' @seealso [pdftools::pdf_render_page()], [pdf_render_bm_pixmap()]

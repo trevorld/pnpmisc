@@ -1,7 +1,7 @@
 #' Copies pdf file while removing temporary pdf files
 #'
 #' `pdf_clean()` copies `input` pdf file to `output` and removes temporary pdf files with `rm_temp_pdfs(exclude = output)`.
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @return `output` pdf file name invisibly.
 #'         As a side effect copies `input` to `output` and removes temporary pdf files.
 #' @examples

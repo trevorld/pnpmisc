@@ -13,7 +13,8 @@
 #' 5. Flip over the paper and make the two valley folds each labeled "Folds 3"
 #' 6. Fold in half (valley fold)
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pnp_pdf
+#' @inheritParams pdf_apply
 #' @param front Fill color/pattern/gradient or grob for front cover section of wallet.
 #'              Will be drawn in a rotated masked viewport with a
 #'              width of `2 + 2 * bleed` inches

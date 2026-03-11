@@ -2,7 +2,7 @@
 #'
 #' `pdf_pages()` calculates an integer vector of subset of pdf pages.
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pdf_apply
 #' @inheritParams pdf_apply
 #' @examples
 #' f <- pdf_create_blank(length = 8L)

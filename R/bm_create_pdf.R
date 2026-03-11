@@ -2,7 +2,8 @@
 #'
 #' `bm_create_pdf()` creates a pdf from a list of images (each representing a page).
 #'
-#' @inheritParams pdf_pad_paper
+#' @inheritParams pnp_pdf
+#' @inheritParams pdf_apply
 #' @param width,height Paper size in inches.  Ignored if both are missing (in favor of `paper` and `orientation`).
 #' @param orientation Either "portrait" or "landscape".  Ignored if `width` and `height` are not missing.
 #' @param pages  A list of images (each representing a page).
