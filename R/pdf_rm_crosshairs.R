@@ -6,8 +6,9 @@
 #' * The default layout supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
 #' * The original pdf document will be rasterized.
 #'
-#' @inheritParams pdf_apply
 #' @inheritParams bm_crop_layout
+#' @inheritParams pdf_apply
+#' @param ... Passed to [pdf_apply()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect removes from crosshairs from a pdf.
 #' @examples
@@ -28,18 +29,12 @@ pdf_rm_crosshairs <- function(
 	input,
 	output = NULL,
 	...,
-	layout = "poker_3x2_bleed",
-	pages = "odd",
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL
+	layout = "poker_3x2_bleed"
 ) {
-	chkDots(...)
 	pdf_apply(
 		input,
 		output,
-		pages = pages,
-		dpi = dpi,
-		paper = paper,
+		...,
 		bm_fn = \(r) {
 			bm_rm_crosshairs(r, layout = layout)
 		}
