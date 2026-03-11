@@ -6,6 +6,7 @@
 #' @inheritParams pdf_apply
 #' @param grid_fn A zero-argument function called to draw graphics on selected pages.
 #'               Defaults to [grid::grid.null()].
+#' @param ... Passed to [pdf_apply()].
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates a pdf with overlaid graphics.
 #' @seealso [pdf_apply()] which this function wraps and
@@ -25,21 +26,7 @@ pdf_add_overlay <- function(
 	input,
 	output = NULL,
 	...,
-	pages = "all",
-	rasterize = rasterise,
-	dpi = getOption("pnpmisc.dpi", 300),
-	paper = NULL,
-	grid_fn = grid::grid.null,
-	rasterise = NULL
+	grid_fn = grid::grid.null
 ) {
-	chkDots(...)
-	pdf_apply(
-		input,
-		output,
-		pages = pages,
-		rasterize = rasterize,
-		dpi = dpi,
-		paper = paper,
-		grid_fn = grid_fn
-	)
+	pdf_apply(input, output, ..., grid_fn = grid_fn)
 }
