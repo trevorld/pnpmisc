@@ -5,7 +5,9 @@ test_that("`pdf_rm_crosshairs()`", {
 
 	f1 <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
 	f2 <- pdf_add_crosshairs(f1, pages = "all", layout = "poker_3x2_bleed", dpi = 75)
-	f3 <- pdf_rm_crosshairs(f2, pages = "odd", layout = "poker_3x2_bleed", dpi = 75)
+	expect_snapshot(
+		f3 <- pdf_rm_crosshairs(f2, pages = "odd", layout = "poker_3x2_bleed", dpi = 75)
+	)
 	expect_equal(qpdf::pdf_length(f2), 2L)
 	expect_equal(qpdf::pdf_length(f3), 2L)
 

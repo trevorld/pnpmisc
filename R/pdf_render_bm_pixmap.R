@@ -17,7 +17,7 @@ pdf_render_bm_pixmap <- function(input, ..., page = 1L, dpi = getOption("pnpmisc
 	check_dots_empty()
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 
-	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
+	bitmap <- pdf_render_array_pdftools(input, page = page, dpi = dpi)
 	bittermelon::as_bm_pixmap(bitmap)
 }
 
@@ -67,11 +67,53 @@ pdf_render_bm_list <- function(input, ..., dpi = getOption("pnpmisc.dpi", 300)) 
 #' @export
 pdf_render_raster <- function(input, ..., page = 1L, dpi = 300, native = FALSE) {
 	check_dots_empty()
-	bitmap <- pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
+	bitmap <- pdf_render_array_pdftools(input, page = page, dpi = dpi)
 	if (native) {
 		stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 		as.raster(bittermelon::as_bm_pixmap(bitmap), native = TRUE)
 	} else {
 		as.raster(bitmap)
 	}
+}
+
+pdf_render_array <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
+	check_dots_empty()
+	if (nzchar(find_gs_cmd()) && requireNamespace("png", quietly = TRUE)) {
+		pdf_render_array_gs(input, page = page, dpi = dpi)
+	} else {
+		pdf_render_array_pdftools(input, page = page, dpi = dpi)
+	}
+}
+
+pdf_render_array_pdftools <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
+	check_dots_empty()
+	pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
+}
+
+pdf_render_array_gs <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
+	check_dots_empty()
+	stopifnot(requireNamespace("png", quietly = TRUE))
+	if (is.raw(input)) {
+		tmp_pdf <- tempfile(fileext = ".pdf")
+		on.exit(unlink(tmp_pdf), add = TRUE)
+		writeBin(input, tmp_pdf)
+		input <- tmp_pdf
+	}
+	tmp <- tempfile(fileext = ".png")
+	on.exit(unlink(tmp), add = TRUE)
+	system2(
+		find_gs_cmd(),
+		c(
+			"-dBATCH",
+			"-dNOPAUSE",
+			"-sDEVICE=pngalpha",
+			paste0("-dFirstPage=", page),
+			paste0("-dLastPage=", page),
+			paste0("-r", dpi),
+			paste0("-sOutputFile=", shQuote(tmp)),
+			shQuote(normalizePath(input))
+		),
+		stdout = TRUE
+	)
+	png::readPNG(tmp)
 }

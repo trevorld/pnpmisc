@@ -18,7 +18,7 @@
 #'   f2 <- pdf_add_crosshairs(f1, pages = "all",
 #'                            layout = "poker_3x2_bleed")
 #'   f3 <- pdf_rm_crosshairs(f2, pages = "odd",
-#'                           layout = "poker_3x2_bleed")
+#'                           layout = "poker_3x2_bleed", dpi = 75)
 #'   unlink(f1)
 #'   unlink(f2)
 #'   unlink(f3)
