@@ -18,6 +18,7 @@ New features
   + `pdf_add_lines()` adds lines along the components of a print-and-play layout.
   + `pdf_add_overlay()` overlays custom graphics on selected pages.
   + `pdf_apply()` can modify the selected pages of pdf files by overlaying custom graphics on top and/or customizing the (rasterized) original contents.
+  + `pdf_change_paper()` changes the paper size of a pdf centering the original contents.
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
   + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
