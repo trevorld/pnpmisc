@@ -17,7 +17,7 @@
 #' @export
 pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
 	check_dots_empty()
-	stopifnot(nzchar(tools::find_gs_cmd()))
+	stopifnot(nzchar(find_gs_cmd()))
 	input <- normalizePath(input)
 	output <- normalize_output(output, input)
 
@@ -39,8 +39,8 @@ pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
 
 # Adapted from `xmpdf:::xmpdf_system2()`
 system2_gs <- function(args) {
-	cmd <- tools::find_gs_cmd()
-	output <- system2(cmd, args, stdout = TRUE)
+	cmd <- find_gs_cmd()
+	output <- system2(cmd, args, stdout = TRUE, stderr = FALSE)
 	if (!is.null(attr(output, "status"))) {
 		abort(paste(sQuote("system2()"), "command failed."))
 	}

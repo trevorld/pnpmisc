@@ -82,16 +82,23 @@ pdf_apply <- function(
 	output <- normalize_output(output, input)
 
 	must_grid_a_subset <- any(pages != "all") && !identical(grid_fn, grid::grid.null)
-	must_resize_wo_gs <- (!is.null(paper) || scale != 1) && !nzchar(tools::find_gs_cmd())
+	must_resize_wo_gs <- (!is.null(paper) || scale != 1) && !nzchar(find_gs_cmd())
 	must_bm <- !identical(bm_fn, identity)
-	must_rasterize <- must_grid_a_subset || must_resize_wo_gs || must_bm
+	bg_alpha <- grDevices::col2rgb(bg, alpha = TRUE)[4L] / 255
+	must_semi_transparent_bg <- bg_alpha > 0 && bg_alpha < 1
+	must_rasterize <- must_grid_a_subset || must_resize_wo_gs || must_bm || must_semi_transparent_bg
 
 	missing_rasterize <- missing(rasterize) && missing(rasterise)
 	rasterize <- rasterize %||% must_rasterize
 
 	if (isFALSE(rasterize)) {
 		if (must_rasterize) {
-			reasons <- must_rasterize_reasons(must_grid_a_subset, must_resize_wo_gs, must_bm)
+			reasons <- must_rasterize_reasons(
+				must_grid_a_subset,
+				must_resize_wo_gs,
+				must_bm,
+				must_semi_transparent_bg
+			)
 			abort(
 				c(
 					"`isFALSE(rasterize)` but the original pdf contents must be rasterized.",
@@ -101,10 +108,25 @@ pdf_apply <- function(
 			)
 		}
 
+		if (!missing(bg) && is.null(paper) && scale == 1) {
+			warn(
+				c(
+					"`bg` is ignored in the vector path when not resizing.",
+					i = "Pass `paper` or `scale` to apply `bg`, or `rasterize = TRUE` to force rasterization."
+				),
+				class = "pnpmisc_warning_bg_ignored"
+			)
+		}
+
 		pdf_apply_vector(input, output, paper = paper, scale = scale, bg = bg, grid_fn = grid_fn)
 	} else {
 		if (missing_rasterize) {
-			reasons <- must_rasterize_reasons(must_grid_a_subset, must_resize_wo_gs, must_bm)
+			reasons <- must_rasterize_reasons(
+				must_grid_a_subset,
+				must_resize_wo_gs,
+				must_bm,
+				must_semi_transparent_bg
+			)
 			inform(
 				c(
 					"The original pdf contents were rasterized.",
@@ -139,7 +161,7 @@ pdf_apply_vector <- function(
 	bg = "transparent",
 	grid_fn = grid::grid.null
 ) {
-	resize <- (!is.null(paper) || scale != 1) && nzchar(tools::find_gs_cmd())
+	resize <- (!is.null(paper) || scale != 1) && nzchar(find_gs_cmd())
 	overlay <- !identical(grid_fn, grid::grid.null)
 
 	if (!resize && !overlay) {
@@ -288,7 +310,12 @@ pdf_apply_raster <- function(
 	invisible(output)
 }
 
-must_rasterize_reasons <- function(must_grid_a_subset, must_resize_wo_gs, must_bm) {
+must_rasterize_reasons <- function(
+	must_grid_a_subset,
+	must_resize_wo_gs,
+	must_bm,
+	must_semi_transparent_bg
+) {
 	reasons <- character(0L)
 	if (must_grid_a_subset) {
 		reasons <- c(
@@ -299,13 +326,19 @@ must_rasterize_reasons <- function(must_grid_a_subset, must_resize_wo_gs, must_b
 	if (must_resize_wo_gs) {
 		reasons <- c(
 			reasons,
-			i = "`tools::find_gs_cmd())` couldn't find a suitable `ghostscript`."
+			i = "`tools::find_gs_cmd()` couldn't find a suitable `ghostscript`."
 		)
 	}
 	if (must_bm) {
 		reasons <- c(
 			reasons,
-			i = 'We needed to rasterize the contents to edit them.`'
+			i = 'We needed to edit the contents with a bitmap function.`'
+		)
+	}
+	if (must_semi_transparent_bg) {
+		reasons <- c(
+			reasons,
+			i = "`bg` is semi-transparent which our vector code cannot yet handle."
 		)
 	}
 	reasons

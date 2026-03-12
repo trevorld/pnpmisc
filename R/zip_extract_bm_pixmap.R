@@ -29,7 +29,7 @@ raw_from_zip <- function(zipfile, filename) {
 zip_extract_bm_pixmap <- function(zipfile, filename, ...) {
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
 	vec_raw <- raw_from_zip(zipfile, filename)
-	ext <- tolower(tools::file_ext(filename))
+	ext <- tolower(file_ext(filename))
 	switch(
 		ext,
 		pdf = pnpmisc::pdf_render_bm_pixmap(vec_raw, ...),

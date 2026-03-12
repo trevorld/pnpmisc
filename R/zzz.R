@@ -1,7 +1,8 @@
 #' @importFrom grDevices as.raster dev.cur dev.off dev.set
 #' @import grid
-#' @importFrom rlang abort check_dots_empty inform
+#' @importFrom rlang abort check_dots_empty inform warn
 #' @importFrom stats median quantile
+#' @importFrom tools file_ext find_gs_cmd
 #' @importFrom utils head tail packageVersion hasName
 NULL
 
