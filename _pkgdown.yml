@@ -16,6 +16,7 @@ reference:
           - pdf_add_rects
           - pdf_append_blank
           - pdf_apply
+          - pdf_change_paper
           - pdf_clean
           - pdf_compress
           - pdf_gs
