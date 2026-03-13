@@ -24,6 +24,9 @@
 #'              }
 #'              The functions [pdf_pages()] and [pdf_subset()] also support the string:\describe{
 #'              \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
+#'              \item{interleave}{Interleave the first and second halves of the pages.  Requires an even number of pages.}
+#'              \item{interleave_first}{Repeat the first page `n - 1` times and interleave with the remaining `n - 1` pages.}
+#'              \item{interleave_last}{Repeat the last page `n - 1` times and interleave with the first `n - 1` pages.}
 #'              }
 #' @param rasterize,rasterise If `TRUE` rasterize the original content using [pdftools::pdf_render_page()].
 #'   If `FALSE` don't rasterize the original content and throw an error if a requested feature can not yet be implemented without rasterization.

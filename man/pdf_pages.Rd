@@ -4,7 +4,12 @@
 \alias{pdf_pages}
 \title{Get integer vector of subset of pdf pages}
 \usage{
-pdf_pages(input, ..., pages = c("all", "even", "odd", "2-up saddle stitch"))
+pdf_pages(
+  input,
+  ...,
+  pages = c("all", "even", "odd", "2-up saddle stitch", "interleave", "interleave_first",
+    "interleave_last")
+)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -20,6 +25,9 @@ or a string:\describe{
 }
 The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
 \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
+\item{interleave}{Interleave the first and second halves of the pages.  Requires an even number of pages.}
+\item{interleave_first}{Repeat the first page \code{n - 1} times and interleave with the remaining \code{n - 1} pages.}
+\item{interleave_last}{Repeat the last page \code{n - 1} times and interleave with the first \code{n - 1} pages.}
 }}
 }
 \value{
@@ -35,6 +43,9 @@ pdf_pages(f, pages = -(1:4))
 pdf_pages(f, pages = "all")
 pdf_pages(f, pages = "even")
 pdf_pages(f, pages = "odd")
+pdf_pages(f, pages = "interleave")
+pdf_pages(f, pages = "interleave_first")
+pdf_pages(f, pages = "interleave_last")
 
 unlink(f) # Clean up
 }

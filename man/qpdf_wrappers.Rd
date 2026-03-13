@@ -28,6 +28,9 @@ or a string:\describe{
 }
 The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]{pdf_subset()}} also support the string:\describe{
 \item{2-up saddle stitch}{The order of the pages to create a saddle-stitch booklet if printing 2-up.}
+\item{interleave}{Interleave the first and second halves of the pages.  Requires an even number of pages.}
+\item{interleave_first}{Repeat the first page \code{n - 1} times and interleave with the remaining \code{n - 1} pages.}
+\item{interleave_last}{Repeat the last page \code{n - 1} times and interleave with the first \code{n - 1} pages.}
 }}
 }
 \value{

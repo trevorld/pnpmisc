@@ -25,6 +25,7 @@ New features
   + `pdf_rep()` repeats pages of a pdf similar to `rep()`.
   + `pdf_scale()` scales pdf contents centered within the page.
 
+* `pdf_pages()` and `pdf_subset()` gain three new `pages` string options: `"interleave"` interleaves the first and second halves of the pages (requires an even number of pages); `"interleave_first"` repeats the first page and interleaves it with the remaining pages; `"interleave_last"` repeats the last page and interleaves it with the preceding pages.
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
 
