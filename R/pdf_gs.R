@@ -32,17 +32,7 @@ pdf_gs <- function(input, output = NULL, ..., args = character(0L)) {
 		shQuote(input)
 	)
 
-	stdout <- system2_gs(args)
+	stdout <- system2_cmd(find_gs_cmd(), args)
 
-	invisible(output)
-}
-
-# Adapted from `xmpdf:::xmpdf_system2()`
-system2_gs <- function(args) {
-	cmd <- find_gs_cmd()
-	output <- system2(cmd, args, stdout = TRUE, stderr = FALSE)
-	if (!is.null(attr(output, "status"))) {
-		abort(paste(sQuote("system2()"), "command failed."))
-	}
 	invisible(output)
 }

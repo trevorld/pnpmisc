@@ -20,7 +20,7 @@ reference:
           - pdf_clean
           - pdf_compress
           - pdf_gs
-          - pdf_pad_paper
+          - pdf_pdfxup
           - pdf_rasterize
           - pdf_scale
           - pdf_rep

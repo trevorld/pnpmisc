@@ -21,6 +21,7 @@ New features
   + `pdf_change_paper()` changes the paper size of a pdf centering the original contents.
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
+  + `pdf_pdfxup()` wraps the `pdfxup` command-line program to create n-up PDF documents with automatic margin removal. `pdf_pdfxup_booklet()` is a convenience wrapper with defaults suited for printing a physical booklet.
   + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
   + `pdf_rep()` repeats pages of a pdf similar to `rep()`.
   + `pdf_scale()` scales pdf contents centered within the page.

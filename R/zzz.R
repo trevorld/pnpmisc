@@ -103,6 +103,15 @@ pnp_pdf <- function(
 	}
 }
 
+# Adapted from `xmpdf:::xmpdf_system2()`
+system2_cmd <- function(cmd, args) {
+	output <- system2(cmd, args, stdout = TRUE, stderr = FALSE)
+	if (!is.null(attr(output, "status"))) {
+		abort(paste(sQuote("system2()"), "command failed."))
+	}
+	invisible(output)
+}
+
 is_supported_bitmap <- function(x) {
 	if (requireNamespace("bittermelon") && packageVersion("bittermelon") >= "2.2.0") {
 		bittermelon::is_supported_bitmap(x)

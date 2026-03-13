@@ -28,6 +28,7 @@ Suggests:
     marquee,
     testthat (>= 3.0.0),
     xmpdf
+SystemRequirements: Several features require `ghostscript`.  To make N-up pdf documents you'll also need `pdfxup`.
 License: MIT + file LICENSE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
