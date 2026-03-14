@@ -42,9 +42,7 @@ pdf_pdfxup_booklet(
 
 \item{...}{Ignored.}
 
-\item{ncol}{Number of columns per page.}
-
-\item{nrow}{Number of rows per page.}
+\item{ncol, nrow}{Number of columns/rows per page.}
 
 \item{byrow}{If \code{TRUE} fill pages row by row. If \code{FALSE} fill pages column by column.}
 
@@ -106,11 +104,12 @@ opinionated defaults better suited for printing a physical booklet on a home pri
 }
 }
 \examples{
-if (nzchar(Sys.which("pdfxup"))) {
-  f1 <- system.file("doc", "Sweave.pdf", package = "utils")
-  if (file.exists(f1)) {
-    f2 <- pdf_pdfxup(f1)
-    unlink(f2)
-  }
+f1 <- system.file("doc", "Sweave.pdf", package = "utils")
+if (nzchar(Sys.which("pdfxup")) && file.exists(f1)) {
+  f2 <- pdf_pdfxup_booklet(f1)
+  unlink(f2)
 }
+}
+\seealso{
+\url{https://ctan.org/tex-archive/support/pdfxup} for more information about \code{pdfxup}
 }

@@ -14,8 +14,7 @@
 #'
 #' @inheritParams pdf_apply
 #' @param ... Ignored.
-#' @param ncol Number of columns per page.
-#' @param nrow Number of rows per page.
+#' @param ncol,nrow Number of columns/rows per page.
 #' @param byrow If `TRUE` fill pages row by row. If `FALSE` fill pages column by column.
 #' @param booklet If `TRUE` configure for printing as a 2-up booklet.
 #'   Can also be `"se"` (short-edge mode) or `"le"` (long-edge mode) for explicit control over two-sided printing; `booklet = TRUE` defaults to "le" mode.
@@ -33,13 +32,12 @@
 #'   Defaults to `"all"`.  Note negative numbers indicate pages to omit from computation of bounding box.
 #' @return `output` pdf file name invisibly.
 #'         As a side effect creates an n-up pdf.
+#' @seealso <https://ctan.org/tex-archive/support/pdfxup> for more information about `pdfxup`
 #' @examples
-#' if (nzchar(Sys.which("pdfxup"))) {
-#'   f1 <- system.file("doc", "Sweave.pdf", package = "utils")
-#'   if (file.exists(f1)) {
-#'     f2 <- pdf_pdfxup(f1)
-#'     unlink(f2)
-#'   }
+#' f1 <- system.file("doc", "Sweave.pdf", package = "utils")
+#' if (nzchar(Sys.which("pdfxup")) && file.exists(f1)) {
+#'   f2 <- pdf_pdfxup_booklet(f1)
+#'   unlink(f2)
 #' }
 #' @export
 pdf_pdfxup <- function(
@@ -67,34 +65,27 @@ pdf_pdfxup <- function(
 	input <- normalizePath(input)
 	output <- normalize_output(output, input)
 
-	if (dev.cur() == 1L) {
-		grDevices::pdf(NULL)
-		on.exit(invisible(dev.off()), add = TRUE)
+	v <- pdfxup_version()
+	if (isFALSE(byrow) && v < "2.10") {
+		abort(sprintf("`byrow = FALSE` requires pdfxup >= 2.10 but detected version %s.", v))
 	}
-	as_unit <- function(x) if (is.numeric(x)) unit(x, default.units) else x
-	margins_pt <- convertUnit(as_unit(margins), "pt", valueOnly = TRUE)
-	intspaces_pt <- convertUnit(as_unit(intspaces), "pt", valueOnly = TRUE)
-	innermargins_pt <- convertUnit(as_unit(innermargins), "pt", valueOnly = TRUE)
-	framewidth_pt <- convertUnit(as_unit(framewidth), "pt", valueOnly = TRUE)
+	if (isFALSE(clip) && v < "1.50") {
+		abort(sprintf("`clip = FALSE` requires pdfxup >= 1.50 but detected version %s.", v))
+	}
+	as_pt <- as_pt_fn(default.units, v)
 
+	# fmt: skip
 	args <- c(
-		"--columns",
-		as.character(ncol),
-		"--rows",
-		as.character(nrow),
-		"--paper",
-		paper,
-		"--margins",
-		formatC(margins_pt, format = "f", digits = 1),
-		"--intspaces",
-		formatC(intspaces_pt, format = "f", digits = 1),
-		"--innermargins",
-		formatC(innermargins_pt, format = "f", digits = 1),
-		"--framewidth",
-		formatC(framewidth_pt, format = "f", digits = 1),
-		if (orientation == "landscape") "--landscape" else "--portrait",
-		if (isFALSE(byrow)) "--vertical" else "--horizontal",
-		if (isFALSE(clip)) "--no-clip" else "--clip"
+		"--columns", as.character(ncol),
+		"--rows", as.character(nrow),
+		"--paper", paper,
+		"--margins", as_pt(margins),
+		"--intspaces", as_pt(intspaces),
+		"--innermargins", as_pt(innermargins),
+		"--framewidth", as_pt(framewidth),
+		ifelse(orientation == "landscape", "--landscape", "--portrait"),
+		if (v >= "2.10") ifelse(isFALSE(byrow), "--vertical", "--horizontal"),
+		if (v >= "1.50") ifelse(isFALSE(clip), "--no-clip", "--clip")
 	)
 
 	if (!isFALSE(booklet)) {
@@ -104,20 +95,26 @@ pdf_pdfxup <- function(
 	}
 
 	if (!identical(bb_pages, "all")) {
-		bb_pages <- pdf_pages(input, bb_pages)
+		bb_pages <- pdf_pages(input, pages = bb_pages)
 		args <- c(args, "--bb", paste(bb_pages, collapse = ","))
 	}
 
 	if (!identical(pages, "all")) {
-		pages <- pdf_pages(input, pages)
+		pages <- pdf_pages(input, pages = pages)
 		args <- c(args, "--pages", paste(pages, collapse = ","))
 	}
 
 	args <- c(args, "-ow", "-o", shQuote(output), shQuote(input))
-
 	system2_cmd(cmd, args)
 
 	invisible(output)
+}
+
+pdfxup_version <- function() {
+	cmd <- Sys.which("pdfxup")
+	stopifnot(nzchar(cmd))
+	output <- system2_cmd(cmd, "--version")
+	numeric_version(sub("^pdfxup version (\\S+).*", "\\1", output))
 }
 
 #' @rdname pdf_pdfxup
@@ -140,4 +137,20 @@ pdf_pdfxup_booklet <- function(
 		intspaces = intspaces,
 		innermargins = innermargins
 	)
+}
+
+as_pt_fn <- function(default.units, v) {
+	# v2.11 (2024/03/15) is when fractional values were first supported
+	fmt_dim <- ifelse(v >= "2.11", "%.1fpt", "%.0fpt")
+	as_unit <- function(x) if (is.numeric(x)) unit(x, default.units) else x
+	fmt_pt <- function(x) sprintf(fmt_dim, x)
+	function(x) {
+		if (dev.cur() == 1L) {
+			grDevices::pdf(NULL)
+			on.exit(invisible(dev.off()), add = TRUE)
+		}
+		as_unit(x) |>
+			convertUnit("pt", valueOnly = TRUE) |>
+			fmt_pt()
+	}
 }
