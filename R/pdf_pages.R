@@ -53,21 +53,17 @@ pdf_pages <- function(
 
 pages_interleave <- function(n) {
 	if (n %% 2L != 0L) {
-		abort(paste0(
-			"\"interleave\" requires an even number of pages but got ",
-			n,
-			"."
-		))
+		abort(sprintf("\"interleave\" requires an even number of pages but got %d.", n))
 	}
-	as.integer(rbind(seq.int(n %/% 2L), seq.int(n %/% 2L + 1L, n)))
+	interleave(seq.int(n %/% 2L), seq.int(n %/% 2L + 1L, n))
 }
 
 pages_interleave_first <- function(n) {
-	as.integer(rbind(rep(1L, n - 1L), seq_len(n - 1L) + 1L))
+	interleave(rep.int(1L, n - 1L), seq_len(n - 1L) + 1L)
 }
 
 pages_interleave_last <- function(n) {
-	as.integer(rbind(seq_len(n - 1L), rep(as.integer(n), n - 1L)))
+	interleave(seq_len(n - 1L), rep.int(n, n - 1L))
 }
 
 pages_2up_saddle_stitch <- function(n) {
@@ -80,3 +76,5 @@ pages_2up_saddle_stitch <- function(n) {
 	}
 	pages
 }
+
+interleave <- function(x, y) as.integer(rbind(x, y))
