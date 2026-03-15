@@ -188,10 +188,10 @@ pdf_apply_vector <- function(
 	if (resize) {
 		overlaid <- tempfile(fileext = ".pdf")
 		on.exit(unlink(overlaid), add = TRUE)
-		qpdf::pdf_overlay_stamp(input, stamp = stamp, output = overlaid)
+		pdf_overlay_stamp(input, overlaid, stamp = stamp)
 		pdf_resize_vector(overlaid, output, scale = scale, paper = paper, bg = bg)
 	} else {
-		qpdf::pdf_overlay_stamp(input, stamp = stamp, output = output)
+		pdf_overlay_stamp(input, output, stamp = stamp)
 	}
 	invisible(output)
 }

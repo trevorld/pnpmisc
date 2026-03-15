@@ -37,5 +37,6 @@ unlink(f2)
 \seealso{
 \code{\link[=pdf_apply]{pdf_apply()}} which this function wraps and
 \code{\link[=pdf_add_cropmarks]{pdf_add_cropmarks()}}, \code{\link[=pdf_add_crosshairs]{pdf_add_crosshairs()}},
-\code{\link[=pdf_add_lines]{pdf_add_lines()}}, and \code{\link[=pdf_add_rects]{pdf_add_rects()}} for specific applications
+\code{\link[=pdf_add_lines]{pdf_add_lines()}}, and \code{\link[=pdf_add_rects]{pdf_add_rects()}} for specific applications.
+\code{\link[=pdf_overlay_stamp]{pdf_overlay_stamp()}} alternatively adds the contents of a \code{stamp} pdf file.
 }

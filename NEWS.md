@@ -21,11 +21,13 @@ New features
   + `pdf_change_paper()` changes the paper size of a pdf centering the original contents.
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
+  + `pdf_overlay_stamp()` overlays a stamp pdf onto each page of a pdf (wrapping [qpdf::pdf_overlay_stamp()]).
   + `pdf_pdfxup()` wraps the `pdfxup` command-line program to create n-up PDF documents with automatic margin removal. `pdf_pdfxup_booklet()` is a convenience wrapper with defaults suited for printing a physical booklet.
   + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
   + `pdf_rep()` repeats pages of a pdf similar to `rep()`.
   + `pdf_scale()` scales pdf contents centered within the page.
 
+* `pdf_combine()` combines multiple pdf files into one (wrapping [qpdf::pdf_combine()]).
 * `pdf_pages()` and `pdf_subset()` gain three new `pages` string options: `"interleave"` interleaves the first and second halves of the pages (requires an even number of pages); `"interleave_first"` repeats the first page and interleaves it with the remaining pages; `"interleave_last"` repeats the last page and interleaves it with the preceding pages.
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
