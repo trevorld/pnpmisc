@@ -11,7 +11,8 @@
 #'         As a side effect creates a pdf with overlaid graphics.
 #' @seealso [pdf_apply()] which this function wraps and
 #'          [pdf_add_cropmarks()], [pdf_add_crosshairs()],
-#'          [pdf_add_lines()], and [pdf_add_rects()] for specific applications
+#'          [pdf_add_lines()], and [pdf_add_rects()] for specific applications.
+#'          [pdf_overlay_stamp()] alternatively adds the contents of a `stamp` pdf file.
 #' @examples
 #' f1 <- pdf_create_blank(length = 2L, paper = "letter")
 #' f2 <- pdf_add_overlay(f1, pages = "all", dpi = 75,
