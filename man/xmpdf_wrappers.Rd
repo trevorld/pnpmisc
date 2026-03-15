@@ -4,7 +4,7 @@
 \alias{pdf_set_bookmarks}
 \alias{pdf_set_docinfo}
 \alias{pdf_set_xmp}
-\title{Wrappers around xmpdf functions}
+\title{Wrappers around \code{xmpdf} functions}
 \usage{
 pdf_set_bookmarks(input, output = NULL, ..., bookmarks)
 
@@ -29,7 +29,7 @@ pdf_set_xmp(input, output = NULL, ..., xmp)
 \code{output} filename of new pdf file invisibly.
 }
 \description{
-These functions wrap around the utilities in the xmpdf package
+These functions wrap around the utilities in the \code{xmpdf} package
 but alters the arguments to match this package's conventions:
 the first two arguments must be \code{input} and \code{output},
 by default \code{output = tempfile(fileext = ".pdf")}, and all other

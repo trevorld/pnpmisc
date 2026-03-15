@@ -48,21 +48,27 @@ remotes::install_github("trevorld/pnpmisc")
 
 ## <a name="examples">Examples</a>
 
-### `bm_split_layout()`
+### `bm_split_layout()` and `grid_add_layout()`
 
 * The provided rules for Button Shy games are formatted as a mini-zine which is great for printing and making into a concise booklet but it is hard to read the rules when looking at them on the computer.
-* You can use functions like `bm_split_layout()` to create a poker-sized pdf of the booklet pages all oriented up.
+* You can use functions like `bm_split_layout()` and `grid_add_layout()` to create a pdf of the booklet pages all oriented up.
 
 ```{r eval=FALSE}
 library("bittermelon")
 library("pnpmisc")
 # Download "A Nice Cuppa"
-# <https://www.pnparcade.com/products/a-nice-cuppa>
+# <https://buttonshygames.itch.io/a-nice-cuppa>
 input <- "A Nice Cuppa - PNP.pdf"
-output <- "a_nice_cuppa_rules_pages.pdf"
-input |> pdf_render_bm_pixmap() |>
-    bm_split_layout(layout = "button_shy_rules") |>
-	bm_create_pdf(output, paper = "poker")
+output <- "a_nice_cuppa_rules.pdf"
+layout <- layout_preset("button_shy_rules")
+bml <- input |> pdf_render_bm_pixmap() |>
+    bm_split_layout(layout = layout)
+
+layout <- transform(layout, angle = 0, name = paste0("page_", 1:8))
+pdf(output, width = 11, height = 8.5)
+grid_add_layout(bml, layout = layout)
+grid_add_rects(layout = layout, gp = grid::gpar(lwd = 4))
+dev.off()
 ```
 
 ### `pdf_add_crosshairs()`
@@ -74,7 +80,7 @@ input |> pdf_render_bm_pixmap() |>
 library("piecepackr")
 library("pnpmisc")
 # Download "A Nice Cuppa"
-# <https://www.pnparcade.com/products/a-nice-cuppa>
+# <https://buttonshygames.itch.io/a-nice-cuppa>
 input <- "A Nice Cuppa - PNP.pdf"
 output <- "a_nice_cuppa_cards.pdf"
 input |> pdf_subset(pages = -1L) |>
@@ -134,7 +140,7 @@ library("grid")
 library("gridpattern")
 library("pnpmisc")
 # Download "Numbsters"
-# <https://www.pnparcade.com/products/numbsters-1>
+# <https://buttonshygames.itch.io/numbsters>
 input <- "Numbsters_PNP_letter_v1.2.pdf"
 output <- "numbsters_wallet.pdf"
 bm_cover <- pdf_render_bm_pixmap(input, page = 1L) |>
@@ -160,10 +166,11 @@ weird shared page size that is a bit smaller than both "letter" and "A4" paper s
 
 ```{r eval=FALSE}
 library("pnpmisc")
-# Download Birdscaping from <https://www.pnparcade.com/products/birdscaping>
-input <- "Birdscaping 1.8 - Front-Back Layout.pdf"
+# Download Birdscaping from <https://boardgamegeek.com/boardgame/366484/birdscaping/files>
+input <- list.files(pattern = "^Birdscaping_1.7")
 output <- "birdscaping_cards.pdf"
-pdf_pad_paper(input, output)
+pdf_combine(input) |>
+	pdf_pad_paper(output)
 ```
 
 ### `pdf_rm_crosshairs()`
@@ -171,14 +178,13 @@ pdf_pad_paper(input, output)
 * Since there may be some font-back printing drift when duplex printing cards
   I prefer only crosshairs on one side of the double-sided leaf so the both sides of the cards look clean after removing the corners.
 * `pdf_rm_crosshairs()` removes the crosshairs from a PnP layout with a solid color bleed.
-* The default `layout` supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (v1, letter).
 
 ```{r eval=FALSE}
 library("pnpmisc")
 # Download Galdor's Grip from <https://greggjewell.itch.io/galdors-grip>
 input <- "GaldorsGrip_PnP_Cards_TGCBundle_EN_USL_v1.pdf"
 output <- "galdors_grip_cards.pdf"
-pdf_rm_crosshairs(input, output, pages = "odd")
+pdf_rm_crosshairs(input, output, pages = "odd", layout = "poker_3x2_bleed")
 ```
 
 ## <a name="related">Related links</a>

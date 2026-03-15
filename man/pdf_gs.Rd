@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_gs.R
 \name{pdf_gs}
 \alias{pdf_gs}
-\title{Process the pdf file with ghostscript}
+\title{Process the pdf file with \code{ghostscript}}
 \usage{
 pdf_gs(input, output = NULL, ..., args = character(0L))
 }
@@ -17,7 +17,7 @@ pdf_gs(input, output = NULL, ..., args = character(0L))
 We automatically add \code{-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}}.}
 }
 \description{
-\code{pdf_gs()} processes the pdf file with ghostscript.
+\code{pdf_gs()} processes the pdf file with \code{ghostscript}.
 This may prevent issues with other pdf processing functions like \code{\link[pdftools:pdftools]{pdftools::pdf_pagesize()}}.
 }
 \examples{
@@ -30,5 +30,5 @@ if (nzchar(tools::find_gs_cmd())) {
 }
 }
 \seealso{
-\code{\link[tools:find_gs_cmd]{tools::find_gs_cmd()}}
+\code{\link[tools:find_gs_cmd]{tools::find_gs_cmd()}} and \url{https://ghostscript.readthedocs.io/en/latest/}
 }
