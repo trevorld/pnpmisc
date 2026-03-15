@@ -7,6 +7,21 @@
 #' @seealso [piecepackr::pmap_piece()] to draw pieces to a layout represented by a [piecepackr::pp_cfg()] object.
 #' @return `NULL` invisibly.
 #'         As a side effect draws images to the active graphics device.
+#' @examples
+#' if (requireNamespace("bittermelon", quietly = TRUE)) {
+#'   crops <- bittermelon::farming_crops_16x16()$corn
+#'   layout <- data.frame(
+#'     name = names(crops),
+#'     x = 0.1 + rep(c(1, 3, 5), 2),
+#'     y = 0.1 + rep(c(3, 1), each = 3),
+#'     width = 2,
+#'     height = 2,
+#'     angle = 0
+#'   )
+#'   grid::grid.newpage()
+#'   grid_add_layout(crops, layout = layout)
+#'   grid_add_rects(layout = layout, gp = grid::gpar(lwd = 4))
+#' }
 #' @export
 grid_add_layout <- function(images, ..., layout = "poker_3x3") {
 	check_dots_empty()

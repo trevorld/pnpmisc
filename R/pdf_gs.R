@@ -1,11 +1,11 @@
-#' Process the pdf file with ghostscript
+#' Process the pdf file with `ghostscript`
 #'
-#' `pdf_gs()` processes the pdf file with ghostscript.
+#' `pdf_gs()` processes the pdf file with `ghostscript`.
 #' This may prevent issues with other pdf processing functions like [pdftools::pdf_pagesize()].
 #' @inheritParams pdf_apply
 #' @param args Arguments to pass to ghostscript.
 #'             We automatically add `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
-#' @seealso [tools::find_gs_cmd()]
+#' @seealso [tools::find_gs_cmd()] and <https://ghostscript.readthedocs.io/en/latest/>
 #' @examples
 #' if (nzchar(tools::find_gs_cmd())) {
 #'   f1 <- pdf_create_blank()

@@ -1,6 +1,6 @@
-#' Wrappers around xmpdf functions
+#' Wrappers around `xmpdf` functions
 #'
-#' These functions wrap around the utilities in the xmpdf package
+#' These functions wrap around the utilities in the `xmpdf` package
 #' but alters the arguments to match this package's conventions:
 #' the first two arguments must be `input` and `output`,
 #' by default `output = tempfile(fileext = ".pdf")`, and all other
