@@ -33,6 +33,9 @@ Unless otherwise indicated assumes letter-sized paper.  Supports the following p
 \item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include \href{https://greggjewell.itch.io/galdors-grip}{Galdor's Grip}.}
 \item{poker_3x3}{Poker-sized cards (2.5" by 3.5") in 3 columns of 3 cards (portrait) with an zero bleed around each card.  Examples of PnP games using this layout include the original \href{https://boardgamegeek.com/boardgame/199242/mini-rogue-a-roguelike-microgame}{Mini Rogue}.}
 \item{poker_4x2}{Poker-sized cards (2.5" by 3.5") in 4 columns of 2 cards (landscape) with zero bleed around each card.  Examples of PnP games using this layout include the \href{https://www.decktet.com/getit.php}{Decktet}.}
+\item{4x6_jacket}{A single 4x6 photo storage box jacket as created by \code{\link[=pdf_create_4x6_jacket]{pdf_create_4x6_jacket()}}.  The width covers the full jacket (back + spine + front).}
+\item{poker_jacket_1x1}{A single poker deck storage box jacket as created by \code{\link[=pdf_create_poker_jacket]{pdf_create_poker_jacket()}}.  The width covers the full jacket (back + spine + front).}
+\item{poker_jacket_1x2}{Two poker deck storage box jackets as created by \code{\link[=pdf_create_poker_jacket]{pdf_create_poker_jacket()}} when passed a list of two items.  Uses portrait paper.  The \code{bleed} column is zero (the gap between jackets is encoded in the y positions).}
 }
 }
 \examples{

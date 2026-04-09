@@ -299,8 +299,8 @@ pdf_create_poker_jacket <- function(
 
 		pnp_pdf(output, paper = paper, orientation = "portrait")
 
-		yt <- unit(0.5, "npc") + 1.0 * unit(JACKET_POKER_HEIGHT, "in") - unit(1.218, "in")
-		yb <- unit(0.5, "npc") - 1.0 * unit(JACKET_POKER_HEIGHT, "in") + unit(1.218, "in")
+		yt <- unit(0.5, "npc") + unit(0.5 * JACKET_POKER_HEIGHT + JACKET_POKER_INNER_MARGIN, "in")
+		yb <- unit(0.5, "npc") - unit(0.5 * JACKET_POKER_HEIGHT + JACKET_POKER_INNER_MARGIN, "in")
 
 		vp <- list(viewport(y = yt), viewport(y = yb))
 

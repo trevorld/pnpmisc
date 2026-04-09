@@ -147,6 +147,9 @@ assign_rtl <- function(x, nrow) {
 #' \item{poker_3x2_bleed}{Poker-sized cards (2.5" by 3.5") in 3 columns of 2 cards (landscape) with an 1/8" bleed around each card.  Examples of PnP games using this layout include [Galdor's Grip](https://greggjewell.itch.io/galdors-grip).}
 #' \item{poker_3x3}{Poker-sized cards (2.5" by 3.5") in 3 columns of 3 cards (portrait) with an zero bleed around each card.  Examples of PnP games using this layout include the original [Mini Rogue](https://boardgamegeek.com/boardgame/199242/mini-rogue-a-roguelike-microgame).}
 #' \item{poker_4x2}{Poker-sized cards (2.5" by 3.5") in 4 columns of 2 cards (landscape) with zero bleed around each card.  Examples of PnP games using this layout include the [Decktet](https://www.decktet.com/getit.php).}
+#' \item{4x6_jacket}{A single 4x6 photo storage box jacket as created by [pdf_create_4x6_jacket()].  The width covers the full jacket (back + spine + front).}
+#' \item{poker_jacket_1x1}{A single poker deck storage box jacket as created by [pdf_create_poker_jacket()].  The width covers the full jacket (back + spine + front).}
+#' \item{poker_jacket_1x2}{Two poker deck storage box jackets as created by [pdf_create_poker_jacket()] when passed a list of two items.  Uses portrait paper.  The `bleed` column is zero (the gap between jackets is encoded in the y positions).}
 #' }
 #'
 #' @param preset Preset name.  Must be in `layout_names()`.
@@ -184,7 +187,34 @@ layout_preset <- function(preset = "button_shy_cards", ...) {
 		),
 		poker_3x2_bleed = layout_grid(nrow = 2L, ncol = 3L, bleed = 0.125, ...),
 		poker_3x3 = layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait", ...),
-		poker_4x2 = layout_grid(nrow = 2L, ncol = 4L, ...)
+		poker_4x2 = layout_grid(nrow = 2L, ncol = 4L, ...),
+		`4x6_jacket` = layout_grid(
+			nrow = 1L,
+			ncol = 1L,
+			width = JACKET_4x6_WIDTH,
+			height = JACKET_4x6_HEIGHT,
+			...
+		),
+		poker_jacket_1x1 = layout_grid(
+			nrow = 1L,
+			ncol = 1L,
+			width = JACKET_POKER_WIDTH,
+			height = JACKET_POKER_HEIGHT,
+			...
+		),
+		poker_jacket_1x2 = {
+			d <- layout_grid(
+				nrow = 2L,
+				ncol = 1L,
+				width = JACKET_POKER_WIDTH,
+				height = JACKET_POKER_HEIGHT,
+				bleed = JACKET_POKER_INNER_MARGIN,
+				orientation = "portrait",
+				...
+			)
+			d$bleed <- 0
+			d
+		}
 	)
 
 	df
@@ -199,7 +229,10 @@ layout_names <- function() {
 		"button_shy_rules_2x2",
 		"poker_3x2_bleed",
 		"poker_3x3",
-		"poker_4x2"
+		"poker_4x2",
+		"4x6_jacket",
+		"poker_jacket_1x1",
+		"poker_jacket_1x2"
 	)
 }
 

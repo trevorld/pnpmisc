@@ -19,15 +19,15 @@ New features
   + `pdf_add_overlay()` overlays custom graphics on selected pages.
   + `pdf_apply()` can modify the selected pages of pdf files by overlaying custom graphics on top and/or customizing the (rasterized) original contents.
   + `pdf_change_paper()` changes the paper size of a pdf centering the original contents.
+  + `pdf_combine()` combines multiple pdf files into one (wraps `qpdf::pdf_combine()`).
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
-  + `pdf_overlay_stamp()` overlays a stamp pdf onto each page of a pdf (wrapping [qpdf::pdf_overlay_stamp()]).
+  + `pdf_overlay_stamp()` overlays a stamp pdf onto each page of a pdf (wraps `qpdf::pdf_overlay_stamp()`).
   + `pdf_pdfxup()` wraps the `pdfxup` command-line program to create n-up PDF documents with automatic margin removal. `pdf_pdfxup_booklet()` is a convenience wrapper with defaults suited for printing a physical booklet.
   + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
   + `pdf_rep()` repeats pages of a pdf similar to `rep()`.
   + `pdf_scale()` scales pdf contents centered within the page.
 
-* `pdf_combine()` combines multiple pdf files into one (wrapping [qpdf::pdf_combine()]).
 * `pdf_pages()` and `pdf_subset()` gain three new `pages` string options: `"interleave"` interleaves the first and second halves of the pages (requires an even number of pages); `"interleave_first"` repeats the first page and interleaves it with the remaining pages; `"interleave_last"` repeats the last page and interleaves it with the preceding pages.
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
@@ -68,6 +68,7 @@ New features
 
   + New `...` argument(s) passed to `layout_grid()`.
   + New supported `name` value `button_shy_rules_2x2` to support Button Shy's 4-page booklets.
+  + New supported `name` values `4x6_jacket`, `poker_jacket_1x1`, and `poker_jacket_1x2` for storage box jackets created by `pdf_create_4x6_jacket()` and `pdf_create_poker_jacket()`.
   + Adds `angle` and `name` columns to returned data frames.
 
 * `layout_name_fn()` can be used to return a function to generate layout names in `layout_grid()`'s `name` argument.
