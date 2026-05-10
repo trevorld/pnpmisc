@@ -19,11 +19,11 @@ pdf_set_xmp(input, output = NULL, ..., xmp)
 
 \item{...}{Currently ignored.}
 
-\item{bookmarks}{See \code{\link[xmpdf:bookmarks]{xmpdf::set_bookmarks()}}.}
+\item{bookmarks}{See \code{\link[xmpdf:set_bookmarks]{xmpdf::set_bookmarks()}}.}
 
-\item{docinfo}{See \code{\link[xmpdf:edit_docinfo]{xmpdf::set_docinfo()}}.}
+\item{docinfo}{See \code{\link[xmpdf:set_docinfo]{xmpdf::set_docinfo()}}.}
 
-\item{xmp}{See \code{\link[xmpdf:edit_xmp]{xmpdf::set_xmp()}}.}
+\item{xmp}{See \code{\link[xmpdf:set_xmp]{xmpdf::set_xmp()}}.}
 }
 \value{
 \code{output} filename of new pdf file invisibly.
@@ -61,5 +61,5 @@ if (requireNamespace("xmpdf", quietly = TRUE) &&
 unlink(f1)
 }
 \seealso{
-\code{\link[xmpdf:bookmarks]{xmpdf::set_bookmarks()}}, \code{\link[xmpdf:edit_docinfo]{xmpdf::set_docinfo()}}, \code{\link[xmpdf:edit_xmp]{xmpdf::set_xmp()}}
+\code{\link[xmpdf:set_bookmarks]{xmpdf::set_bookmarks()}}, \code{\link[xmpdf:set_docinfo]{xmpdf::set_docinfo()}}, \code{\link[xmpdf:set_xmp]{xmpdf::set_xmp()}}
 }

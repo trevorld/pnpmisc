@@ -19,7 +19,7 @@ grid_add_crosshairs(
 with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
 
 \item{gp, ch_width, ch_grob}{Passed to \code{\link[piecepackr:grid.crosshair]{piecepackr::grid.crosshair()}}.
-\code{ch_grob} defaults to \code{\link[piecepackr:grid.crosshair]{piecepackr::squaresCrosshairGrob()}}.}
+\code{ch_grob} defaults to \code{\link[piecepackr:squaresCrosshairGrob]{piecepackr::squaresCrosshairGrob()}}.}
 }
 \value{
 \code{NULL} invisibly.

@@ -28,7 +28,7 @@ pnp_pdf(
 \item{bg}{\code{output} pdf background color.}
 }
 \description{
-\code{pnp_pdf()} creates a pdf device preferring \code{\link[grDevices:cairo]{grDevices::cairo_pdf()}}
+\code{pnp_pdf()} creates a pdf device preferring \code{\link[grDevices:cairo_pdf]{grDevices::cairo_pdf()}}
 when supported but falling back to \code{\link[grDevices:pdf]{grDevices::pdf()}} when not.
 }
 \keyword{internal}

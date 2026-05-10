@@ -18,7 +18,7 @@ We automatically add \code{-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages
 }
 \description{
 \code{pdf_gs()} processes the pdf file with \code{ghostscript}.
-This may prevent issues with other pdf processing functions like \code{\link[pdftools:pdftools]{pdftools::pdf_pagesize()}}.
+This may prevent issues with other pdf processing functions like \code{\link[pdftools:pdf_pagesize]{pdftools::pdf_pagesize()}}.
 }
 \examples{
 if (nzchar(tools::find_gs_cmd())) {
