@@ -68,6 +68,6 @@ unlink(f6)
 unlink(f7)
 }
 \seealso{
-\code{\link[qpdf:qpdf]{qpdf::pdf_combine()}}, \code{\link[qpdf:qpdf]{qpdf::pdf_compress()}},
-\code{\link[qpdf:qpdf]{qpdf::pdf_overlay_stamp()}}, \code{\link[qpdf:qpdf]{qpdf::pdf_rotate_pages()}}, \code{\link[qpdf:qpdf]{qpdf::pdf_subset()}}
+\code{\link[qpdf:pdf_combine]{qpdf::pdf_combine()}}, \code{\link[qpdf:pdf_compress]{qpdf::pdf_compress()}},
+\code{\link[qpdf:pdf_overlay_stamp]{qpdf::pdf_overlay_stamp()}}, \code{\link[qpdf:pdf_rotate_pages]{qpdf::pdf_rotate_pages()}}, \code{\link[qpdf:pdf_subset]{qpdf::pdf_subset()}}
 }

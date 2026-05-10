@@ -20,22 +20,22 @@ grid.full(...)
 as_fill(fill = "transparent", ..., width = NULL, height = NULL)
 }
 \arguments{
-\item{fill}{A color string, a \code{\link[grid:grid.grob]{grid::grob()}}, a \code{\link[grid:patterns]{grid::pattern()}}, or a bitmap like a \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} or raster object.}
+\item{fill}{A color string, a \code{\link[grid:grob]{grid::grob()}}, a \code{\link[grid:pattern]{grid::pattern()}}, or a bitmap like a \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} or raster object.}
 
 \item{...}{Ignored for now.}
 
-\item{width, height}{If \code{fill} is a bitmap object then these will be passed to \code{\link[grid:grid.raster]{grid::rasterGrob()}}.}
+\item{width, height}{If \code{fill} is a bitmap object then these will be passed to \code{\link[grid:rasterGrob]{grid::rasterGrob()}}.}
 
-\item{vp, name}{Passed to \code{\link[grid:grid.rect]{grid::rectGrob()}}.}
+\item{vp, name}{Passed to \code{\link[grid:rectGrob]{grid::rectGrob()}}.}
 }
 \value{
-\code{fullGrob()} and \code{grid.full()} return \code{\link[grid:grid.rect]{grid::rectGrob()}} object.
+\code{fullGrob()} and \code{grid.full()} return \code{\link[grid:rectGrob]{grid::rectGrob()}} object.
 As a side effect \code{grid.full()} draws to the active graphics device.  \code{as_fill()} returns a supported grid fill object such as a color string or a \code{grid::pattern()} object.
 }
 \description{
-\code{fullGrob()} is a wrapper around \code{\link[grid:grid.rect]{grid::rectGrob()}} for a single
+\code{fullGrob()} is a wrapper around \code{\link[grid:rectGrob]{grid::rectGrob()}} for a single
 rectangle grob filled with a color, bitmap, grob, or pattern.
-In particular grob or bitmap fills will be automatically converted to a \code{\link[grid:patterns]{grid::pattern()}} fill by \code{as_fill()}.
+In particular grob or bitmap fills will be automatically converted to a \code{\link[grid:pattern]{grid::pattern()}} fill by \code{as_fill()}.
 \code{grid.full()} creates a \code{fullGrob()} and draws it to the screen.
 }
 \examples{
