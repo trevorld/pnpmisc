@@ -7,7 +7,7 @@ Authors@R: c(person("Trevor L.", "Davis", role=c("aut", "cre"),
              comment = c(ORCID = "0000-0001-6341-4639")))
 URL: https://github.com/trevorld/pnpmisc, https://trevorldavis.com/R/pnpmisc/dev/
 BugReports: https://github.com/trevorld/pnpmisc/issues
-Description: Utilities for print-and-play board games.
+Description: Functions for creating and editing PDF files for print-and-play board games with a consistent interface in which the input filename is the first argument, the output filename is the second, and all other arguments are named.  Includes functions to resize, scale, rotate, and combine PDF pages, add crop marks, crosshairs, and origami fold guides, and create plastic storage box jackets and origami card wallets. Also provides layout functions for splitting pages into individual component images and reassembling them.  Wraps PDF functionality from 'qpdf', 'pdftools', and 'xmpdf' and optionally uses 'ghostscript', 'pdfxup', and 'bittermelon' for additional functionality.
 Depends:
 	R (>= 4.2)
 Imports:
