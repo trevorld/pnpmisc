@@ -31,8 +31,10 @@ bm_split_layout <- function(
 	}
 	stopifnot(
 		requireNamespace("bittermelon", quietly = TRUE),
-		bittermelon::is_bm_pixmap(page)
+		"`page` must be a bm_pixmap object" = bittermelon::is_bm_pixmap(page)
 	)
+	# Sort by name so components are returned in reading order rather than
+	# physical layout order (e.g. zine booklet pages become page_1, page_2, ...).
 	if (hasName(layout, "name")) {
 		layout <- layout[order(layout$name), ]
 	}

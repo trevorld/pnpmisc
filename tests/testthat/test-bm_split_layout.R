@@ -6,4 +6,6 @@ test_that("`bm_split_layout()` works as expected", {
 	page <- pdf_render_bm_pixmap(f1, page = 1)
 	bml <- bm_split_layout(page, layout = "button_shy_rules")
 	expect_equal(length(bml), 8L)
+
+	expect_snapshot(error = TRUE, bm_split_layout("not a pixmap", layout = "button_shy_rules"))
 })
