@@ -26,7 +26,7 @@ normalize_output <- function(output, input = NULL) {
 	output <- normalizePath(output, mustWork = FALSE)
 	if (!is.null(input)) {
 		input <- normalizePath(input, mustWork = TRUE)
-		stopifnot(input != output)
+		stopifnot("`input` and `output` must be different files" = input != output)
 	}
 	output
 }
@@ -90,7 +90,12 @@ pnp_pdf <- function(
 	bg = "white"
 ) {
 	paper <- tolower(paper)
-	stopifnot(paper %in% SUPPORTED_PAPER)
+	if (!paper %in% SUPPORTED_PAPER) {
+		abort(sprintf(
+			"`paper` must be one of %s.",
+			paste(dQuote(SUPPORTED_PAPER), collapse = ", ")
+		))
+	}
 	if (missing(width) && missing(height) && paper != "special") {
 		orientation <- match.arg(orientation)
 		width <- paper_width(paper, orientation)

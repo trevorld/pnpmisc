@@ -19,12 +19,16 @@ pdf_paper <- function(input) {
 	short <- pmin(width, height)
 	long <- pmax(width, height)
 	paper <- rep_len("special", length(height))
-	paper <- ifelse(abs(short - 2.25) < 5e-2 & abs(long - 3.5) < 5e-2, "bridge", paper)
-	paper <- ifelse(abs(short - 2.5) < 5e-2 & abs(long - 3.5) < 5e-2, "poker", paper)
-	paper <- ifelse(abs(short - 8.5) < 5e-2 & abs(long - 14) < 5e-2, "legal", paper)
-	paper <- ifelse(abs(short - 8.5) < 5e-2 & abs(long - 11) < 5e-2, "letter", paper)
-	paper <- ifelse(abs(short - 11.69) < 5e-2 & abs(long - 16.54) < 5e-2, "a3", paper)
-	paper <- ifelse(abs(short - 8.27) < 5e-2 & abs(long - 11.69) < 5e-2, "a4", paper)
-	paper <- ifelse(abs(short - 5.83) < 5e-2 & abs(long - 8.27) < 5e-2, "a5", paper)
+	# PDFs store dimensions as integer bigpts, so the inch round-trip introduces
+	# quantization error (~0.007 in for A4). 5e-2 is the tightest value that
+	# passes tests for all supported paper sizes.
+	tol <- 5e-2
+	paper <- ifelse(abs(short - 2.25) < tol & abs(long - 3.5) < tol, "bridge", paper)
+	paper <- ifelse(abs(short - 2.5) < tol & abs(long - 3.5) < tol, "poker", paper)
+	paper <- ifelse(abs(short - 8.5) < tol & abs(long - 14) < tol, "legal", paper)
+	paper <- ifelse(abs(short - 8.5) < tol & abs(long - 11) < tol, "letter", paper)
+	paper <- ifelse(abs(short - 11.69) < tol & abs(long - 16.54) < tol, "a3", paper)
+	paper <- ifelse(abs(short - 8.27) < tol & abs(long - 11.69) < tol, "a4", paper)
+	paper <- ifelse(abs(short - 5.83) < tol & abs(long - 8.27) < tol, "a5", paper)
 	paper
 }

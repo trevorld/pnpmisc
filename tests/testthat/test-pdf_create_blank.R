@@ -3,4 +3,6 @@ test_that("`pdf_create_blank()`", {
 
 	f <- pdf_create_blank(length = 4L)
 	expect_equal(qpdf::pdf_length(f), 4L)
+
+	expect_snapshot(error = TRUE, pdf_create_blank(paper = "a6"))
 })

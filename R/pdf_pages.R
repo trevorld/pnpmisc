@@ -3,7 +3,6 @@
 #' `pdf_pages()` calculates an integer vector of subset of pdf pages.
 #'
 #' @inheritParams pdf_apply
-#' @inheritParams pdf_apply
 #' @examples
 #' f <- pdf_create_blank(length = 8L)
 #' pdf_pages(f, pages = 1:4)
@@ -32,7 +31,7 @@ pdf_pages <- function(
 	)
 ) {
 	check_dots_empty()
-	stopifnot(is.numeric(pages) || is.character(pages))
+	stopifnot("`pages` must be numeric or character" = is.numeric(pages) || is.character(pages))
 	n <- qpdf::pdf_length(input)
 	if (is.numeric(pages)) {
 		pages <- seq.int(n)[pages]
@@ -67,7 +66,12 @@ pages_interleave_last <- function(n) {
 }
 
 pages_2up_saddle_stitch <- function(n) {
-	stopifnot(n > 0L, n %% 4L == 0L)
+	if (n %% 4L != 0L) {
+		abort(sprintf(
+			'"2-up saddle stitch" requires a number of pages divisible by 4 but got %d.',
+			n
+		))
+	}
 	x <- seq.int(n)
 	pages <- integer(0L)
 	while (length(x) > 0L) {

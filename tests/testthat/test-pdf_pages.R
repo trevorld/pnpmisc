@@ -20,4 +20,6 @@ test_that("`pdf_pages()`", {
 
 	f3 <- pdf_create_blank(length = 3L)
 	expect_snapshot(error = TRUE, pdf_pages(f3, pages = "interleave"))
+	expect_snapshot(error = TRUE, pdf_pages(f3, pages = "2-up saddle stitch"))
+	expect_snapshot(error = TRUE, pdf_pages(f3, pages = list()))
 })

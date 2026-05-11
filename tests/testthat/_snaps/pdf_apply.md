@@ -25,6 +25,14 @@
       `bg` is ignored in the vector path when not resizing.
       i Pass `paper` or `scale` to apply `bg`, or `rasterize = TRUE` to force rasterization.
 
+# `pdf_apply()` errors when `input` and `output` are the same file
+
+    Code
+      pdf_apply(f, output = f)
+    Condition
+      Error in `normalize_output()`:
+      ! `input` and `output` must be different files
+
 # `pdf_apply()` errors when `isFALSE(rasterize)` but must rasterize
 
     Code
