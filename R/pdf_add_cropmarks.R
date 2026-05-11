@@ -70,8 +70,7 @@ grid_add_cropmarks <- function(
 	cm_width = unit(0.25, "mm"),
 	cm_length = unit(0.125, "in")
 ) {
-	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-	stopifnot(packageVersion("piecepackr") >= "1.14.0-6")
+	stopifnot(has_namespace("piecepackr", "1.14.0-6"))
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
 	}

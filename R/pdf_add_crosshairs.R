@@ -67,8 +67,7 @@ grid_add_crosshairs <- function(
 	ch_width = unit(1 / 6, "in"),
 	ch_grob = NULL
 ) {
-	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-	stopifnot(packageVersion("piecepackr") >= "1.14.0-5")
+	stopifnot(has_namespace("piecepackr", "1.14.0-5"))
 	ch_grob <- ch_grob %||% piecepackr::squaresCrosshairGrob()
 	if (is.character(layout)) {
 		layout <- layout_preset(layout)
