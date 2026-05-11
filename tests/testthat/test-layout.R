@@ -76,4 +76,13 @@ test_that("layout functions", {
 	expect_true(is.data.frame(df))
 	expect_true(all(hasName(df, expected_names)))
 	expect_equal(nrow(df), 25L)
+
+	expect_snapshot(error = TRUE, layout_grid(direction = "up"))
+	expect_snapshot(error = TRUE, layout_grid(nrow = 0L))
+	expect_snapshot(error = TRUE, layout_grid(nrow = 2L, ncol = 2L, name = c("a", "b", "c")))
+	expect_snapshot(error = TRUE, layout_grid(nrow = 2L, ncol = 2L, name = c("a", "b", "b", "c")))
+	expect_snapshot(
+		error = TRUE,
+		layout_grid(nrow = 2L, ncol = 2L, direction = "rtl", angle = c(0, 90, 180))
+	)
 })

@@ -36,9 +36,12 @@ layout_grid <- function(
 
 	is_ltr <- tolower(direction) %in% c("left-to-right", "ltr", "lr")
 	is_rtl <- tolower(direction) %in% c("right-to-left", "rtl", "rl")
-	stopifnot(is_ltr || is_rtl)
+	stopifnot("`direction` must be \"left-to-right\" or \"right-to-left\"" = is_ltr || is_rtl)
 
-	stopifnot(nrow > 0L, ncol > 0L)
+	stopifnot(
+		"`nrow` must be a positive integer" = nrow > 0L,
+		"`ncol` must be a positive integer" = ncol > 0L
+	)
 
 	xc <- 0.5 * paper_width(paper, orientation)
 	yc <- 0.5 * paper_height(paper, orientation)
@@ -80,12 +83,15 @@ layout_grid <- function(
 	if (is.function(name)) {
 		name <- name(nrow, ncol)
 	} else {
-		stopifnot(length(name) == nrow * ncol, !anyDuplicated(name))
+		stopifnot(
+			"`name` must have length `nrow * ncol`" = length(name) == nrow * ncol,
+			"`name` must not contain duplicates" = !anyDuplicated(name)
+		)
 	}
 	if (is_rtl) {
 		name <- assign_rtl(name, nrow)
 		if (length(angle) > 1L) {
-			stopifnot(length(angle) == nrow * ncol)
+			stopifnot("`angle` must have length `nrow * ncol`" = length(angle) == nrow * ncol)
 			angle <- assign_rtl(angle, nrow)
 		}
 	}
