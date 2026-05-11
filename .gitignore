@@ -4,3 +4,4 @@ codecov.yml
 pkgdown
 *.swp
 tmp
+tests/testthat/Rplots.pdf

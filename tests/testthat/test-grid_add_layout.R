@@ -13,3 +13,9 @@ test_that("layout functions", {
 
 	expect_equal(qpdf::pdf_length(f2), 1L)
 })
+
+test_that("`grid_add_layout()` errors on unsupported image type", {
+	skip_if_not_installed("bittermelon")
+	layout <- data.frame(name = "a", x = 1, y = 1, width = 1, height = 1, angle = 0)
+	expect_snapshot(error = TRUE, grid_add_layout(list(a = "not an image"), layout = layout))
+})

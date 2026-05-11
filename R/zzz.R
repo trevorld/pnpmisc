@@ -110,15 +110,22 @@ pnp_pdf <- function(
 
 # Adapted from `xmpdf:::xmpdf_system2()`
 system2_cmd <- function(cmd, args) {
-	output <- system2(cmd, args, stdout = TRUE, stderr = FALSE)
+	stderr_file <- tempfile()
+	on.exit(unlink(stderr_file), add = TRUE)
+	output <- system2(cmd, args, stdout = TRUE, stderr = stderr_file)
 	if (!is.null(attr(output, "status"))) {
-		abort(paste(sQuote("system2()"), "command failed."))
+		abort(c(paste(sQuote("system2()"), "command failed."), readLines(stderr_file)))
 	}
 	invisible(output)
 }
 
+has_namespace <- function(pkg, version = NULL) {
+	requireNamespace(pkg, quietly = TRUE) &&
+		(is.null(version) || packageVersion(pkg) >= version)
+}
+
 is_supported_bitmap <- function(x) {
-	if (requireNamespace("bittermelon") && packageVersion("bittermelon") >= "2.2.0") {
+	if (has_namespace("bittermelon", "2.2.0")) {
 		bittermelon::is_supported_bitmap(x)
 	} else {
 		inherits(x, c("bm_bitmap", "bm_pixmap", "magick-image", "nativeRaster", "raster"))

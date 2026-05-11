@@ -280,6 +280,8 @@ pdf_apply_raster <- function(
 	if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
 		old_w <- df_size_orig$width[1L]
 		old_h <- df_size_orig$height[1L]
+		# Record the grob in the original (pre-scale) viewport so that when
+		# grid.use() applies the affine viewportTransform below it scales correctly.
 		overlay_grob <- recordGrob(
 			grid_fn(),
 			list(grid_fn = grid_fn),

@@ -53,6 +53,12 @@ grid_add_layout <- function(images, ..., layout = "poker_3x3") {
 			pushViewport(vp)
 			grid.draw(image)
 			popViewport()
+		} else {
+			abort(sprintf(
+				"Image %s must be a supported bitmap or grob but got class %s.",
+				dQuote(n),
+				dQuote(class(image)[[1L]])
+			))
 		}
 	}
 	invisible(NULL)
