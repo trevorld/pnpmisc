@@ -33,7 +33,7 @@ bm_crop_layout <- function(
 	check_dots_empty()
 	stopifnot(
 		requireNamespace("bittermelon", quietly = TRUE),
-		bittermelon::is_bm_pixmap(page),
+		"`page` must be a bm_pixmap object" = bittermelon::is_bm_pixmap(page),
 		is.null(name) || (missing(row) && missing(col))
 	)
 	if (is.character(layout)) {
@@ -41,8 +41,10 @@ bm_crop_layout <- function(
 	}
 	if (is.null(name) || !hasName(layout, "name")) {
 		index <- which(layout$row == row & layout$col == col)
+		stopifnot("`row`/`col` not found in `layout`" = length(index) > 0L)
 	} else {
 		index <- which(layout$name == name)
+		stopifnot("`name` not found in `layout`" = length(index) > 0L)
 	}
 	rows <- bm_card_rows(page, layout = layout, index = index, bleed = bleed)
 	cols <- bm_card_cols(page, layout = layout, index = index, bleed = bleed)
