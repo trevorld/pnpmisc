@@ -1,6 +1,7 @@
 .claude
 README.html
 codecov.yml
+Rplots.pdf
 pkgdown
 *.swp
 tmp

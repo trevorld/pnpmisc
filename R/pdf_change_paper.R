@@ -8,6 +8,16 @@
 #' By default these function do **not** scale the original contents
 #' (but you can pass on a `scale` argument in the `...` to [pdf_apply()]).
 #'
+#' To convert a document between A4 and letter paper without losing any of its
+#' original safe zone, scale by the ratio of the binding dimension
+#' (the dimension that shrinks) rather than leaving `scale` at its default of 1:
+#' \describe{
+#'   \item{A4 to letter}{Height is the binding dimension (letter is shorter than A4),
+#'         so use `scale = 11 / (297 / 25.4)` (about 0.94).}
+#'   \item{Letter to A4}{Width is the binding dimension (A4 is narrower than letter),
+#'         so use `scale = (210 / 25.4) / 8.5` (about 0.97).}
+#' }
+#'
 #' @inheritParams pnp_pdf
 #' @inheritParams pdf_apply
 #' @param ... Passed to [pdf_apply()].
@@ -36,6 +46,30 @@
 #' unlink(output_a4)
 #'
 #' unlink(input)
+#'
+#' # Convert an A4 document to letter, preserving its safe zone
+#' input_a4 <- pdf_create_blank(paper = "a4", bg = "blue")
+#' output_letter <- pdf_change_paper(
+#'   input_a4,
+#'   paper = "letter",
+#'   scale = 11 / (297 / 25.4)
+#' )
+#' pdf_width(output_letter)
+#' pdf_height(output_letter)
+#' unlink(input_a4)
+#' unlink(output_letter)
+#'
+#' # Convert a letter document to A4, preserving its safe zone
+#' input_letter <- pdf_create_blank(paper = "letter", bg = "blue")
+#' output_a4_safe <- pdf_change_paper(
+#'   input_letter,
+#'   paper = "a4",
+#'   scale = (210 / 25.4) / 8.5
+#' )
+#' pdf_width(output_a4_safe)
+#' pdf_height(output_a4_safe)
+#' unlink(input_letter)
+#' unlink(output_a4_safe)
 #' @export
 pdf_change_paper <- function(
 	input,

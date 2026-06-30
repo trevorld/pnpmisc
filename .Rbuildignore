@@ -6,6 +6,7 @@
 ^README.html$
 ^README.rst$
 ^Rakefile$
+^Rplots.pdf$
 ^\.air.toml$
 ^\.claude$
 ^\.editorconfig$
