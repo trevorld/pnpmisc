@@ -6,7 +6,7 @@
 \alias{pnpmisc}
 \title{pnpmisc: Utilities for Print-and-Play Board Games}
 \description{
-Utilities for print-and-play board games.
+Functions for creating and editing PDF files for print-and-play board games with a consistent interface in which the input filename is the first argument, the output filename is the second, and all other arguments are named. Includes functions to resize, scale, rotate, and combine PDF pages, add crop marks, crosshairs, and origami fold guides, and create plastic storage box jackets and origami card wallets. Also provides layout functions for splitting pages into individual component images and reassembling them. Wraps PDF functionality from 'qpdf', 'pdftools', and 'xmpdf' and optionally uses 'ghostscript', 'pdfxup', and 'bittermelon' for additional functionality.
 }
 \section{Package options}{
 
