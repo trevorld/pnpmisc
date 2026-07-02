@@ -215,7 +215,11 @@ pdf_resize_vector <- function(input, output, scale = 1, paper = NULL, bg = "tran
 		extra_args <- c(
 			"-dFIXEDMEDIA",
 			paste0("-dDEVICEWIDTHPOINTS=", new_w),
-			paste0("-dDEVICEHEIGHTPOINTS=", new_h)
+			paste0("-dDEVICEHEIGHTPOINTS=", new_h),
+			# Without this, `pdfwrite` propagates the input's /CropBox (etc.) to the
+			# output even when it doesn't match the new page size
+			# (ghostscript >= 10.01.0 only, ignored on older versions).
+			"-dModifiesPageSize=true"
 		)
 	}
 
