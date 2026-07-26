@@ -73,6 +73,8 @@ New features
 
 * `layout_name_fn()` can be used to return a function to generate layout names in `layout_grid()`'s `name` argument.
 
+* `layout_octavo()` calculates a layout data frame for one side of a 16-page octavo booklet signature using a standard sheetwise imposition.
+
 * All functions with a `dpi` argument now default to `getOption("pnpmisc.dpi", 300)` to allow setting a global default dpi.
 
 pnpmisc v0.1.1

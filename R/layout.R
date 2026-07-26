@@ -137,6 +137,90 @@ assign_rtl <- function(x, nrow) {
 	as.vector(apply(m, 1L, rev))
 }
 
+#' Layout data frame for an octavo booklet signature
+#'
+#' `layout_octavo()` calculates a layout data frame for one side of a
+#' 16-page octavo booklet signature using a standard sheetwise imposition.
+#'
+#' An octavo signature is created by printing both `page` sides of a sheet
+#' (duplex, flipped on the short edge) and then folding the sheet in half
+#' three times, giving 8 leaves (16 pages).
+#' `signature` refers to which 16-page signature of a larger book is being laid out;
+#' gathering multiple signatures together (each incrementing `signature` by one) builds up a full book.
+#' Once printed and folded, the head (top and bottom of every page) and the
+#' fore-edge (the right side of odd pages and left side of even pages) are
+#' folded shut and need to be trimmed open; adjacent pages that instead form
+#' an uncut two-page spread (e.g. an even page and the odd page to its right)
+#' are not cut.
+#' `bolt_padding` inserts extra space at these folds that will
+#' be trimmed open (and nowhere else) so there is deliberately blank material
+#' for the trim to remove, without disturbing the flush join between the
+#' pages of an uncut spread.
+#' @param width,height Width and height of each (booklet) page (in inches).  Defaults
+#'   to poker-card size (2.5" by 3.5").
+#' @param page Which side of the printed sheet: `1` (front) or `2` (back).
+#' @param signature Which 16-page signature of a larger book this represents.
+#'   Each increment of `signature` adds 16 to the `page_#` labels.
+#' @param bolt_padding Extra space (in inches) inserted at the folds that will be
+#'   trimmed open (the bolts): between the two rows, and between pages that
+#'   aren't part of the same uncut two-page spread.
+#'   Defaults to `0` (no extra space).
+#' @param ... Passed to [layout_grid()]
+#' @examples
+#' layout_octavo()
+#' layout_octavo(page = 2)
+#' layout_octavo(signature = 2)
+#' layout_octavo(bolt_padding = 0.25)
+#' @return A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
+#' @export
+layout_octavo <- function(
+	width = 2.5,
+	height = 3.5,
+	page = 1,
+	signature = 1,
+	bolt_padding = 0,
+	...
+) {
+	page <- as.integer(page)
+	signature <- as.integer(signature)
+	bolt_padding <- as.numeric(bolt_padding)
+	stopifnot(
+		"`page` must be 1 or 2" = page %in% c(1L, 2L),
+		"`signature` must be a positive integer" = signature > 0L,
+		"`bolt_padding` must be non-negative" = bolt_padding >= 0
+	)
+	row1 <- if (page == 1L) c(5L, 12L, 9L, 8L) else c(7L, 10L, 11L, 6L)
+	row2 <- if (page == 1L) c(4L, 13L, 16L, 1L) else c(2L, 15L, 14L, 3L)
+	pages <- c(row1, row2) + 16L * (signature - 1L)
+
+	df <- layout_grid(
+		nrow = 2L,
+		ncol = 4L,
+		width = width,
+		height = height,
+		angle = rep(c(180, 0), each = 4L),
+		name = paste0("page_", pages),
+		...
+	)
+
+	if (bolt_padding > 0) {
+		# `flip` accounts for row1 being printed rotated 180 degrees: its
+		# reading-right/left are swapped relative to the flat sheet's
+		# physical left/right, so the odd/even cut rule inverts.
+		col_offset <- function(row_pages, flip) {
+			cut <- ((row_pages[1:3] %% 2L) == 1L) != flip
+			inc <- ifelse(cut, bolt_padding, 0)
+			cumsum(c(0, inc)) - sum(inc) / 2
+		}
+		df$x[1:4] <- df$x[1:4] + col_offset(row1, flip = TRUE)
+		df$x[5:8] <- df$x[5:8] + col_offset(row2, flip = FALSE)
+		df$y[1:4] <- df$y[1:4] + bolt_padding / 2
+		df$y[5:8] <- df$y[5:8] - bolt_padding / 2
+	}
+
+	df
+}
+
 #' Layout data frame for a named preset
 #'
 #' `layout_preset()` calculates a layout data frame

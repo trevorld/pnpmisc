@@ -47,6 +47,7 @@ reference:
       contents:
           - layout_grid
           - layout_name_fn
+          - layout_octavo
           - layout_preset
     - title: "{bittermelon} pixmap object utilities"
       desc: ''
