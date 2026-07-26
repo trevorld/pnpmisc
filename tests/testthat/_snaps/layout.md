@@ -1,6 +1,30 @@
 # layout functions
 
     Code
+      layout_octavo(page = 3)
+    Condition
+      Error in `layout_octavo()`:
+      ! `page` must be 1 or 2
+
+---
+
+    Code
+      layout_octavo(signature = 0)
+    Condition
+      Error in `layout_octavo()`:
+      ! `signature` must be a positive integer
+
+---
+
+    Code
+      layout_octavo(bolt_padding = -1)
+    Condition
+      Error in `layout_octavo()`:
+      ! `bolt_padding` must be non-negative
+
+---
+
+    Code
       layout_grid(direction = "up")
     Condition
       Error in `layout_grid()`:

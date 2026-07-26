@@ -50,6 +50,50 @@ test_that("layout functions", {
 	expect_equal(df$orientation, c("portrait", "portrait"))
 	expect_equal(abs(diff(df$y)), JACKET_POKER_HEIGHT + 2 * JACKET_POKER_INNER_MARGIN)
 
+	df <- layout_octavo()
+	expect_true(is.data.frame(df))
+	expect_true(all(hasName(df, expected_names)))
+	expect_equal(nrow(df), 8L)
+	expect_equal(df$name, paste0("page_", c(5, 12, 9, 8, 4, 13, 16, 1)))
+	expect_equal(df$angle, rep(c(180, 0), each = 4L))
+
+	df <- layout_octavo(page = 2)
+	expect_equal(df$name, paste0("page_", c(7, 10, 11, 6, 2, 15, 14, 3)))
+
+	df <- layout_octavo(signature = 2)
+	expect_equal(df$name, paste0("page_", c(5, 12, 9, 8, 4, 13, 16, 1) + 16))
+
+	df <- layout_octavo(page = 2, signature = 3)
+	expect_equal(df$name, paste0("page_", c(7, 10, 11, 6, 2, 15, 14, 3) + 32))
+
+	all_pages <- sort(as.integer(sub(
+		"page_",
+		"",
+		c(
+			layout_octavo()$name,
+			layout_octavo(page = 2)$name
+		)
+	)))
+	expect_equal(all_pages, 1:16)
+
+	expect_snapshot(error = TRUE, layout_octavo(page = 3))
+	expect_snapshot(error = TRUE, layout_octavo(signature = 0))
+	expect_snapshot(error = TRUE, layout_octavo(bolt_padding = -1))
+
+	df0 <- layout_octavo()
+	df <- layout_octavo(bolt_padding = 0.2)
+	expect_equal(df$width, df0$width)
+	expect_equal(df$height, df0$height)
+	# uncut two-page spreads stay flush (no added gap)
+	expect_equal(df$x[2] - df$x[1], df$width[1])
+	expect_equal(df$x[4] - df$x[3], df$width[1])
+	expect_equal(df$x[6] - df$x[5], df$width[1])
+	expect_equal(df$x[8] - df$x[7], df$width[1])
+	# folds that get trimmed open gain the extra bolt_padding
+	expect_equal(df$x[3] - df$x[2], df$width[1] + 0.2)
+	expect_equal(df$x[7] - df$x[6], df$width[1] + 0.2)
+	expect_equal(df$y[1] - df$y[5], df$height[1] + 0.2)
+
 	df <- layout_grid(nrow = 1L, ncol = 1L)
 	expect_true(is.data.frame(df))
 	expect_true(all(hasName(df, expected_names)))
