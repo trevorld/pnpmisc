@@ -1,5 +1,5 @@
-pnpmisc v0.2.0 (development)
-============================
+pnpmisc v0.2.1
+==============
 
 Breaking changes
 ----------------

@@ -131,3 +131,14 @@ is_supported_bitmap <- function(x) {
 		inherits(x, c("bm_bitmap", "bm_pixmap", "magick-image", "nativeRaster", "raster"))
 	}
 }
+
+# Use for examples that
+# may take more than 5 seconds
+# or with CPU time > 2.5 times elapsed time on CRAN servers
+# theoretically you "should" use \donttest{} but
+# in practice this led to package archival without response by CRAN
+donttest <- function() {
+	interactive() ||
+		identical(Sys.getenv("NOT_CRAN"), "true") ||
+		identical(Sys.getenv("IN_PKGDOWN"), "true")
+}
