@@ -14,9 +14,8 @@
 ## <a name="overview">Overview</a>
 
 `{pnpmisc}` is an R package to edit pdf files.
-While some of the pdf editing functions are of general use the motivating goal of this package
-is to help me tweak existing print-and-play files to a format a little
-bit easier for me to physically manufacture using my preferred techniques and tools.
+Includes functions to resize, scale, rotate, and combine PDF pages, add crop marks, crosshairs, and origami fold guides, and create plastic storage box jackets and origami card wallets.
+Also provides layout functions for splitting pages into individual component images and reassembling them.
 
 The pdf editing functions in this package have the following conventions which allow them to be chained:
 
@@ -24,6 +23,10 @@ The pdf editing functions in this package have the following conventions which a
 * The output filename is the second positional argument and if unspecified defaults to `tempfile(fileext=".pdf")`.
 * All other arguments must be named.
 * Returns the output filename invisibly.
+
+While some of the pdf editing functions are of general use the motivating goal of this package
+is to help me tweak existing print-and-play files to a format a little
+bit easier for me to physically manufacture using my preferred techniques and tools.
 
 My personal print-and-play preferences:
 
