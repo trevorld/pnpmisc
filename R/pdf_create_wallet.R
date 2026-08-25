@@ -83,7 +83,6 @@ pdf_create_wallet <- function(
 	output <- normalize_output(output)
 
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
-	stopifnot(getRversion() >= "4.1.0") # e.g. alpha masks
 
 	current_dev <- dev.cur()
 	if (current_dev > 1) {
