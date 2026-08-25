@@ -9,7 +9,8 @@
 #'         As a side effect adds crop marks to a pdf.
 #' @seealso [grid_add_cropmarks()], [piecepackr::grid.cropmark()]
 #' @examples
-#' if (requireNamespace("piecepackr", quietly = TRUE)) {
+#' if (pnpmisc:::donttest() &&
+#'     requireNamespace("piecepackr", quietly = TRUE)) {
 #'   input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
 #'   output <- pdf_add_cropmarks(input, pages = "odd",
 #'                               layout = "button_shy_cards")
