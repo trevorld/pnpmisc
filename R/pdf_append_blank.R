@@ -5,6 +5,8 @@
 #' @inheritParams pdf_apply
 #' @param minimum Final number of pages should be at least this integer.
 #' @param multiples_of Final number of pages should be a multiple of this integer.
+#' @return `output` pdf file name invisibly.
+#'         As a side effect creates a pdf file with any extra blank pages appended.
 #' @examples
 #' f1 <- pdf_create_blank(length = 1L)
 #' f2 <- pdf_append_blank(f1, multiples_of = 4L)

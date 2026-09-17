@@ -27,6 +27,9 @@ pnp_pdf(
 
 \item{bg}{\code{output} pdf background color.}
 }
+\value{
+\code{NULL} invisibly.  As a side effect opens a pdf graphics device.
+}
 \description{
 \code{pnp_pdf()} creates a pdf device preferring \code{\link[grDevices:cairo_pdf]{grDevices::cairo_pdf()}}
 when supported but falling back to \code{\link[grDevices:pdf]{grDevices::pdf()}} when not.

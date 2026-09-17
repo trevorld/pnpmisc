@@ -17,6 +17,10 @@ pdf_append_blank(input, output = NULL, ..., minimum = 1L, multiples_of = 1L)
 
 \item{multiples_of}{Final number of pages should be a multiple of this integer.}
 }
+\value{
+\code{output} pdf file name invisibly.
+As a side effect creates a pdf file with any extra blank pages appended.
+}
 \description{
 \code{pdf_append_blank()} appends blank pages to a pdf.
 }

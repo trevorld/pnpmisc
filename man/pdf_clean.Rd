@@ -19,6 +19,10 @@ this package gives the temporary pdf files it creates.
 Use a more indiscriminate value such as ".pdf" to also
 list/remove pdf files in \code{\link[=tempdir]{tempdir()}} created by other means.}
 }
+\value{
+\code{output} pdf file name invisibly.
+As a side effect copies \code{input} to \code{output} and removes temporary pdf files.
+}
 \description{
 \code{pdf_clean()} copies \code{input} pdf file to \code{output} and removes temporary pdf files with \code{rm_temp_pdfs(exclude = output)}.
 }
