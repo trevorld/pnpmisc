@@ -20,7 +20,7 @@ Also provides layout functions for splitting pages into individual component ima
 The pdf editing functions in this package have the following conventions which allow them to be chained:
 
 * The input filename is the first positional argument.
-* The output filename is the second positional argument and if unspecified defaults to `tempfile(fileext=".pdf")`.
+* The output filename is the second positional argument and if unspecified defaults to `tempfile(fileext="___pnpmisc.pdf")` (which `rm_temp_pdfs()` removes by default).
 * All other arguments must be named.
 * Returns the output filename invisibly.
 

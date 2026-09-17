@@ -94,7 +94,7 @@ pdf_render_array_gs <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.
 	check_dots_empty()
 	stopifnot(requireNamespace("png", quietly = TRUE))
 	if (is.raw(input)) {
-		tmp_pdf <- tempfile(fileext = ".pdf")
+		tmp_pdf <- temp_pdf()
 		on.exit(unlink(tmp_pdf), add = TRUE)
 		writeBin(input, tmp_pdf)
 		input <- tmp_pdf

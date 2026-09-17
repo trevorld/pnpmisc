@@ -1,6 +1,10 @@
 A4_WIDTH <- 210 / 25.4 # 210 mm
 A4_HEIGHT <- 297 / 25.4 # 297 mm
 
+# Distinguishes the temporary pdf files we create from any other pdf
+# files in `tempdir()` so `rm_temp_pdfs()` only deletes our own by default
+TEMP_PDF_FILEEXT <- "___pnpmisc.pdf"
+
 LETTER_WIDTH <- 8.5
 LETTER_HEIGHT <- 11.0
 

@@ -54,7 +54,7 @@ pdf_create_jacket_instructions(
 )
 }
 \arguments{
-\item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
+\item{output}{Output pdf filename.  \code{NULL} defaults to a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension.}
 
 \item{...}{Ignored.}
 

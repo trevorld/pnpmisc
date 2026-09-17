@@ -15,7 +15,7 @@ pdf_set_xmp(input, output = NULL, ..., xmp)
 \arguments{
 \item{input}{Input pdf filename.}
 
-\item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
+\item{output}{Output pdf filename.  \code{NULL} defaults to a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension.}
 
 \item{...}{Currently ignored.}
 
@@ -32,7 +32,7 @@ pdf_set_xmp(input, output = NULL, ..., xmp)
 These functions wrap around the utilities in the \code{xmpdf} package
 but alters the arguments to match this package's conventions:
 the first two arguments must be \code{input} and \code{output},
-by default \code{output = tempfile(fileext = ".pdf")}, and all other
+by default \code{output} is a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension, and all other
 arguments must be named.
 }
 \examples{

@@ -19,9 +19,13 @@ is_list <- function(x) {
 	is.list(x) && !inherits(x, c("grob", "gList"))
 }
 
+temp_pdf <- function() {
+	tempfile(fileext = TEMP_PDF_FILEEXT)
+}
+
 normalize_output <- function(output, input = NULL) {
 	if (is.null(output)) {
-		output <- tempfile(fileext = ".pdf")
+		output <- temp_pdf()
 	}
 	output <- normalizePath(output, mustWork = FALSE)
 	if (!is.null(input)) {

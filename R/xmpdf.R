@@ -3,7 +3,7 @@
 #' These functions wrap around the utilities in the `xmpdf` package
 #' but alters the arguments to match this package's conventions:
 #' the first two arguments must be `input` and `output`,
-#' by default `output = tempfile(fileext = ".pdf")`, and all other
+#' by default `output` is `r r2i_temp_pdf`, and all other
 #' arguments must be named.
 #' @inheritParams pdf_apply
 #' @param ... Currently ignored.

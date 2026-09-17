@@ -22,7 +22,7 @@ pdf_subset(input, output = NULL, ..., pages = 1L)
 \item{input}{For \code{pdf_combine()}, a character vector of input pdf filenames.
 For all other functions, a single input pdf filename.}
 
-\item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
+\item{output}{Output pdf filename.  \code{NULL} defaults to a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension.}
 
 \item{...}{Passed to the underlying qpdf functions.}
 
@@ -46,7 +46,7 @@ The functions \code{\link[=pdf_pages]{pdf_pages()}} and \code{\link[=pdf_subset]
 \description{
 These functions wrap around the utilities in the \code{qpdf} package
 but alters the arguments to match this package's conventions:
-the first two arguments must be \code{input} and \code{output} (which by default \code{tempfile(fileext = ".pdf")}),
+the first two arguments must be \code{input} and \code{output} (which by default is a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension),
 all other arguments must be named,
 and any \code{pages} argument is first processed by \code{\link[=pdf_pages]{pdf_pages()}} (so you can also use strings like "even" or "odd").
 }
