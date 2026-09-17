@@ -5,29 +5,36 @@
 \alias{rm_temp_pdfs}
 \title{List and remove temporary pdfs}
 \usage{
-ls_temp_pdfs(exclude = character())
+ls_temp_pdfs(exclude = character(), fileext = "___pnpmisc.pdf")
 
-rm_temp_pdfs(exclude = character())
+rm_temp_pdfs(exclude = character(), fileext = "___pnpmisc.pdf")
 }
 \arguments{
 \item{exclude}{A character vector of filenames to exclude.}
+
+\item{fileext}{File extension of the temporary pdf files to list/remove.
+Defaults to \verb{___pnpmisc.pdf}, the file extension
+this package gives the temporary pdf files it creates.
+Use a more indiscriminate value such as ".pdf" to also
+list/remove pdf files in \code{\link[=tempdir]{tempdir()}} created by other means.}
 }
 \value{
 \code{ls_temp_pdfs()} returns a character vector.
 \code{rm_temp_pdfs()} returns \code{invisible(NULL)}.
+As a side effect \code{rm_temp_pdfs()} deletes the listed files.
 }
 \description{
 Using the functions in this package can lead to several pdf
 files cluttering your \code{\link[=tempdir]{tempdir()}}.
 \code{ls_temp_pdfs()} lists them while \code{rm_temp_pdfs()} removes them.
+By default only the temporary pdf files created by this package are
+listed/removed.
 }
 \examples{
-\dontrun{# May delete user pdf files in `tempdir()`
 f1 <- pdf_create_blank()
 f2 <- pdf_compress(f1)
 f3 <- pdf_subset(f2, pages = 1L)
 ls_temp_pdfs()
 rm_temp_pdfs()
 ls_temp_pdfs()
-}
 }

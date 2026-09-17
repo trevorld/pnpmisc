@@ -2,7 +2,7 @@
 #'
 #' These functions wrap around the utilities in the `qpdf` package
 #' but alters the arguments to match this package's conventions:
-#' the first two arguments must be `input` and `output` (which by default `tempfile(fileext = ".pdf")`),
+#' the first two arguments must be `input` and `output` (which by default is `r r2i_temp_pdf`),
 #' all other arguments must be named,
 #' and any `pages` argument is first processed by [pdf_pages()] (so you can also use strings like "even" or "odd").
 #' @inheritParams pdf_apply

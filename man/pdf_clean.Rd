@@ -4,30 +4,31 @@
 \alias{pdf_clean}
 \title{Copies pdf file while removing temporary pdf files}
 \usage{
-pdf_clean(input, output = NULL, ...)
+pdf_clean(input, output = NULL, ..., fileext = "___pnpmisc.pdf")
 }
 \arguments{
 \item{input}{Input pdf filename.}
 
-\item{output}{Output pdf filename.  \code{NULL} defaults to \code{tempfile(fileext = ".pdf")}.}
+\item{output}{Output pdf filename.  \code{NULL} defaults to a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension.}
 
 \item{...}{Ignored.}
-}
-\value{
-\code{output} pdf file name invisibly.
-As a side effect copies \code{input} to \code{output} and removes temporary pdf files.
+
+\item{fileext}{File extension of the temporary pdf files to list/remove.
+Defaults to \verb{___pnpmisc.pdf}, the file extension
+this package gives the temporary pdf files it creates.
+Use a more indiscriminate value such as ".pdf" to also
+list/remove pdf files in \code{\link[=tempdir]{tempdir()}} created by other means.}
 }
 \description{
 \code{pdf_clean()} copies \code{input} pdf file to \code{output} and removes temporary pdf files with \code{rm_temp_pdfs(exclude = output)}.
 }
 \examples{
-\dontrun{# May delete user files in `tempdir()`
 f1 <- pdf_create_blank()
 f2 <- pdf_compress(f1)
 f3 <- pdf_subset(f2, pages = 1L)
 ls_temp_pdfs()
-pdf_clean(f3, "output.pdf")
+output <- tempfile(fileext = ".pdf")
+pdf_clean(f3, output)
 ls_temp_pdfs()
-unlink("output.pdf")
-}
+unlink(output)
 }

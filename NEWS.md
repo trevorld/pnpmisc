@@ -7,6 +7,7 @@ Breaking changes
 * The first argument of `layout_preset()` is now `preset` instead of `name` (so we can now pass `layout_grid()`'s new `name` argument in the `...`).
 * The default argument for `paper` is now `getOption("papersize", "letter")` instead of (depending on the function) "letter" or "special".
 * `bm_create_pdf()` and `pdf_create_blank()` now follow the convention that paper size will be determined by `height` and `width` if either are non-missing (and/or `paper = "special"`) otherwise paper size will be determined by both `paper` and `orientation`.
+* `ls_temp_pdfs()` and `rm_temp_pdfs()` now only list/remove the temporary pdf files created by this package (which now use a `___pnpmisc.pdf` file extension) instead of every pdf file in `tempdir()`.  Pass `fileext = ".pdf"` for the previous behaviour (#67).
 * By default `pdf_rm_crosshairs()` now removes crosshairs from all pages.  You'll need to explicitly pass `pages = "odd"` to get the previous behaviour.
 * The original pdf contents are now rasterized in fewer cases.  In such cases if you want to explicitly rasterize the pdf contents you'll need to pass `rasterize = TRUE`.
 
@@ -74,6 +75,8 @@ New features
 * `layout_name_fn()` can be used to return a function to generate layout names in `layout_grid()`'s `name` argument.
 
 * `layout_octavo()` calculates a layout data frame for one side of a 16-page octavo booklet signature using a standard sheetwise imposition.
+
+* `ls_temp_pdfs()`, `rm_temp_pdfs()`, and `pdf_clean()` gain a `fileext` argument to control which temporary pdf files are listed/removed (#67).
 
 * All functions with a `dpi` argument now default to `getOption("pnpmisc.dpi", 300)` to allow setting a global default dpi.
 

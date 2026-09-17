@@ -9,7 +9,7 @@
 #'   whether ghostscript is available (see [pdf_gs()]).
 #'
 #' @param input Input pdf filename.
-#' @param output Output pdf filename.  `NULL` defaults to `tempfile(fileext = ".pdf")`.
+#' @param output Output pdf filename.  `NULL` defaults to `r r2i_temp_pdf`.
 #' @param ... Ignored.
 #' @param dpi Dots per inch.
 #'   Passed to [pdftools::pdf_render_page()] when we rasterize the original content.
@@ -179,14 +179,14 @@ pdf_apply_vector <- function(
 	df_size <- pdftools::pdf_pagesize(input)
 	width_in <- df_size$width[1L] / 72
 	height_in <- df_size$height[1L] / 72
-	stamp <- tempfile(fileext = ".pdf")
+	stamp <- temp_pdf()
 	on.exit(unlink(stamp), add = TRUE)
 	pnp_pdf(stamp, width = width_in, height = height_in, bg = "transparent")
 	grid.newpage()
 	grid_fn()
 	invisible(dev.off())
 	if (resize) {
-		overlaid <- tempfile(fileext = ".pdf")
+		overlaid <- temp_pdf()
 		on.exit(unlink(overlaid), add = TRUE)
 		pdf_overlay_stamp(input, overlaid, stamp = stamp)
 		pdf_resize_vector(overlaid, output, scale = scale, paper = paper, bg = bg)
