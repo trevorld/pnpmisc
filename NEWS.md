@@ -1,4 +1,4 @@
-pnpmisc v0.2.1
+pnpmisc v0.2.2
 ==============
 
 Breaking changes
