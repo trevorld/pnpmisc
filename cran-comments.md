@@ -1,6 +1,10 @@
 * Several features require `ghostscript`.  To make N-up pdf documents you'll also need `pdfxup`.
   The examples and tests shouldn't throw an ERROR if one (or all)
   of these are not installed.
+* Makes the following tweaks requested by CRAN:
+
+  + Removes "Functions for" at the start of the description.
+  + Added `\value` tag to the Rd files that were missing it.
 
 ## Test environments
 
