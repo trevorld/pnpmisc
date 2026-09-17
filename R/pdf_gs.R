@@ -5,6 +5,8 @@
 #' @inheritParams pdf_apply
 #' @param args Arguments to pass to ghostscript.
 #'             We automatically add `-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}`.
+#' @return `output` pdf file name invisibly.
+#'         As a side effect creates a pdf file processed by `ghostscript`.
 #' @seealso [tools::find_gs_cmd()] and <https://ghostscript.readthedocs.io/en/latest/>
 #' @examples
 #' if (nzchar(tools::find_gs_cmd())) {

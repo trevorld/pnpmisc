@@ -3,6 +3,8 @@
 #' `pdf_clean()` copies `input` pdf file to `output` and removes temporary pdf files with `rm_temp_pdfs(exclude = output)`.
 #' @inheritParams pdf_apply
 #' @inheritParams rm_temp_pdfs
+#' @return `output` pdf file name invisibly.
+#'         As a side effect copies `input` to `output` and removes temporary pdf files.
 #' @examples
 #' f1 <- pdf_create_blank()
 #' f2 <- pdf_compress(f1)

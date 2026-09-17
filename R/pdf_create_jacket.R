@@ -41,6 +41,10 @@
 #'              For a 4x6 photo storage box a good value is `r JACKET_4x6_SPINE_WIDTH` inches and for a poker deck storage box a good value is `r JACKET_POKER_SPINE_WIDTH` inches.
 #' @param bg Background fill for the storage jacket.
 #'           Passed to [grid.full()].
+#' @return `output` pdf file name invisibly.
+#'         As a side effect creates a printable storage box jacket pdf file
+#'         (or, for `pdf_create_jacket_instructions()`, a printable
+#'         sheet of instructions for making such a jacket).
 #' @examples
 #' # Template `front`, `back`, and `spine`
 #' if (requireNamespace("piecepackr", quietly = TRUE)) {

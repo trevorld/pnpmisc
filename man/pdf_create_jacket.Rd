@@ -101,6 +101,12 @@ Passed to \code{\link[=grid.full]{grid.full()}}.}
 \item{style}{A style set such as \code{\link[marquee:classic_style]{marquee::classic_style()}} to
 be passed to \code{\link[marquee:marquee_grob]{marquee::marquee_grob()}}.}
 }
+\value{
+\code{output} pdf file name invisibly.
+As a side effect creates a printable storage box jacket pdf file
+(or, for \code{pdf_create_jacket_instructions()}, a printable
+sheet of instructions for making such a jacket).
+}
 \description{
 \code{pdf_create_jacket()} creates a printable storage box jacket.
 \code{pdf_create_4x6_jacket()} is a wrapper targeting a 4x6 photo storage box.

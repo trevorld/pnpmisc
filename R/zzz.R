@@ -83,6 +83,7 @@ paper_height <- function(paper, orientation = "portrait") {
 #' @param paper Paper size.  Usually either "letter" or "a4" but in certain circumstances can be one of `r paste(dQuote(SUPPORTED_PAPER), collapse = ", ")`.
 #' @param width,height Passed to underlying graphics device.
 #' @param orientation Either "portrait" or "landscape".
+#' @return `NULL` invisibly.  As a side effect opens a pdf graphics device.
 #' @keywords internal
 pnp_pdf <- function(
 	output,

@@ -16,6 +16,10 @@ pdf_gs(input, output = NULL, ..., args = character(0L))
 \item{args}{Arguments to pass to ghostscript.
 We automatically add \code{-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sAutoRotatePages=None -sOutputFile={output}}.}
 }
+\value{
+\code{output} pdf file name invisibly.
+As a side effect creates a pdf file processed by \code{ghostscript}.
+}
 \description{
 \code{pdf_gs()} processes the pdf file with \code{ghostscript}.
 This may prevent issues with other pdf processing functions like \code{\link[pdftools:pdf_pagesize]{pdftools::pdf_pagesize()}}.
