@@ -77,6 +77,11 @@ New features
 
 * All functions with a `dpi` argument now default to `getOption("pnpmisc.dpi", 300)` to allow setting a global default dpi.
 
+Bug fixes
+---------
+
+* `pdf_width()` and `pdf_height()` no longer leave an `Rplots.pdf` file behind in the working directory when called with no graphics device open.  This also affected the functions that call them internally such as `pdf_append_blank()`, `pdf_change_paper()`, and `pdf_scale()` (#67).
+
 pnpmisc v0.1.1
 ==============
 

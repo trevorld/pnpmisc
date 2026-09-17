@@ -19,6 +19,7 @@ pdf_width <- function(input, ..., units = "inches", numeric = FALSE) {
 		return(width)
 	} else {
 		if (dev.cur() == 1L) {
+			grDevices::pdf(NULL)
 			on.exit(invisible(dev.off()), add = TRUE)
 		}
 		convertWidth(unit(width, "bigpts"), units, valueOnly = numeric)
@@ -34,6 +35,7 @@ pdf_height <- function(input, ..., units = "inches", numeric = FALSE) {
 		return(height)
 	} else {
 		if (dev.cur() == 1L) {
+			grDevices::pdf(NULL)
 			on.exit(invisible(dev.off()), add = TRUE)
 		}
 		convertHeight(unit(height, "bigpts"), units, valueOnly = numeric)
