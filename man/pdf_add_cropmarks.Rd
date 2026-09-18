@@ -34,10 +34,9 @@ As a side effect adds crop marks to a pdf.
 \code{pdf_add_cropmarks()} adds crop marks to the edges of components of a print-and-play layout.
 }
 \examples{
-if (pnpmisc:::donttest() &&
-    requireNamespace("piecepackr", quietly = TRUE)) {
+if (requireNamespace("piecepackr", quietly = TRUE)) {
   input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
-  output <- pdf_add_cropmarks(input, pages = "odd",
+  output <- pdf_add_cropmarks(input, pages = "odd", dpi = 75,
                               layout = "button_shy_cards")
   unlink(input)
   unlink(output)
