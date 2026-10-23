@@ -3,7 +3,7 @@
     Code
       pdf_pages(f3, pages = "interleave")
     Condition
-      Error in `pages_interleave()`:
+      Error in `pdf_pages()`:
       ! "interleave" requires an even number of pages but got 3.
 
 ---
@@ -11,7 +11,7 @@
     Code
       pdf_pages(f3, pages = "2-up saddle stitch")
     Condition
-      Error in `pages_2up_saddle_stitch()`:
+      Error in `pdf_pages()`:
       ! "2-up saddle stitch" requires a number of pages divisible by 4 but got 3.
 
 ---

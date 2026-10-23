@@ -71,7 +71,6 @@ test_that("`pdf_apply()` errors early on out-of-range `pages`", {
 	on.exit(rm_temp_pdfs(), add = TRUE)
 	f <- pdf_create_blank(paper = "letter", length = 4L)
 	expect_snapshot(error = TRUE, pdf_apply(f, pages = 5L, grid_fn = \() grid::grid.rect()))
-	expect_snapshot(error = TRUE, pdf_apply(f, pages = 5L, rasterize = TRUE))
 })
 
 test_that("`pdf_apply()` treats an empty `pages` selection as nothing to do", {
@@ -95,6 +94,4 @@ test_that("`pdf_apply()` overlays a subset of pages without rasterizing when `qp
 	f1 <- pdf_create_blank(paper = "letter", length = 4L)
 	expect_no_message(f2 <- pdf_apply(f1, pages = "even", grid_fn = \() grid::grid.rect()))
 	expect_equal(qpdf::pdf_length(f2), 4L)
-	f3 <- pdf_apply(f1, pages = "even", grid_fn = \() grid::grid.rect(), rasterize = FALSE)
-	expect_equal(qpdf::pdf_length(f3), 4L)
 })

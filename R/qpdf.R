@@ -54,20 +54,15 @@ pdf_overlay_stamp <- function(input, output = NULL, ..., pages = "all") {
 	output <- normalize_output(output, input)
 	n <- qpdf::pdf_length(input)
 	pages <- check_pages_nonempty(pages_from_n(n, pages))
-	if (qpdf_overlay_supports_pages()) {
-		qpdf::pdf_overlay_stamp(input, output = output, ..., pages = pages)
-	} else {
-		if (!setequal(pages, seq_len(n))) {
-			abort(
-				c(
-					'`pages` must be "all" because the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument.',
-					i = "This requires a version of `qpdf` newer than v1.4.1."
-				),
-				class = "pnpmisc_error_overlay_pages"
-			)
-		}
-		qpdf::pdf_overlay_stamp(input, output = output, ...)
+	if (setequal(pages, seq_len(n))) {
+		pages <- NULL
+	} else if (!qpdf_overlay_supports_pages()) {
+		abort(
+			paste("`pages` must select every page because", QPDF_OVERLAY_PAGES_UNSUPPORTED),
+			class = "pnpmisc_error_overlay_pages"
+		)
 	}
+	qpdf_overlay_stamp(input, output, ..., pages = pages)
 	invisible(output)
 }
 
@@ -78,12 +73,24 @@ qpdf_overlay_supports_pages <- function() {
 	"pages" %in% names(formals(qpdf::pdf_overlay_stamp))
 }
 
+QPDF_OVERLAY_PAGES_UNSUPPORTED <- "the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1)."
+
+# `pages` is either `NULL` (every page) or an integer vector of pages which
+# the caller must only pass if `qpdf_overlay_supports_pages()`
+qpdf_overlay_stamp <- function(input, output, ..., pages = NULL) {
+	if (is.null(pages)) {
+		qpdf::pdf_overlay_stamp(input, output = output, ...)
+	} else {
+		qpdf::pdf_overlay_stamp(input, output = output, ..., pages = pages)
+	}
+}
+
 #' @inheritParams pdf_apply
 #' @rdname qpdf_wrappers
 #' @export
 pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
 	output <- normalize_output(output, input)
-	pages <- check_pages_nonempty(pdf_pages(input, pages = pages))
+	pages <- check_pages_nonempty(pages_from_n(qpdf::pdf_length(input), pages))
 	qpdf::pdf_rotate_pages(input, output = output, ..., pages = pages)
 	invisible(output)
 }
@@ -93,7 +100,7 @@ pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
 #' @export
 pdf_subset <- function(input, output = NULL, ..., pages = 1L) {
 	output <- normalize_output(output, input)
-	pages <- check_pages_nonempty(pdf_pages(input, pages = pages))
+	pages <- check_pages_nonempty(pages_from_n(qpdf::pdf_length(input), pages))
 	qpdf::pdf_subset(input, output = output, ..., pages = pages)
 	invisible(output)
 }

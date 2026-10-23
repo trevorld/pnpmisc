@@ -25,7 +25,7 @@ pdf_rep <- function(
 	each = 1L
 ) {
 	check_dots_empty()
-	pages <- pdf_pages(input, pages = pages)
+	pages <- pages_from_n(qpdf::pdf_length(input), pages)
 	pages <- rep(pages, times = times, length.out = length.out, each = each)
 	pdf_subset(input, output, pages = pages)
 }
