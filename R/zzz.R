@@ -77,6 +77,16 @@ paper_height <- function(paper, orientation = "portrait") {
 	}
 }
 
+# Evaluate `expr` with a graphics device open (as `grid::convertUnit()` and
+# friends need) without creating an `Rplots.pdf` file if no device is open
+with_null_device <- function(expr) {
+	if (dev.cur() == 1L) {
+		grDevices::pdf(NULL)
+		on.exit(invisible(dev.off()), add = TRUE)
+	}
+	force(expr)
+}
+
 #' Create a pdf device
 #'
 #' `pnp_pdf()` creates a pdf device preferring [grDevices::cairo_pdf()]

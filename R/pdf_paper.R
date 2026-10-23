@@ -10,12 +10,10 @@
 #' @export
 pdf_paper <- function(input) {
 	pagesize <- pdftools::pdf_pagesize(input) # in "bigpts" units
-	if (dev.cur() == 1L) {
-		grDevices::pdf(NULL)
-		on.exit(invisible(dev.off()), add = TRUE)
-	}
-	height <- convertHeight(unit(pagesize$height, "bigpts"), "in", valueOnly = TRUE)
-	width <- convertWidth(unit(pagesize$width, "bigpts"), "in", valueOnly = TRUE)
+	with_null_device({
+		height <- convertHeight(unit(pagesize$height, "bigpts"), "in", valueOnly = TRUE)
+		width <- convertWidth(unit(pagesize$width, "bigpts"), "in", valueOnly = TRUE)
+	})
 	short <- pmin(width, height)
 	long <- pmax(width, height)
 	paper <- rep_len("special", length(height))

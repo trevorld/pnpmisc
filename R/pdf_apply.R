@@ -92,7 +92,9 @@ pdf_apply <- function(
 		bm_fn <- identity
 	}
 
-	must_grid_a_subset <- !setequal(pages, seq_len(n)) &&
+	all_pages <- setequal(pages, seq_len(n))
+
+	must_grid_a_subset <- !all_pages &&
 		!identical(grid_fn, grid::grid.null) &&
 		!qpdf_overlay_supports_pages()
 	must_resize_wo_gs <- (!is.null(paper) || scale != 1) && !nzchar(find_gs_cmd())
@@ -134,7 +136,7 @@ pdf_apply <- function(
 		pdf_apply_vector(
 			input,
 			output,
-			pages = pages,
+			pages = if (all_pages) NULL else pages,
 			paper = paper,
 			scale = scale,
 			bg = bg,
@@ -171,13 +173,14 @@ pdf_apply <- function(
 	}
 }
 
-# Can only use if no `bm_fn` and either `pages = "all"` or
-# `qpdf::pdf_overlay_stamp()` supports a `pages` argument
+# Can only use if no `bm_fn`.
+# `pages` is `NULL` (every page) or an integer vector of pages which
+# `pdf_apply()` only passes if `qpdf_overlay_supports_pages()`
 pdf_apply_vector <- function(
 	input,
 	output,
 	...,
-	pages = "all",
+	pages = NULL,
 	paper = NULL,
 	scale = 1,
 	bg = "transparent",
@@ -207,10 +210,10 @@ pdf_apply_vector <- function(
 	if (resize) {
 		overlaid <- temp_pdf()
 		on.exit(unlink(overlaid), add = TRUE)
-		pdf_overlay_stamp(input, overlaid, stamp = stamp, pages = pages)
+		qpdf_overlay_stamp(input, overlaid, stamp = stamp, pages = pages)
 		pdf_resize_vector(overlaid, output, scale = scale, paper = paper, bg = bg)
 	} else {
-		pdf_overlay_stamp(input, output, stamp = stamp, pages = pages)
+		qpdf_overlay_stamp(input, output, stamp = stamp, pages = pages)
 	}
 	invisible(output)
 }
@@ -348,7 +351,7 @@ must_rasterize_reasons <- function(
 	if (must_grid_a_subset) {
 		reasons <- c(
 			reasons,
-			i = "`pages` is a strict subset of the pages but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1)."
+			i = paste("`pages` is a strict subset of the pages but", QPDF_OVERLAY_PAGES_UNSUPPORTED)
 		)
 	}
 	if (must_resize_wo_gs) {

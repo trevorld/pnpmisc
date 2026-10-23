@@ -51,12 +51,3 @@
       ! `pages` must only select pages that exist.
       i `input` has 4 pages.
 
----
-
-    Code
-      pdf_apply(f, pages = 5L, rasterize = TRUE)
-    Condition
-      Error in `pdf_apply()`:
-      ! `pages` must only select pages that exist.
-      i `input` has 4 pages.
-

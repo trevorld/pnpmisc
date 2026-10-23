@@ -31,22 +31,13 @@ pdf_pages <- function(
 	)
 ) {
 	check_dots_empty()
-	n <- qpdf::pdf_length(input)
-	pages_from_n(n, pages)
+	pages_from_n(qpdf::pdf_length(input), pages)
 }
 
-# Keep in sync with the (literal, so it renders in `\\usage{}`) default of `pdf_pages()`
-PAGES_CHOICES <- c(
-	"all",
-	"even",
-	"odd",
-	"2-up saddle stitch",
-	"interleave",
-	"interleave_first",
-	"interleave_last"
-)
+PAGES_CHOICES <- eval(formals(pdf_pages)$pages)
 
-# `pdf_apply()` also calls this directly so it only reads `input` once
+# Internal workhorse of `pdf_pages()` for callers that already know the
+# number of pages `n` and want errors attributed to themselves
 pages_from_n <- function(n, pages, call = caller_env()) {
 	if (!is.numeric(pages) && !is.character(pages)) {
 		abort("`pages` must be numeric or character", call = call)
@@ -67,10 +58,10 @@ pages_from_n <- function(n, pages, call = caller_env()) {
 		pages <- switch(
 			arg_match0(pages, PAGES_CHOICES, arg_nm = "pages", error_call = call),
 			all = seq.int(n),
-			even = which(seq_len(n) %% 2L == 0L),
-			odd = which(seq_len(n) %% 2L == 1L),
-			`2-up saddle stitch` = pages_2up_saddle_stitch(n),
-			interleave = pages_interleave(n),
+			even = which(is_even(seq_len(n))),
+			odd = which(is_odd(seq_len(n))),
+			`2-up saddle stitch` = pages_2up_saddle_stitch(n, call),
+			interleave = pages_interleave(n, call),
 			interleave_first = pages_interleave_first(n),
 			interleave_last = pages_interleave_last(n)
 		)
@@ -78,9 +69,12 @@ pages_from_n <- function(n, pages, call = caller_env()) {
 	pages
 }
 
-pages_interleave <- function(n) {
+pages_interleave <- function(n, call = caller_env()) {
 	if (n %% 2L != 0L) {
-		abort(sprintf("\"interleave\" requires an even number of pages but got %d.", n))
+		abort(
+			sprintf("\"interleave\" requires an even number of pages but got %d.", n),
+			call = call
+		)
 	}
 	interleave(seq.int(n %/% 2L), seq.int(n %/% 2L + 1L, n))
 }
@@ -93,12 +87,15 @@ pages_interleave_last <- function(n) {
 	interleave(seq_len(n - 1L), rep.int(n, n - 1L))
 }
 
-pages_2up_saddle_stitch <- function(n) {
+pages_2up_saddle_stitch <- function(n, call = caller_env()) {
 	if (n %% 4L != 0L) {
-		abort(sprintf(
-			'"2-up saddle stitch" requires a number of pages divisible by 4 but got %d.',
-			n
-		))
+		abort(
+			sprintf(
+				'"2-up saddle stitch" requires a number of pages divisible by 4 but got %d.',
+				n
+			),
+			call = call
+		)
 	}
 	x <- seq.int(n)
 	pages <- integer(0L)

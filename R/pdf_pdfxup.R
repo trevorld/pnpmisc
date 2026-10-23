@@ -95,12 +95,12 @@ pdf_pdfxup <- function(
 	}
 
 	if (!identical(bb_pages, "all")) {
-		bb_pages <- pdf_pages(input, pages = bb_pages)
+		bb_pages <- pages_from_n(qpdf::pdf_length(input), bb_pages)
 		args <- c(args, "--bb", paste(bb_pages, collapse = ","))
 	}
 
 	if (!identical(pages, "all")) {
-		pages <- pdf_pages(input, pages = pages)
+		pages <- pages_from_n(qpdf::pdf_length(input), pages)
 		args <- c(args, "--pages", paste(pages, collapse = ","))
 	}
 
@@ -145,12 +145,6 @@ as_pt_fn <- function(default.units, v) {
 	as_unit <- function(x) if (is.numeric(x)) unit(x, default.units) else x
 	fmt_pt <- function(x) sprintf(fmt_dim, x)
 	function(x) {
-		if (dev.cur() == 1L) {
-			grDevices::pdf(NULL)
-			on.exit(invisible(dev.off()), add = TRUE)
-		}
-		as_unit(x) |>
-			convertUnit("pt", valueOnly = TRUE) |>
-			fmt_pt()
+		with_null_device(as_unit(x) |> convertUnit("pt", valueOnly = TRUE) |> fmt_pt())
 	}
 }
