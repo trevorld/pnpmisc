@@ -23,7 +23,7 @@ Suggests:
     bittermelon (>= 2.2.0-1),
     gridpattern,
     jpeg,
-    piecepackr (>= 1.14.0-6),
+    piecepackr (>= 1.17.1),
     png,
     marquee,
     testthat (>= 3.0.0),

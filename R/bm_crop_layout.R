@@ -12,13 +12,25 @@
 #' @return A [bittermelon::bm_pixmap()] object.
 #' @seealso [bm_split_layout()] to extract all components from the layout
 #' @examples
-#' \dontrun{# User not expected to have this PDF file
-#' if (requireNamespace("bittermelon", quietly = TRUE)) {
-#'   input <- "A Nice Cuppa - PNP.pdf"
-#'   page <- pdf_render_bm_pixmap(input, page = 4L, dpi = 75)
-#'   card <- bm_crop_layout(page, layout = "button_shy_cards", row = 1L, col = 1L)
+#' # Create a mock print-and-play layout page of playing cards
+#' if (requireNamespace("bittermelon", quietly = TRUE) &&
+#'     requireNamespace("piecepackr", quietly = TRUE) &&
+#'     utils::packageVersion("piecepackr") >= "1.17.1" &&
+#'     capabilities("cairo")) {
+#'   df <- layout_preset("poker_3x3") |>
+#'     transform(piece_side = "card_face", suit = 1L, rank = 1:9)
+#'   cfg <- piecepackr::game_systems(border = FALSE, systems = "playing_cards")$playing_cards
+#'
+#'   input <- tempfile(fileext = ".pdf")
+#'   grDevices::cairo_pdf(input, width = 8.5, height = 11)
+#'   piecepackr::pmap_piece(df, cfg = cfg, default.units = "in")
+#'   invisible(grDevices::dev.off())
+#'
+#'   page <- pdf_render_bm_pixmap(input, page = 1L, dpi = 75)
+#'   card <- bm_crop_layout(page, layout = "poker_3x3", row = 1L, col = 1L)
 #'   grid::grid.raster(card)
-#' }
+#'
+#'   unlink(input)
 #' }
 #' @export
 bm_crop_layout <- function(
