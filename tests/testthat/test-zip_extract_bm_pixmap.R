@@ -1,13 +1,11 @@
 test_that("`zip_extract_bm_pixmap()`", {
 	skip_if_not(nzchar(Sys.which(Sys.getenv("R_ZIPCMD", "zip"))))
 	skip_if_not_installed("bittermelon")
-	dir <- setwd(tempdir())
-	on.exit(setwd(dir), add = TRUE)
 	z <- tempfile(fileext = ".zip")
 	on.exit(unlink(z), add = TRUE)
 	f <- pdf_create_blank(bg = "black")
 	on.exit(unlink(f), add = TRUE)
-	zip(basename(z), basename(f), flags = "-q")
+	zip(z, f, flags = "-qj")
 	bm <- zip_extract_bm_pixmap(z, basename(f))
 	expect_equal(bm[1, 1], "#000000FF")
 
@@ -18,7 +16,7 @@ test_that("`zip_extract_bm_pixmap()`", {
 	grDevices::jpeg(f, bg = "black")
 	grid::grid.newpage()
 	invisible(dev.off())
-	zip(basename(z), basename(f), flags = "-q")
+	zip(z, f, flags = "-qj")
 	bm <- zip_extract_bm_pixmap(z, basename(f))
 	expect_equal(bm[1, 1], "#000000FF")
 
@@ -27,7 +25,7 @@ test_that("`zip_extract_bm_pixmap()`", {
 	grDevices::jpeg(f, bg = "black")
 	grid::grid.newpage()
 	invisible(dev.off())
-	zip(basename(z), basename(f), flags = "-q")
+	zip(z, f, flags = "-qj")
 	bm <- zip_extract_bm_pixmap(z, basename(f))
 	expect_equal(bm[1, 1], "#000000FF")
 
@@ -38,7 +36,7 @@ test_that("`zip_extract_bm_pixmap()`", {
 	grDevices::png(f, bg = "black")
 	grid::grid.newpage()
 	invisible(dev.off())
-	zip(basename(z), basename(f), flags = "-q")
+	zip(z, f, flags = "-qj")
 	bm <- zip_extract_bm_pixmap(z, basename(f))
 	expect_equal(bm[1, 1], "#000000FF")
 
@@ -48,6 +46,6 @@ test_that("`zip_extract_bm_pixmap()`", {
 	grDevices::tiff(f, bg = "black")
 	grid::grid.newpage()
 	invisible(dev.off())
-	zip(basename(z), basename(f), flags = "-q")
+	zip(z, f, flags = "-qj")
 	expect_error(zip_extract_bm_pixmap(z, basename(f)))
 })

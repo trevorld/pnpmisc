@@ -16,14 +16,18 @@ raw_from_zip <- function(zipfile, filename) {
 #' @param ... If `filename` is a pdf file then passed to [pdf_render_bm_pixmap()]
 #' @return A [bittermelon::bm_pixmap()] object.
 #' @examples
-#' \dontrun{
-#' # "https://boardgamegeek.com/filepage/279177/packvelopes-storage-boxes"
-#' zipfile <- "Everdeck_Packvelopes.zip"
-#' bm <- zip_extract_bm_pixmap(zipfile, "Red and Black.pdf")
+#' # Typically used with a print-and-play zip archive downloaded from
+#' # e.g. <https://boardgamegeek.com/> but here we create our own zip file
+#' if (requireNamespace("bittermelon", quietly = TRUE) &&
+#'     nzchar(Sys.which(Sys.getenv("R_ZIPCMD", "zip")))) {
+#'   input <- pdf_create_blank(bg = "blue")
+#'   zipfile <- tempfile(fileext = ".zip")
+#'   utils::zip(zipfile, input, flags = "-qj")
 #'
-#' # https://boardgamegeek.com/filepage/62704/cards-in-png-format
-#' zipfile <- "decktet_cards_PNG.zip"
-#' bm <- zip_extract_bm_pixmap(zipfile, "PNG/a_card_cover3.png")
+#'   bm <- zip_extract_bm_pixmap(zipfile, basename(input), dpi = 75)
+#'   grid::grid.raster(bm)
+#'
+#'   unlink(c(input, zipfile))
 #' }
 #' @export
 zip_extract_bm_pixmap <- function(zipfile, filename, ...) {
