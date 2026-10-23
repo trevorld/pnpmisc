@@ -60,8 +60,19 @@ test_that("`pdf_apply()` errors when `input` and `output` are the same file", {
 test_that("`pdf_apply()` errors when `isFALSE(rasterize)` but must rasterize", {
 	on.exit(rm_temp_pdfs(), add = TRUE)
 	f <- pdf_create_blank(paper = "letter", length = 4L)
+	local_mocked_bindings(qpdf_overlay_supports_pages = \() FALSE)
 	expect_snapshot(
 		error = TRUE,
 		pdf_apply(f, pages = "even", grid_fn = \() grid::grid.null(), rasterize = FALSE)
 	)
+})
+
+test_that("`pdf_apply()` overlays a subset of pages without rasterizing when `qpdf` supports it", {
+	skip_if_not(qpdf_overlay_supports_pages())
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	f1 <- pdf_create_blank(paper = "letter", length = 4L)
+	expect_no_message(f2 <- pdf_apply(f1, pages = "even", grid_fn = \() grid::grid.rect()))
+	expect_equal(qpdf::pdf_length(f2), 4L)
+	f3 <- pdf_apply(f1, pages = "even", grid_fn = \() grid::grid.rect(), rasterize = FALSE)
+	expect_equal(qpdf::pdf_length(f3), 4L)
 })

@@ -34,7 +34,8 @@
 #'   Currently requires rasterization in the following cases:
 #'
 #'   1. (`!is.null(paper)` or `scale != 1`) and ghostscript is unavailable (see [pdf_gs()])
-#'   2. `any(pages != "all")` and `!identical(grid_fn, grid::grid.null)`
+#'   2. `any(pages != "all")` and `!identical(grid_fn, grid::grid.null)` and
+#'      the installed `qpdf::pdf_overlay_stamp()` lacks a `pages` argument (i.e. `qpdf` v1.4.1 or older)
 #'   3. `!identical(bm_fn, identity)`
 #'
 #'   `rasterise` is an alias for `rasterize`.
@@ -84,7 +85,9 @@ pdf_apply <- function(
 	}
 	output <- normalize_output(output, input)
 
-	must_grid_a_subset <- any(pages != "all") && !identical(grid_fn, grid::grid.null)
+	must_grid_a_subset <- any(pages != "all") &&
+		!identical(grid_fn, grid::grid.null) &&
+		!qpdf_overlay_supports_pages()
 	must_resize_wo_gs <- (!is.null(paper) || scale != 1) && !nzchar(find_gs_cmd())
 	must_bm <- !identical(bm_fn, identity)
 	bg_alpha <- grDevices::col2rgb(bg, alpha = TRUE)[4L] / 255
@@ -121,7 +124,15 @@ pdf_apply <- function(
 			)
 		}
 
-		pdf_apply_vector(input, output, paper = paper, scale = scale, bg = bg, grid_fn = grid_fn)
+		pdf_apply_vector(
+			input,
+			output,
+			pages = pages,
+			paper = paper,
+			scale = scale,
+			bg = bg,
+			grid_fn = grid_fn
+		)
 	} else {
 		if (missing_rasterize) {
 			reasons <- must_rasterize_reasons(
@@ -154,11 +165,13 @@ pdf_apply <- function(
 	}
 }
 
-# Currently can only use if pages = "all" and no `bm_fn`
+# Can only use if no `bm_fn` and either `pages = "all"` or
+# `qpdf::pdf_overlay_stamp()` supports a `pages` argument
 pdf_apply_vector <- function(
 	input,
 	output,
 	...,
+	pages = "all",
 	paper = NULL,
 	scale = 1,
 	bg = "transparent",
@@ -188,10 +201,10 @@ pdf_apply_vector <- function(
 	if (resize) {
 		overlaid <- temp_pdf()
 		on.exit(unlink(overlaid), add = TRUE)
-		pdf_overlay_stamp(input, overlaid, stamp = stamp)
+		pdf_overlay_stamp(input, overlaid, stamp = stamp, pages = pages)
 		pdf_resize_vector(overlaid, output, scale = scale, paper = paper, bg = bg)
 	} else {
-		pdf_overlay_stamp(input, output, stamp = stamp)
+		pdf_overlay_stamp(input, output, stamp = stamp, pages = pages)
 	}
 	invisible(output)
 }
@@ -329,7 +342,7 @@ must_rasterize_reasons <- function(
 	if (must_grid_a_subset) {
 		reasons <- c(
 			reasons,
-			i = '`any(pages != "all")` but `qpdf::pdf_overlay_stamp()` does not support a `pages` argument as of v1.4.1.'
+			i = '`any(pages != "all")` but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1).'
 		)
 	}
 	if (must_resize_wo_gs) {

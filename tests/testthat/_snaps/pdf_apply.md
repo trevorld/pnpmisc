@@ -40,5 +40,5 @@
     Condition
       Error in `pdf_apply()`:
       ! `isFALSE(rasterize)` but the original pdf contents must be rasterized.
-      i `any(pages != "all")` but `qpdf::pdf_overlay_stamp()` does not support a `pages` argument as of v1.4.1.
+      i `any(pages != "all")` but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1).
 

@@ -12,7 +12,7 @@ pdf_combine(input, output = NULL, ...)
 
 pdf_compress(input, output = NULL, ...)
 
-pdf_overlay_stamp(input, output = NULL, ...)
+pdf_overlay_stamp(input, output = NULL, ..., pages = "all")
 
 pdf_rotate_pages(input, output = NULL, ..., pages = "all")
 
@@ -49,6 +49,10 @@ but alters the arguments to match this package's conventions:
 the first two arguments must be \code{input} and \code{output} (which by default is a \code{\link[=tempfile]{tempfile()}} with a \verb{___pnpmisc.pdf} file extension),
 all other arguments must be named,
 and any \code{pages} argument is first processed by \code{\link[=pdf_pages]{pdf_pages()}} (so you can also use strings like "even" or "odd").
+}
+\details{
+\code{pdf_overlay_stamp()} only supports a \code{pages} argument other than \code{"all"}
+if the installed version of \code{qpdf} is newer than v1.4.1 (i.e. \code{qpdf::pdf_overlay_stamp()} has a \code{pages} argument).
 }
 \examples{
 f1 <- pdf_create_blank(width = 6, height = 4)
