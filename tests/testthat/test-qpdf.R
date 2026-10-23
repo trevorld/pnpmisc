@@ -7,6 +7,8 @@ test_that("`pdf_overlay_stamp()` with `pages`", {
 	f2 <- pdf_overlay_stamp(f1, stamp = stamp, pages = "all")
 	expect_equal(qpdf::pdf_length(f2), 4L)
 	expect_snapshot(error = TRUE, pdf_overlay_stamp(f1, stamp = stamp, pages = "odd"))
+	expect_snapshot(error = TRUE, pdf_overlay_stamp(f1, stamp = stamp, pages = integer(0)))
+	expect_snapshot(error = TRUE, pdf_subset(f1, pages = integer(0)))
 })
 
 test_that("`pdf_overlay_stamp()` with `pages` when `qpdf` supports it", {

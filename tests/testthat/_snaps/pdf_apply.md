@@ -40,5 +40,23 @@
     Condition
       Error in `pdf_apply()`:
       ! `isFALSE(rasterize)` but the original pdf contents must be rasterized.
-      i `any(pages != "all")` but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1).
+      i `pages` is a strict subset of the pages but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1).
+
+# `pdf_apply()` errors early on out-of-range `pages`
+
+    Code
+      pdf_apply(f, pages = 5L, grid_fn = function() grid::grid.rect())
+    Condition
+      Error in `pdf_apply()`:
+      ! `pages` must only select pages that exist.
+      i `input` has 4 pages.
+
+---
+
+    Code
+      pdf_apply(f, pages = 5L, rasterize = TRUE)
+    Condition
+      Error in `pdf_apply()`:
+      ! `pages` must only select pages that exist.
+      i `input` has 4 pages.
 

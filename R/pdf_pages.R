@@ -31,16 +31,44 @@ pdf_pages <- function(
 	)
 ) {
 	check_dots_empty()
-	stopifnot("`pages` must be numeric or character" = is.numeric(pages) || is.character(pages))
 	n <- qpdf::pdf_length(input)
+	pages_from_n(n, pages)
+}
+
+# Keep in sync with the (literal, so it renders in `\\usage{}`) default of `pdf_pages()`
+PAGES_CHOICES <- c(
+	"all",
+	"even",
+	"odd",
+	"2-up saddle stitch",
+	"interleave",
+	"interleave_first",
+	"interleave_last"
+)
+
+# `pdf_apply()` also calls this directly so it only reads `input` once
+pages_from_n <- function(n, pages, call = caller_env()) {
+	if (!is.numeric(pages) && !is.character(pages)) {
+		abort("`pages` must be numeric or character", call = call)
+	}
 	if (is.numeric(pages)) {
 		pages <- seq.int(n)[pages]
+		if (anyNA(pages)) {
+			abort(
+				c(
+					"`pages` must only select pages that exist.",
+					i = sprintf("`input` has %d page%s.", n, if (n == 1L) "" else "s")
+				),
+				class = "pnpmisc_error_pages",
+				call = call
+			)
+		}
 	} else {
 		pages <- switch(
-			match.arg(pages),
+			arg_match0(pages, PAGES_CHOICES, arg_nm = "pages", error_call = call),
 			all = seq.int(n),
-			even = seq.int(2L, n, by = 2L),
-			odd = seq.int(1L, n, by = 2L),
+			even = which(seq_len(n) %% 2L == 0L),
+			odd = which(seq_len(n) %% 2L == 1L),
 			`2-up saddle stitch` = pages_2up_saddle_stitch(n),
 			interleave = pages_interleave(n),
 			interleave_first = pages_interleave_first(n),
@@ -82,3 +110,11 @@ pages_2up_saddle_stitch <- function(n) {
 }
 
 interleave <- function(x, y) as.integer(rbind(x, y))
+
+# The qpdf wrappers can't do anything useful with an empty selection
+check_pages_nonempty <- function(pages, call = caller_env()) {
+	if (length(pages) == 0L) {
+		abort("`pages` must select at least one page.", class = "pnpmisc_error_pages", call = call)
+	}
+	invisible(pages)
+}

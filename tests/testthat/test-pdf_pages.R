@@ -22,4 +22,10 @@ test_that("`pdf_pages()`", {
 	expect_snapshot(error = TRUE, pdf_pages(f3, pages = "interleave"))
 	expect_snapshot(error = TRUE, pdf_pages(f3, pages = "2-up saddle stitch"))
 	expect_snapshot(error = TRUE, pdf_pages(f3, pages = list()))
+	expect_snapshot(error = TRUE, pdf_pages(f3, pages = 4L))
+	expect_equal(pdf_pages(f3, pages = -(1:3)), integer(0))
+
+	f1 <- pdf_create_blank(length = 1L)
+	expect_equal(pdf_pages(f1, pages = "odd"), 1L)
+	expect_equal(pdf_pages(f1, pages = "even"), integer(0))
 })
