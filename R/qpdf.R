@@ -52,11 +52,12 @@ pdf_compress <- function(input, output = NULL, ...) {
 #' @export
 pdf_overlay_stamp <- function(input, output = NULL, ..., pages = "all") {
 	output <- normalize_output(output, input)
-	pages <- pdf_pages(input, pages = pages)
+	n <- qpdf::pdf_length(input)
+	pages <- check_pages_nonempty(pages_from_n(n, pages))
 	if (qpdf_overlay_supports_pages()) {
 		qpdf::pdf_overlay_stamp(input, output = output, ..., pages = pages)
 	} else {
-		if (!setequal(pages, seq_len(qpdf::pdf_length(input)))) {
+		if (!setequal(pages, seq_len(n))) {
 			abort(
 				c(
 					'`pages` must be "all" because the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument.',
@@ -82,7 +83,7 @@ qpdf_overlay_supports_pages <- function() {
 #' @export
 pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
 	output <- normalize_output(output, input)
-	pages <- pdf_pages(input, pages = pages)
+	pages <- check_pages_nonempty(pdf_pages(input, pages = pages))
 	qpdf::pdf_rotate_pages(input, output = output, ..., pages = pages)
 	invisible(output)
 }
@@ -92,7 +93,7 @@ pdf_rotate_pages <- function(input, output = NULL, ..., pages = "all") {
 #' @export
 pdf_subset <- function(input, output = NULL, ..., pages = 1L) {
 	output <- normalize_output(output, input)
-	pages <- pdf_pages(input, pages = pages)
+	pages <- check_pages_nonempty(pdf_pages(input, pages = pages))
 	qpdf::pdf_subset(input, output = output, ..., pages = pages)
 	invisible(output)
 }

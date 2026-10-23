@@ -34,7 +34,7 @@
 #'   Currently requires rasterization in the following cases:
 #'
 #'   1. (`!is.null(paper)` or `scale != 1`) and ghostscript is unavailable (see [pdf_gs()])
-#'   2. `any(pages != "all")` and `!identical(grid_fn, grid::grid.null)` and
+#'   2. `pages` is a strict subset of the pages and `!identical(grid_fn, grid::grid.null)` and
 #'      the installed `qpdf::pdf_overlay_stamp()` lacks a `pages` argument (i.e. `qpdf` v1.4.1 or older)
 #'   3. `!identical(bm_fn, identity)`
 #'
@@ -84,8 +84,15 @@ pdf_apply <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 	output <- normalize_output(output, input)
+	n <- qpdf::pdf_length(input)
+	pages <- pages_from_n(n, pages)
+	if (length(pages) == 0L) {
+		# Nothing to overlay or edit so just copy or resize
+		grid_fn <- grid::grid.null
+		bm_fn <- identity
+	}
 
-	must_grid_a_subset <- any(pages != "all") &&
+	must_grid_a_subset <- !setequal(pages, seq_len(n)) &&
 		!identical(grid_fn, grid::grid.null) &&
 		!qpdf_overlay_supports_pages()
 	must_resize_wo_gs <- (!is.null(paper) || scale != 1) && !nzchar(find_gs_cmd())
@@ -150,7 +157,6 @@ pdf_apply <- function(
 				class = "pnpmisc_message_rasterized"
 			)
 		}
-		pages <- pdf_pages(input, pages = pages)
 		pdf_apply_raster(
 			input,
 			output,
@@ -342,7 +348,7 @@ must_rasterize_reasons <- function(
 	if (must_grid_a_subset) {
 		reasons <- c(
 			reasons,
-			i = '`any(pages != "all")` but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1).'
+			i = "`pages` is a strict subset of the pages but the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument (requires a version of `qpdf` newer than v1.4.1)."
 		)
 	}
 	if (must_resize_wo_gs) {

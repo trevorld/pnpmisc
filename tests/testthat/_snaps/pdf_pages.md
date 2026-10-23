@@ -22,3 +22,12 @@
       Error in `pdf_pages()`:
       ! `pages` must be numeric or character
 
+---
+
+    Code
+      pdf_pages(f3, pages = 4L)
+    Condition
+      Error in `pdf_pages()`:
+      ! `pages` must only select pages that exist.
+      i `input` has 3 pages.
+
