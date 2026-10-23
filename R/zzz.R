@@ -1,6 +1,6 @@
 #' @importFrom grDevices as.raster dev.cur dev.off dev.set
 #' @import grid
-#' @importFrom rlang abort check_dots_empty inform warn
+#' @importFrom rlang abort arg_match0 caller_env check_dots_empty inform warn
 #' @importFrom stats median quantile
 #' @importFrom tools file_ext find_gs_cmd
 #' @importFrom utils head tail packageVersion hasName
@@ -27,7 +27,10 @@ normalize_output <- function(output, input = NULL) {
 	if (is.null(output)) {
 		output <- temp_pdf()
 	}
-	output <- normalizePath(output, mustWork = FALSE)
+	# `normalizePath()` only resolves symlinks (e.g. macOS's `/var` -> `/private/var`)
+	# for paths that exist so normalize the directory and re-attach the file name
+	# so the returned path matches what `ls_temp_pdfs()` lists once the file exists
+	output <- file.path(normalizePath(dirname(output), mustWork = FALSE), basename(output))
 	if (!is.null(input)) {
 		input <- normalizePath(input, mustWork = TRUE)
 		stopifnot("`input` and `output` must be different files" = input != output)
