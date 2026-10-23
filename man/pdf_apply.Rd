@@ -46,7 +46,8 @@ If \code{NULL} only rasterize if a requested feature requires it.
 Currently requires rasterization in the following cases:
 \enumerate{
 \item (\code{!is.null(paper)} or \code{scale != 1}) and ghostscript is unavailable (see \code{\link[=pdf_gs]{pdf_gs()}})
-\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)}
+\item \code{any(pages != "all")} and \code{!identical(grid_fn, grid::grid.null)} and
+the installed \code{qpdf::pdf_overlay_stamp()} lacks a \code{pages} argument (i.e. \code{qpdf} v1.4.1 or older)
 \item \code{!identical(bm_fn, identity)}
 }
 

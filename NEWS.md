@@ -23,7 +23,7 @@ New features
   + `pdf_combine()` combines multiple pdf files into one (wraps `qpdf::pdf_combine()`).
   + `pdf_create_4x6_jacket()` creates 4x6 photo storage box jacket pdf files.
   + `pdf_create_poker_jacket()` creates poker deck storage box jacket pdf files.
-  + `pdf_overlay_stamp()` overlays a stamp pdf onto each page of a pdf (wraps `qpdf::pdf_overlay_stamp()`).
+  + `pdf_overlay_stamp()` overlays a stamp pdf onto the pages of a pdf (wraps `qpdf::pdf_overlay_stamp()`).
   + `pdf_pdfxup()` wraps the `pdfxup` command-line program to create n-up PDF documents with automatic margin removal. `pdf_pdfxup_booklet()` is a convenience wrapper with defaults suited for printing a physical booklet.
   + `pdf_rasterize()` re-renders a pdf by rasterizing each page.
   + `pdf_rep()` repeats pages of a pdf similar to `rep()`.

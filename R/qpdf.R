@@ -5,6 +5,9 @@
 #' the first two arguments must be `input` and `output` (which by default is `r r2i_temp_pdf`),
 #' all other arguments must be named,
 #' and any `pages` argument is first processed by [pdf_pages()] (so you can also use strings like "even" or "odd").
+#'
+#' `pdf_overlay_stamp()` only supports a `pages` argument other than `"all"`
+#' if the installed version of `qpdf` is newer than v1.4.1 (i.e. `qpdf::pdf_overlay_stamp()` has a `pages` argument).
 #' @inheritParams pdf_apply
 #' @param input For `pdf_combine()`, a character vector of input pdf filenames.
 #'   For all other functions, a single input pdf filename.
@@ -44,12 +47,34 @@ pdf_compress <- function(input, output = NULL, ...) {
 	invisible(output)
 }
 
+#' @inheritParams pdf_apply
 #' @rdname qpdf_wrappers
 #' @export
-pdf_overlay_stamp <- function(input, output = NULL, ...) {
+pdf_overlay_stamp <- function(input, output = NULL, ..., pages = "all") {
 	output <- normalize_output(output, input)
-	qpdf::pdf_overlay_stamp(input, output = output, ...)
+	pages <- pdf_pages(input, pages = pages)
+	if (qpdf_overlay_supports_pages()) {
+		qpdf::pdf_overlay_stamp(input, output = output, ..., pages = pages)
+	} else {
+		if (!setequal(pages, seq_len(qpdf::pdf_length(input)))) {
+			abort(
+				c(
+					'`pages` must be "all" because the installed `qpdf::pdf_overlay_stamp()` does not support a `pages` argument.',
+					i = "This requires a version of `qpdf` newer than v1.4.1."
+				),
+				class = "pnpmisc_error_overlay_pages"
+			)
+		}
+		qpdf::pdf_overlay_stamp(input, output = output, ...)
+	}
 	invisible(output)
+}
+
+# The development version of `qpdf` (after v1.4.1) added a `pages` argument
+# to `qpdf::pdf_overlay_stamp()` but has not (yet) bumped its version number
+# so we detect the feature instead of checking the version.
+qpdf_overlay_supports_pages <- function() {
+	"pages" %in% names(formals(qpdf::pdf_overlay_stamp))
 }
 
 #' @inheritParams pdf_apply
