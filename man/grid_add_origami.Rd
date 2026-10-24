@@ -38,8 +38,12 @@ on the active graphics device.
 }
 \examples{
 grid::grid.newpage()
-pnpmisc:::grid_add_jacket_outer()
+vp <- grid::viewport(width=11, height=8.5, default.units="in",
+                     x=0.5, y=0.5, just=c("left", "bottom"))
+grid::pushViewport(vp)
+pnpmisc:::grid_add_mock_jacket()
 grid_add_origami()
+grid::popViewport()
 }
 \seealso{
 \code{\link[=pdf_add_origami]{pdf_add_origami()}}
