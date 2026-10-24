@@ -380,3 +380,5 @@ pdf_create_mock_sbgj <- function(output = NULL) {
 
 	invisible(output)
 }
+
+grid_add_mock_jacket <- grid_add_jacket_outer
