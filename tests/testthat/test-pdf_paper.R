@@ -18,6 +18,9 @@ test_that("`pdf_paper()`", {
 	f6 <- pdf_create_blank(paper = "bridge", orientation = "landscape")
 	expect_equal(pdf_paper(f6), "bridge")
 
-	f7 <- pdf_create_blank(width = 6, height = 4)
-	expect_equal(pdf_paper(f7), "special")
+	f7 <- pdf_create_blank(paper = "executive", orientation = "portrait")
+	expect_equal(pdf_paper(f7), "executive")
+
+	f8 <- pdf_create_blank(width = 6, height = 4)
+	expect_equal(pdf_paper(f8), "special")
 })

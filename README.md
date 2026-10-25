@@ -66,7 +66,7 @@ library("pnpmisc")
 # <https://buttonshygames.itch.io/a-nice-cuppa>
 input <- "A Nice Cuppa - PNP.pdf"
 output <- "a_nice_cuppa_rules.pdf"
-layout <- layout_preset("button_shy_rules")
+layout <- layout_preset("button_shy_rules", paper = "letter")
 bml <- input |> pdf_render_bm_pixmap() |>
     bm_split_layout(layout = layout)
 

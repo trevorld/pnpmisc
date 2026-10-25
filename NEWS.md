@@ -14,6 +14,7 @@ Breaking changes
 New features
 ------------
 
+* The "executive" paper size (7.25 by 10.5 inches) is now supported wherever a `paper` argument is accepted and is now inferred by `pdf_paper()`.
 * The following PDF creation functions:
 
   + `pdf_add_lines()` adds lines along the components of a print-and-play layout.

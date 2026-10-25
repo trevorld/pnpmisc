@@ -38,7 +38,8 @@ grid::grid.newpage()
 vp <- grid::viewport(width=8.5, height=11, default.units="in",
                      x=0.5, y=0.5, just=c("left", "bottom"))
 grid::pushViewport(vp)
-grid_add_rects(layout = "poker_3x3")
+layout <- layout_preset("poker_3x3", paper = "letter")
+grid_add_rects(layout = layout)
 grid::popViewport()
 }
 \seealso{

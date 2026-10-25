@@ -33,6 +33,7 @@ layout_grid <- function(
 	}
 	angle <- angle %% 360
 	orientation <- match.arg(orientation)
+	paper <- normalize_paper(paper)
 
 	is_ltr <- tolower(direction) %in% c("left-to-right", "ltr", "lr")
 	is_rtl <- tolower(direction) %in% c("right-to-left", "rtl", "rl")
@@ -227,7 +228,9 @@ layout_octavo <- function(
 #' for a named preset.
 #' `layout_names()` returns the supported layout presets.
 #'
-#' Unless otherwise indicated assumes letter-sized paper.  Supports the following presets:
+#' Unless otherwise indicated the presets are centered on the paper size given by
+#' `getOption("papersize", "letter")` (pass `paper` in `...` to override).
+#' Supports the following presets:
 #'
 #' \describe{
 #' \item{button_shy_cards}{[Button Shy Games](https://buttonshygames.com/collections/pnps) PnP cards.

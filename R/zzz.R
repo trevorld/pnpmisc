@@ -31,6 +31,10 @@ normalize_output <- function(output, input = NULL) {
 	# for paths that exist so normalize the directory and re-attach the file name
 	# so the returned path matches what `ls_temp_pdfs()` lists once the file exists
 	output <- file.path(normalizePath(dirname(output), mustWork = FALSE), basename(output))
+	# Normalize the full path too: on Windows this makes the separators consistent
+	# with `tempfile()` and `ls_temp_pdfs()` (`file.path()` always joins with "/")
+	# and on Unix it resolves `output` itself if it is an existing symlink
+	output <- normalizePath(output, mustWork = FALSE)
 	if (!is.null(input)) {
 		input <- normalizePath(input, mustWork = TRUE)
 		stopifnot("`input` and `output` must be different files" = input != output)
@@ -38,7 +42,26 @@ normalize_output <- function(output, input = NULL) {
 	output
 }
 
-SUPPORTED_PAPER <- c("letter", "a4", "poker", "bridge", "legal", "a5", "a3", "special")
+SUPPORTED_PAPER <- c("letter", "a4", "poker", "bridge", "legal", "executive", "a5", "a3", "special")
+
+# Lowercase and validate `paper` so e.g. `options(papersize = "A4")` works everywhere.
+# Only graphics devices can use `paper = "special"` (i.e. `width` and `height`)
+# so callers that need a fixed page size leave `allow_special = FALSE`.
+normalize_paper <- function(paper, allow_special = FALSE) {
+	paper <- tolower(paper)
+	supported <- if (allow_special) SUPPORTED_PAPER else setdiff(SUPPORTED_PAPER, "special")
+	if (!paper %in% supported) {
+		msg <- sprintf(
+			"`paper` must be one of %s.",
+			paste(dQuote(supported), collapse = ", ")
+		)
+		if (identical(paper, "special")) {
+			msg <- c(msg, x = "`paper = \"special\"` has no fixed page size.")
+		}
+		abort(msg, call = rlang::caller_env())
+	}
+	paper
+}
 
 paper_width <- function(paper, orientation = "portrait") {
 	if (orientation == "portrait") {
@@ -46,12 +69,13 @@ paper_width <- function(paper, orientation = "portrait") {
 			paper,
 			letter = LETTER_WIDTH,
 			legal = 8.5,
+			executive = 7.25,
 			a3 = A4_HEIGHT,
 			a4 = A4_WIDTH,
 			a5 = A4_HEIGHT / 2,
 			bridge = 2.25,
 			poker = 2.5,
-			paste("Paper", dQuote(paper), "not supported")
+			abort(paste("Paper", dQuote(paper), "not supported"))
 		)
 	} else {
 		# landscape
@@ -63,13 +87,14 @@ paper_height <- function(paper, orientation = "portrait") {
 		switch(
 			paper,
 			legal = 14,
+			executive = 10.5,
 			letter = LETTER_HEIGHT,
 			a3 = 2 * A4_WIDTH,
 			a4 = A4_HEIGHT,
 			a5 = A4_WIDTH,
 			bridge = 3.5,
 			poker = 3.5,
-			paste("Paper", dQuote(paper), "not supported")
+			abort(paste("Paper", dQuote(paper), "not supported"))
 		)
 	} else {
 		# landscape
@@ -107,13 +132,7 @@ pnp_pdf <- function(
 	orientation = c("portrait", "landscape"),
 	bg = "white"
 ) {
-	paper <- tolower(paper)
-	if (!paper %in% SUPPORTED_PAPER) {
-		abort(sprintf(
-			"`paper` must be one of %s.",
-			paste(dQuote(SUPPORTED_PAPER), collapse = ", ")
-		))
-	}
+	paper <- normalize_paper(paper, allow_special = TRUE)
 	if (missing(width) && missing(height) && paper != "special") {
 		orientation <- match.arg(orientation)
 		width <- paper_width(paper, orientation)

@@ -55,7 +55,8 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #' vp <- grid::viewport(width=8.5, height=11, default.units="in",
 #'                      x=0.0, y=0.0, just=c("left", "bottom"))
 #' grid::pushViewport(vp)
-#' grid_add_lines(layout = "poker_3x3",
+#' layout <- layout_preset("poker_3x3", paper = "letter")
+#' grid_add_lines(layout = layout,
 #'                gp = grid::gpar(lty = "dashed", col = "grey"))
 #' grid::popViewport()
 #' @export

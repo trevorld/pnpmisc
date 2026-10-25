@@ -42,7 +42,7 @@ As a side effect adds crosshairs to a pdf.
 \examples{
 if (requireNamespace("piecepackr", quietly = TRUE) &&
     utils::packageVersion("piecepackr") >= "1.14.0-5") {
-  input <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
+  input <- pdf_create_blank(length = 2L, orientation = "landscape")
   output <- pdf_add_crosshairs(input, pages = "odd", dpi = 75,
                                layout = "button_shy_cards")
   unlink(input)

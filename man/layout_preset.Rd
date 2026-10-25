@@ -23,7 +23,9 @@ for a named preset.
 \code{layout_names()} returns the supported layout presets.
 }
 \details{
-Unless otherwise indicated assumes letter-sized paper.  Supports the following presets:
+Unless otherwise indicated the presets are centered on the paper size given by
+\code{getOption("papersize", "letter")} (pass \code{paper} in \code{...} to override).
+Supports the following presets:
 
 \describe{
 \item{button_shy_cards}{\href{https://buttonshygames.com/collections/pnps}{Button Shy Games} PnP cards.

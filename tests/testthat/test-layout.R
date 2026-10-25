@@ -129,4 +129,8 @@ test_that("layout functions", {
 		error = TRUE,
 		layout_grid(nrow = 2L, ncol = 2L, direction = "rtl", angle = c(0, 90, 180))
 	)
+
+	expect_equal(layout_grid(paper = "A4"), layout_grid(paper = "a4"))
+	expect_snapshot(error = TRUE, layout_grid(paper = "foo"))
+	expect_snapshot(error = TRUE, layout_grid(paper = "special"))
 })

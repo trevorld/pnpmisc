@@ -57,6 +57,7 @@ pdf_create_jacket_instructions <- function(
 ) {
 	check_dots_empty()
 	output <- normalize_output(output)
+	paper <- normalize_paper(paper)
 
 	stopifnot(requireNamespace("marquee", quietly = TRUE))
 
