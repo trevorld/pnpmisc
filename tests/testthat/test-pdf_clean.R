@@ -9,6 +9,7 @@ test_that("`rm_temp_pdfs()` only removes our own temporary pdf files", {
 	ours <- pdf_create_blank()
 	theirs <- tempfile(fileext = ".pdf")
 	file.copy(ours, theirs)
+	theirs <- normalizePath(theirs)
 
 	expect_contains(ls_temp_pdfs(), ours)
 	expect_equal(intersect(ls_temp_pdfs(), theirs), character(0L))
@@ -17,7 +18,7 @@ test_that("`rm_temp_pdfs()` only removes our own temporary pdf files", {
 
 	rm_temp_pdfs()
 	expect_equal(ls_temp_pdfs(), character(0L))
-	expect_contains(list.files(tempdir(), full.names = TRUE), theirs)
+	expect_contains(ls_temp_pdfs(fileext = ".pdf"), theirs)
 
 	rm_temp_pdfs(fileext = ".pdf")
 	expect_equal(ls_temp_pdfs(fileext = ".pdf"), character(0L))

@@ -15,8 +15,8 @@
 #'     requireNamespace("piecepackr", quietly = TRUE) &&
 #'     utils::packageVersion("piecepackr") >= "1.17.1" &&
 #'     capabilities("cairo")) {
-#'   df <- layout_preset("poker_3x3") |>
-#'     transform(piece_side = "card_face", suit = 1L, rank = 1:9)
+#'   layout <- layout_preset("poker_3x3", paper = "letter")
+#'   df <- transform(layout, piece_side = "card_face", suit = 1L, rank = 1:9)
 #'   cfg <- piecepackr::game_systems(border = FALSE, systems = "playing_cards")$playing_cards
 #'
 #'   input <- tempfile(fileext = ".pdf")
@@ -25,7 +25,7 @@
 #'   invisible(grDevices::dev.off())
 #'
 #'   page <- pdf_render_bm_pixmap(input, page = 1L, dpi = 75)
-#'   cards <- bm_split_layout(page, layout = "poker_3x3")
+#'   cards <- bm_split_layout(page, layout = layout)
 #'   grid::grid.raster(cards[[1L]])
 #'
 #'   unlink(input)

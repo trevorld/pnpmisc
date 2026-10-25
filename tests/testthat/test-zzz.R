@@ -10,3 +10,13 @@ test_that("`normalize_output()` resolves symlinks in the output directory", {
 		file.path(normalizePath(real), "x.pdf")
 	)
 })
+
+test_that("`normalize_output()` resolves an existing symlinked output file", {
+	skip_on_os("windows")
+	real <- tempfile("real", fileext = ".pdf")
+	file.create(real)
+	link <- tempfile("link", fileext = ".pdf")
+	file.symlink(real, link)
+	on.exit(unlink(c(link, real)), add = TRUE)
+	expect_equal(normalize_output(link), normalizePath(real))
+})

@@ -24,6 +24,7 @@ pdf_paper <- function(input) {
 	paper <- ifelse(abs(short - 2.25) < tol & abs(long - 3.5) < tol, "bridge", paper)
 	paper <- ifelse(abs(short - 2.5) < tol & abs(long - 3.5) < tol, "poker", paper)
 	paper <- ifelse(abs(short - 8.5) < tol & abs(long - 14) < tol, "legal", paper)
+	paper <- ifelse(abs(short - 7.25) < tol & abs(long - 10.5) < tol, "executive", paper)
 	paper <- ifelse(abs(short - 8.5) < tol & abs(long - 11) < tol, "letter", paper)
 	paper <- ifelse(abs(short - 11.69) < tol & abs(long - 16.54) < tol, "a3", paper)
 	paper <- ifelse(abs(short - 8.27) < tol & abs(long - 11.69) < tol, "a4", paper)

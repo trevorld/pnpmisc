@@ -14,7 +14,7 @@
 #' if (requireNamespace("bittermelon", quietly = TRUE) &&
 #'     requireNamespace("piecepackr", quietly = TRUE) &&
 #'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
-#'   f1 <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
+#'   f1 <- pdf_create_blank(length = 2L, orientation = "landscape")
 #'   f2 <- pdf_add_crosshairs(f1, pages = "all",
 #'                            layout = "poker_3x2_bleed")
 #'   f3 <- pdf_rm_crosshairs(f2, pages = "odd",
@@ -55,7 +55,7 @@ pdf_rm_crosshairs <- function(
 #' if (requireNamespace("bittermelon", quietly = TRUE) &&
 #'     requireNamespace("piecepackr", quietly = TRUE) &&
 #'     utils::packageVersion("piecepackr") >= "1.14.0-5") {
-#'   f1 <- pdf_create_blank(length = 1L, width = 11, height = 8.5)
+#'   f1 <- pdf_create_blank(length = 1L, orientation = "landscape")
 #'   f2 <- pdf_add_crosshairs(f1, pages = "all",
 #'                            layout = "poker_3x2_bleed")
 #'   page <- pdf_render_bm_pixmap(f2, page = 1L, dpi = 75)

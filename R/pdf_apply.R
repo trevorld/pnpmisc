@@ -84,6 +84,9 @@ pdf_apply <- function(
 		on.exit(dev.set(current_dev), add = TRUE)
 	}
 	output <- normalize_output(output, input)
+	if (!is.null(paper)) {
+		paper <- normalize_paper(paper)
+	}
 	n <- qpdf::pdf_length(input)
 	pages <- pages_from_n(n, pages)
 	if (length(pages) == 0L) {
@@ -219,9 +222,6 @@ pdf_apply_vector <- function(
 }
 
 pdf_resize_vector <- function(input, output, scale = 1, paper = NULL, bg = "transparent") {
-	if (!is.null(paper)) {
-		paper <- tolower(paper)
-	}
 	df_size <- pdftools::pdf_pagesize(input)
 	old_w <- df_size$width[1L] # bigpts
 	old_h <- df_size$height[1L] # bigpts

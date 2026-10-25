@@ -62,3 +62,20 @@
       Error in `layout_grid()`:
       ! `angle` must have length `nrow * ncol`
 
+---
+
+    Code
+      layout_grid(paper = "foo")
+    Condition
+      Error in `layout_grid()`:
+      ! `paper` must be one of "letter", "a4", "poker", "bridge", "legal", "executive", "a5", "a3".
+
+---
+
+    Code
+      layout_grid(paper = "special")
+    Condition
+      Error in `layout_grid()`:
+      ! `paper` must be one of "letter", "a4", "poker", "bridge", "legal", "executive", "a5", "a3".
+      x `paper = "special"` has no fixed page size.
+

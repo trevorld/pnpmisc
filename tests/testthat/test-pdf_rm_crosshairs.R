@@ -3,7 +3,7 @@ test_that("`pdf_rm_crosshairs()`", {
 	skip_if_not_installed("piecepackr", "1.14.0-6")
 	on.exit(rm_temp_pdfs(), add = TRUE)
 
-	f1 <- pdf_create_blank(length = 2L, width = 11, height = 8.5)
+	f1 <- pdf_create_blank(length = 2L, orientation = "landscape")
 	f2 <- pdf_add_crosshairs(f1, pages = "all", layout = "poker_3x2_bleed", dpi = 75)
 	expect_snapshot(
 		f3 <- pdf_rm_crosshairs(f2, pages = "odd", layout = "poker_3x2_bleed", dpi = 75)
