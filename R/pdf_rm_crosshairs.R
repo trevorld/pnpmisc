@@ -5,7 +5,11 @@
 #' * In order to work the PnP layout needs a solid color bleed.
 #' * The default layout supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
 #'
-#' @inheritParams bm_crop_layout
+#' @param layout Either a layout preset name in [layout_names()] or a data frame
+#'               with layout data (as returned by [layout_grid()]).
+#'               A preset name is centered on the paper size of the input pdf's
+#'               (selected) pages as inferred by [pdf_paper()]; it is an error if
+#'               those pages don't all share a supported paper size.
 #' @inheritParams pdf_apply
 #' @param ... Passed to [pdf_apply()].
 #' @return `output` pdf file name invisibly.
@@ -30,6 +34,7 @@ pdf_rm_crosshairs <- function(
 	...,
 	layout = "poker_3x2_bleed"
 ) {
+	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
 	pdf_apply(
 		input,
 		output,

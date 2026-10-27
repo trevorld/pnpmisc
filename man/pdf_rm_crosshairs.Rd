@@ -14,7 +14,10 @@ pdf_rm_crosshairs(input, output = NULL, ..., layout = "poker_3x2_bleed")
 \item{...}{Passed to \code{\link[=pdf_apply]{pdf_apply()}}.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
-with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
+with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).
+A preset name is centered on the paper size of the input pdf's
+(selected) pages as inferred by \code{\link[=pdf_paper]{pdf_paper()}}; it is an error if
+those pages don't all share a supported paper size.}
 }
 \value{
 \code{output} pdf file name invisibly.

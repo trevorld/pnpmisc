@@ -5,6 +5,11 @@
 #' * The default layout supports Button Shy games.
 #' @inheritParams pdf_apply
 #' @param ... Passed to [pdf_add_overlay()].
+#' @param layout Either a layout preset name in [layout_names()] or a data frame
+#'               with layout data (as returned by [layout_grid()]).
+#'               A preset name is centered on the paper size of the input pdf's
+#'               (selected) pages as inferred by [pdf_paper()]; it is an error if
+#'               those pages don't all share a supported paper size.
 #' @inheritParams grid_add_crosshairs
 #' @return `output` pdf file name invisibly.
 #'         As a side effect adds crosshairs to a pdf.
@@ -27,6 +32,7 @@ pdf_add_crosshairs <- function(
 	ch_width = unit(1 / 6, "in"),
 	ch_grob = NULL
 ) {
+	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
 	pdf_add_overlay(
 		input,
 		output,

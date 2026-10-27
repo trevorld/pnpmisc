@@ -10,11 +10,14 @@ layout_grid(
   width = 2.5,
   height = 3.5,
   bleed = 0,
+  ...,
   paper = getOption("papersize", "letter"),
   orientation = c("landscape", "portrait"),
   angle = 0,
   name = layout_name_fn(),
-  direction = "left-to-right"
+  direction = "left-to-right",
+  input = NULL,
+  pages = "all"
 )
 }
 \arguments{
@@ -22,7 +25,10 @@ layout_grid(
 
 \item{width, height, bleed}{Width, height, and bleed for each print-and-play component (in inches)}
 
-\item{paper, orientation}{Print-and-play paper size and orientation}
+\item{...}{Ignored.}
+
+\item{paper, orientation}{Print-and-play paper size and orientation.
+\code{paper} defaults to \code{getOption("papersize", "letter")} unless \code{input} is passed.}
 
 \item{angle}{Vector of angles of the pieces in degrees (counter-clockwise) (assigned \code{direction}, top-to-bottom)}
 
@@ -30,6 +36,16 @@ layout_grid(
 
 \item{direction}{Should \code{name} and \code{angle} be assigned "left-to-right" or "right-to-left".
 Also supports aliases "ltr", "lr", "rtl", and "rl".}
+
+\item{input}{If not \code{NULL} then an input pdf filename whose (selected) pages'
+paper size as inferred by \code{\link[=pdf_paper]{pdf_paper()}} is used as \code{paper}
+(so the layout is centered on the actual page).
+It is an error to pass both \code{input} and \code{paper}
+or if the selected pages don't all share a supported paper size.}
+
+\item{pages}{Which pages of \code{input} to infer the paper size from.
+Supports the same values as the \code{pages} argument of \code{\link[=pdf_apply]{pdf_apply()}}
+e.g. \code{"all"}, \code{"even"}, \code{"odd"}, or a numeric vector.}
 }
 \value{
 A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
@@ -41,4 +57,9 @@ for a grid of identically sized print-and-play components.
 \examples{
 # Button Shy card layout
 layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
+
+# Center the layout on the paper size of a pdf's pages
+input <- pdf_create_blank(paper = "a4", orientation = "portrait")
+layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait", input = input)
+unlink(input)
 }

@@ -26,6 +26,7 @@ pdf_add_cropmarks <- function(
 	cm_width = unit(0.25, "mm"),
 	cm_length = unit(0.125, "in")
 ) {
+	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
 	pdf_add_overlay(
 		input,
 		output,
