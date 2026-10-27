@@ -13,3 +13,17 @@ test_that("`pdf_add_rects()`", {
 	f2 <- pdf_add_rects(f1, layout = "poker_3x3", dpi = 75)
 	expect_equal(qpdf::pdf_length(f2), 2L)
 })
+
+test_that("`pdf_add_rects()` centers a preset name on the input pdf's paper", {
+	op <- options(papersize = "letter")
+	on.exit(options(op), add = TRUE)
+	on.exit(rm_temp_pdfs(), add = TRUE)
+
+	f1 <- pdf_create_blank(paper = "a4")
+	f2 <- pdf_add_rects(f1, layout = "poker_3x3")
+	f3 <- pdf_add_rects(f1, layout = layout_preset("poker_3x3", paper = "a4"))
+	f4 <- pdf_add_rects(f1, layout = layout_preset("poker_3x3", paper = "letter"))
+	render <- \(f) pdftools::pdf_render_page(f, page = 1L, dpi = 50, numeric = TRUE)
+	expect_equal(render(f2), render(f3))
+	expect_gt(sum(abs(render(f2) - render(f4))), 0)
+})

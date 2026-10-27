@@ -7,6 +7,7 @@ Breaking changes
 * The first argument of `layout_preset()` is now `preset` instead of `name` (so we can now pass `layout_grid()`'s new `name` argument in the `...`).
 * The default argument for `paper` is now `getOption("papersize", "letter")` instead of (depending on the function) "letter" or "special".
 * `bm_create_pdf()` and `pdf_create_blank()` now follow the convention that paper size will be determined by `height` and `width` if either are non-missing (and/or `paper = "special"`) otherwise paper size will be determined by both `paper` and `orientation`.
+* `layout_grid()` now requires the arguments after `bleed` (i.e. `paper`, `orientation`, `angle`, `name`, and `direction`) to be named.
 * `ls_temp_pdfs()` and `rm_temp_pdfs()` now only list/remove the temporary pdf files created by this package (which now use a `___pnpmisc.pdf` file extension) instead of every pdf file in `tempdir()`.  Pass `fileext = ".pdf"` for the previous behaviour (#67).
 * By default `pdf_rm_crosshairs()` now removes crosshairs from all pages.  You'll need to explicitly pass `pages = "odd"` to get the previous behaviour.
 * The original pdf contents are now rasterized in fewer cases.  In such cases if you want to explicitly rasterize the pdf contents you'll need to pass `rasterize = TRUE`.
@@ -15,6 +16,7 @@ New features
 ------------
 
 * The "executive" paper size (7.25 by 10.5 inches) is now supported wherever a `paper` argument is accepted and is now inferred by `pdf_paper()`.
+* `layout_grid()` gains `input` and `pages` arguments to center the layout on the paper size of the input pdf's (selected) pages as inferred by `pdf_paper()` instead of on `getOption("papersize")`.  Since `layout_preset()` and `layout_octavo()` forward `...` to `layout_grid()` they can also be passed `input` and `pages` (#70).
 * The following PDF creation functions:
 
   + `pdf_add_lines()` adds lines along the components of a print-and-play layout.
@@ -36,6 +38,7 @@ New features
   + `pdf_pages()` now throws an error if a numeric `pages` selects a page that doesn't exist.
   + `pdf_pages()` can now return an empty selection (e.g. `pages = "even"` on a one-page pdf).
 
+* `pdf_add_cropmarks()`, `pdf_add_crosshairs()`, `pdf_add_lines()`, `pdf_add_rects()`, and `pdf_rm_crosshairs()` now center a layout preset name passed to `layout` on the paper size of the input pdf's pages (as inferred by `pdf_paper()`) instead of on `getOption("papersize")` and throw an error if those pages don't share a supported paper size (#70).
 * `pdf_create_jacket()` gains `orientation`, `width`, `height`, `depth`, and `bg` arguments.
 * `pdf_create_jacket_instructions()` gains an `orientation` argument.
 

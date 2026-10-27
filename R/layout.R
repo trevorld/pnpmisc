@@ -4,14 +4,29 @@
 #' for a grid of identically sized print-and-play components.
 #' @param nrow,ncol Number of rows and columns of print-and-play components (e.g. cards)
 #' @param width,height,bleed Width, height, and bleed for each print-and-play component (in inches)
-#' @param paper,orientation Print-and-play paper size and orientation
+#' @param ... Ignored.
+#' @param paper,orientation Print-and-play paper size and orientation.
+#'    `paper` defaults to `getOption("papersize", "letter")` unless `input` is passed.
 #' @param angle Vector of angles of the pieces in degrees (counter-clockwise) (assigned `direction`, top-to-bottom)
 #' @param name Either a vector of names of each piece or a function with arguments `nrow` and `ncol` to be used to generate a vector of names for each piece.  These will be assigned `direction`, top-to-bottom.  [layout_name_fn()] can be used to generate such a function.
 #' @param direction Should `name` and `angle` be assigned "left-to-right" or "right-to-left".
 #'    Also supports aliases "ltr", "lr", "rtl", and "rl".
+#' @param input If not `NULL` then an input pdf filename whose (selected) pages'
+#'    paper size as inferred by [pdf_paper()] is used as `paper`
+#'    (so the layout is centered on the actual page).
+#'    It is an error to pass both `input` and `paper`
+#'    or if the selected pages don't all share a supported paper size.
+#' @param pages Which pages of `input` to infer the paper size from.
+#'    Supports the same values as the `pages` argument of [pdf_apply()]
+#'    e.g. `"all"`, `"even"`, `"odd"`, or a numeric vector.
 #' @examples
 #' # Button Shy card layout
 #' layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
+#'
+#' # Center the layout on the paper size of a pdf's pages
+#' input <- pdf_create_blank(paper = "a4", orientation = "portrait")
+#' layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait", input = input)
+#' unlink(input)
 #' @return A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
 #' @export
 layout_grid <- function(
@@ -20,12 +35,16 @@ layout_grid <- function(
 	width = 2.5,
 	height = 3.5,
 	bleed = 0,
+	...,
 	paper = getOption("papersize", "letter"),
 	orientation = c("landscape", "portrait"),
 	angle = 0,
 	name = layout_name_fn(),
-	direction = "left-to-right"
+	direction = "left-to-right",
+	input = NULL,
+	pages = "all"
 ) {
+	check_dots_empty()
 	nrow <- as.integer(nrow)
 	ncol <- as.integer(ncol)
 	if (inherits(angle, "angle")) {
@@ -33,6 +52,15 @@ layout_grid <- function(
 	}
 	angle <- angle %% 360
 	orientation <- match.arg(orientation)
+	if (!is.null(input)) {
+		if (!missing(paper)) {
+			abort(c(
+				"Can't pass both `input` and `paper`.",
+				i = "When `input` is passed `paper` is inferred from it with `pdf_paper()`."
+			))
+		}
+		paper <- paper_from_pdf(input, pages, alternative = "pass `paper` instead of `input`")
+	}
 	paper <- normalize_paper(paper)
 
 	is_ltr <- tolower(direction) %in% c("left-to-right", "ltr", "lr")
@@ -229,7 +257,7 @@ layout_octavo <- function(
 #' `layout_names()` returns the supported layout presets.
 #'
 #' Unless otherwise indicated the presets are centered on the paper size given by
-#' `getOption("papersize", "letter")` (pass `paper` in `...` to override).
+#' `getOption("papersize", "letter")` (pass `paper` or `input` in `...` to override).
 #' Supports the following presets:
 #'
 #' \describe{
@@ -250,6 +278,11 @@ layout_octavo <- function(
 #' @examples
 #' layout_preset("button_shy_cards")
 #' layout_names()
+#'
+#' # Center the preset on the paper size of a pdf's pages
+#' input <- pdf_create_blank(paper = "a4", orientation = "portrait")
+#' layout_preset("poker_3x3", input = input)
+#' unlink(input)
 #' @return A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".
 #' @export
 layout_preset <- function(preset = "button_shy_cards", ...) {
@@ -339,3 +372,54 @@ layout_names <- function() {
 
 # Birdscaping after padding to letter size and rotating 90 degrees is close to
 # layout_grid(nrow = 2, ncol = 4, height = 3.405, width = 2.425, bleed = 0.125)
+
+# Infer the single supported paper size shared by the (selected) pages of
+# `input` so a layout can be centered on the actual page rather than on
+# `getOption("papersize")`.  `alternative` is a phrase (e.g. "pass `paper`")
+# telling the user how to choose the paper size explicitly instead.
+paper_from_pdf <- function(input, pages = "all", ..., alternative, call = caller_env()) {
+	check_dots_empty()
+	paper <- pdf_paper(input)
+	index <- pages_from_n(length(paper), pages, call = call)
+	if (length(index) == 0L) {
+		index <- seq_along(paper)
+	}
+	paper <- unique(paper[index])
+	if (length(paper) > 1L) {
+		abort(
+			c(
+				"The selected pages of `input` don't all have the same paper size.",
+				x = sprintf("Found %s pages.", paste(dQuote(paper, FALSE), collapse = " and ")),
+				i = sprintf(
+					"Either select pages with the same paper size via `pages` or %s.",
+					alternative
+				)
+			),
+			call = call
+		)
+	}
+	if (paper == "special") {
+		abort(
+			c(
+				"Couldn't infer a supported paper size from the selected pages of `input`.",
+				i = sprintf("To choose the paper size explicitly, %s.", alternative)
+			),
+			call = call
+		)
+	}
+	paper
+}
+
+# Resolve a layout preset name against the paper size of the input pdf's
+# (selected) pages.  Data frame layouts are returned as is.
+layout_from_pdf <- function(layout, input, pages = NULL, call = caller_env()) {
+	if (!is.character(layout)) {
+		return(layout)
+	}
+	alternative <- sprintf(
+		"pass a layout data frame e.g. `layout_preset(%s, paper = \"a4\")`",
+		dQuote(layout, FALSE)
+	)
+	paper <- paper_from_pdf(input, pages %||% "all", alternative = alternative, call = call)
+	layout_preset(layout, paper = paper)
+}

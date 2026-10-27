@@ -21,6 +21,7 @@ pdf_add_lines <- function(
 	layout = "poker_3x3",
 	gp = gpar()
 ) {
+	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
 	pdf_add_overlay(
 		input,
 		output,
@@ -44,6 +45,7 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
+#' @inheritParams bm_crop_layout
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].
 #' @param ... Ignored for now.

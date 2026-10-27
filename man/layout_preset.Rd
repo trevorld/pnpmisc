@@ -24,7 +24,7 @@ for a named preset.
 }
 \details{
 Unless otherwise indicated the presets are centered on the paper size given by
-\code{getOption("papersize", "letter")} (pass \code{paper} in \code{...} to override).
+\code{getOption("papersize", "letter")} (pass \code{paper} or \code{input} in \code{...} to override).
 Supports the following presets:
 
 \describe{
@@ -43,4 +43,9 @@ Supports the following presets:
 \examples{
 layout_preset("button_shy_cards")
 layout_names()
+
+# Center the preset on the paper size of a pdf's pages
+input <- pdf_create_blank(paper = "a4", orientation = "portrait")
+layout_preset("poker_3x3", input = input)
+unlink(input)
 }
