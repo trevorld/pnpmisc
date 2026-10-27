@@ -1,7 +1,8 @@
 #' Tell whether pdf is in portrait or landscape mode
 #'
 #' `pdf_orientation()` tells whether a pdf is in portrait
-#' or landscape mode.
+#' or landscape mode.  A page is "landscape" if it is wider than it is tall
+#' and "portrait" otherwise (so square pages are "portrait").
 #' @inheritParams pdf_apply
 #' @return A character vector with a length equal to the number of pages in `input`.
 #' @examples
