@@ -16,7 +16,8 @@ A character vector with a length equal to the number of pages in \code{input}.
 }
 \description{
 \code{pdf_orientation()} tells whether a pdf is in portrait
-or landscape mode.
+or landscape mode.  A page is "landscape" if it is wider than it is tall
+and "portrait" otherwise (so square pages are "portrait").
 }
 \examples{
 f1 <- pdf_create_blank(width = 8.5, height = 11)
