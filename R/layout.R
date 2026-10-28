@@ -54,14 +54,13 @@ layout_grid <- function(
 	}
 	angle <- angle %% 360
 	orientation <- match.arg(orientation)
-	if (is.null(input)) {
-		if (!missing(pages)) {
-			abort(c(
-				"Can't pass `pages` without `input`.",
-				i = "`pages` selects which pages of `input` to infer `paper` from."
-			))
-		}
-	} else {
+	if (is.null(input) && !missing(pages)) {
+		abort(c(
+			"Can't pass `pages` without `input`.",
+			i = "`pages` selects which pages of `input` to infer `paper` from."
+		))
+	}
+	if (!is.null(input)) {
 		if (!missing(paper)) {
 			abort(c(
 				"Can't pass both `input` and `paper`.",
@@ -69,9 +68,6 @@ layout_grid <- function(
 			))
 		}
 		paper <- paper_from_pdf(input, pages, alternative = "pass `paper` instead of `input`")
-		if (length(paper) == 0L) {
-			abort("`pages` doesn't select any pages of `input`.")
-		}
 	}
 	paper <- normalize_paper(paper)
 
@@ -389,15 +385,14 @@ layout_names <- function() {
 # `input` so a layout can be centered on the actual page rather than on
 # `getOption("papersize")`.  `alternative` is a phrase (e.g. "pass `paper`")
 # telling the user how to choose the paper size explicitly instead.
-paper_from_pdf <- function(input, pages = "all", ..., alternative, call = caller_env()) {
-	check_dots_empty()
+# If `allow_empty` an empty page selection returns `character(0)`.
+paper_from_pdf <- function(input, pages, alternative, allow_empty = FALSE, call = caller_env()) {
 	paper <- pdf_paper(input)
 	index <- pages_from_n(length(paper), pages, call = call)
-	paper <- unique(paper[index])
-	# An empty page selection is the caller's to handle (e.g. nothing to draw on)
-	if (length(paper) == 0L) {
-		return(paper)
+	if (!allow_empty) {
+		check_pages_nonempty(index, call = call)
 	}
+	paper <- unique(paper[index])
 	if (length(paper) > 1L) {
 		abort(
 			c(
@@ -411,7 +406,7 @@ paper_from_pdf <- function(input, pages = "all", ..., alternative, call = caller
 			call = call
 		)
 	}
-	if (paper == "special") {
+	if (identical(paper, "special")) {
 		abort(
 			c(
 				"Couldn't infer a supported paper size from the selected pages of `input`.",
@@ -424,20 +419,22 @@ paper_from_pdf <- function(input, pages = "all", ..., alternative, call = caller
 }
 
 # Resolve a layout preset name against the paper size of the input pdf's
-# (selected) pages.  Data frame layouts are returned as is.
-layout_from_pdf <- function(layout, input, pages = NULL, call = caller_env()) {
+# (selected) pages.  Data frame layouts are returned as is and so are preset
+# names when `pages` selects no pages (since nothing is drawn on them).
+# Callers forward their `...` so `pages` is picked out of it by name.
+layout_from_pdf <- function(layout, input, ..., pages = "all", call = caller_env()) {
 	if (!is.character(layout)) {
 		return(layout)
 	}
 	paper <- paper_from_pdf(
 		input,
-		pages %||% "all",
+		pages,
 		alternative = preset_alternative(layout),
+		allow_empty = TRUE,
 		call = call
 	)
 	if (length(paper) == 0L) {
-		# Nothing is drawn on an empty page selection so any paper size will do
-		return(layout_preset(layout))
+		return(layout)
 	}
 	layout_preset(layout, paper = paper)
 }

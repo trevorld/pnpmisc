@@ -56,28 +56,18 @@ bm_paper <- function(x, ..., dpi = NULL) {
 	}
 }
 
-# Aspect ratios (short side divided by long side) of the page sizes we can
-# tell apart by aspect ratio alone.  All ISO A series sizes share the A4 ratio
-# and the poker card ratio (0.714) is too close to it to include.
-paper_ratios <- function() {
-	papers <- c("letter", "a4", "legal", "executive")
-	vapply(papers, \(p) paper_width(p) / paper_height(p), numeric(1L))
-}
-
-# Classify bitmaps' `width` and `height` (in pixels) by aspect ratio alone.
+# Classify bitmaps' `width` and `height` (in pixels) by aspect ratio (short
+# side divided by long side) alone.  Only the page sizes we can tell apart
+# this way are candidates: all ISO A series sizes share the A4 ratio and the
+# poker card ratio (0.714) is too close to it (7e-3) to include.
 # The nearest page ratio wins if within `tol`: pixel rounding perturbs a page's
-# ratio by well under 1e-3 for any plausible dpi while the poker card ratio is
-# 7e-3 from A4 and the nearest pair of page ratios (A4 and executive) is 17e-3 apart.
+# ratio by well under 1e-3 for any plausible dpi while the nearest pair of page
+# ratios (A4 and executive) is 17e-3 apart.
 # Zero-sized bitmaps (whose ratio is `NaN`) are "special".
-paper_from_ratio <- function(width, height, tol = 5e-3) {
-	ratios <- paper_ratios()
+paper_from_ratio <- function(width, height) {
+	tol <- 5e-3
+	sizes <- paper_sizes(c("letter", "a4", "legal", "executive"))
+	ratios <- sizes$short / sizes$long
 	ratio <- pmin(width, height) / pmax(width, height)
-	vapply(
-		ratio,
-		function(r) {
-			d <- abs(ratios - r)
-			if (isTRUE(min(d) < tol)) names(d)[which.min(d)] else "special"
-		},
-		character(1L)
-	)
+	vapply(ratio, \(r) nearest_paper(abs(ratios - r), sizes$paper, tol), character(1L))
 }
