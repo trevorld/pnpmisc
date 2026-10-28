@@ -7,8 +7,9 @@
 #' (which doesn't depend on its orientation or resolution):
 #'
 #' * The ISO A series paper sizes all share the same aspect ratio so they are all reported as `"a4"`.
-#' * The card sizes `"poker"` and `"bridge"` have aspect ratios too close to the page sizes
-#'   to tell apart reliably so they are never inferred.
+#' * The card sizes `"poker"` and `"bridge"` are never inferred from the aspect ratio alone
+#'   (pass `dpi` to infer them).  Since a poker card's aspect ratio is within 1% of A4's
+#'   a low resolution bitmap of a poker card may even be reported as `"a4"`.
 #' * Bitmaps whose aspect ratio doesn't match a supported page size are reported as `"special"`.
 #'
 #' If `dpi` is given then the size of the bitmap in inches is known
@@ -19,7 +20,8 @@
 #' @param ... Ignored.
 #' @param dpi Dots per inch of `x`.
 #'            If `NULL` (default) infer the paper size from the aspect ratio of `x` alone.
-#' @return A character vector with one paper size per bitmap.
+#' @return A character vector with one paper size per bitmap
+#'         (or per frame of a multi-frame `magick-image`).
 #'         If `dpi` is `NULL` one of `"letter"`, `"a4"`, `"legal"`, `"executive"`, or `"special"`
 #'         else one of the paper sizes inferred by [pdf_paper()].
 #' @seealso [pdf_paper()] to infer the paper size of a pdf.
@@ -34,9 +36,13 @@
 #' @export
 bm_paper <- function(x, ..., dpi = NULL) {
 	check_dots_empty()
-	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
+	stopifnot(
+		requireNamespace("bittermelon", quietly = TRUE),
+		"`dpi` must be `NULL` or a positive number" = is.null(dpi) ||
+			(is.numeric(dpi) && length(dpi) == 1L && isTRUE(dpi > 0))
+	)
 	if (bittermelon::is_bm_list(x)) {
-		return(vapply(x, bm_paper, character(1L), dpi = dpi))
+		return(unlist(lapply(x, bm_paper, dpi = dpi)) %||% character(0L))
 	}
 	stopifnot(
 		"`x` must be a bitmap object or a bm_list of bitmap objects" = is_supported_bitmap(x)
@@ -53,14 +59,25 @@ bm_paper <- function(x, ..., dpi = NULL) {
 # Aspect ratios (short side divided by long side) of the page sizes we can
 # tell apart by aspect ratio alone.  All ISO A series sizes share the A4 ratio
 # and the poker card ratio (0.714) is too close to it to include.
-PAPER_RATIOS <- c(letter = 8.5 / 11, a4 = 1 / sqrt(2), legal = 8.5 / 14, executive = 7.25 / 10.5)
+paper_ratios <- function() {
+	papers <- c("letter", "a4", "legal", "executive")
+	vapply(papers, \(p) paper_width(p) / paper_height(p), numeric(1L))
+}
 
-# Classify a bitmap's `width` and `height` (in pixels) by aspect ratio alone.
+# Classify bitmaps' `width` and `height` (in pixels) by aspect ratio alone.
 # The nearest page ratio wins if within `tol`: pixel rounding perturbs a page's
 # ratio by well under 1e-3 for any plausible dpi while the poker card ratio is
 # 7e-3 from A4 and the nearest pair of page ratios (A4 and executive) is 17e-3 apart.
+# Zero-sized bitmaps (whose ratio is `NaN`) are "special".
 paper_from_ratio <- function(width, height, tol = 5e-3) {
-	ratio <- min(width, height) / max(width, height)
-	d <- abs(PAPER_RATIOS - ratio)
-	if (min(d) < tol) names(d)[which.min(d)] else "special"
+	ratios <- paper_ratios()
+	ratio <- pmin(width, height) / pmax(width, height)
+	vapply(
+		ratio,
+		function(r) {
+			d <- abs(ratios - r)
+			if (isTRUE(min(d) < tol)) names(d)[which.min(d)] else "special"
+		},
+		character(1L)
+	)
 }

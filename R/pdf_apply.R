@@ -331,7 +331,11 @@ pdf_apply_raster <- function(
 				grid.use("pnpmisc_overlay", transform = viewportTransform)
 				popViewport()
 			} else {
+				# Draw in the input page's coordinates (as the vector path does)
+				# since `vp` is centered on the (possibly resized) output paper
+				pushViewport(vp)
 				grid_fn()
+				popViewport()
 			}
 		} else {
 			grid.raster(r, interpolate = FALSE, vp = vp)

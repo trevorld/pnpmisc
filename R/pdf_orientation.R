@@ -3,6 +3,11 @@
 #' `pdf_orientation()` tells whether a pdf is in portrait
 #' or landscape mode.  A page is "landscape" if it is wider than it is tall
 #' and "portrait" otherwise (so square pages are "portrait").
+#' The page size is read before any `/Rotate` page attribute is applied
+#' so pages a pdf viewer displays rotated by 90 or 270 degrees are reported
+#' with the orientation of their unrotated size.
+#' Processing the pdf with [pdf_gs()] first bakes any such rotation into the
+#' page size so the displayed orientation is reported.
 #' @inheritParams pdf_apply
 #' @return A character vector with a length equal to the number of pages in `input`.
 #' @examples

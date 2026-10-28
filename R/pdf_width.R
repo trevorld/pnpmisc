@@ -1,6 +1,11 @@
 #' Get dimensions of pdf pages
 #'
 #' [pdf_width()] and [pdf_height()] get the dimensions of the pdf file pages.
+#' The page size is read before any `/Rotate` page attribute is applied
+#' so pages a pdf viewer displays rotated by 90 or 270 degrees are reported
+#' with their unrotated width and height.
+#' Processing the pdf with [pdf_gs()] first bakes any such rotation into the
+#' page size so the displayed dimensions are reported.
 #' @return If `numeric = TRUE` a numeric vector else a [grid::unit()] object.
 #' @inheritParams pdf_apply
 #' @param units Units to use.  See [grid::unit()].

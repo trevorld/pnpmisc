@@ -17,7 +17,8 @@ or a \code{\link[bittermelon:bm_list]{bittermelon::bm_list()}} of such objects.}
 If \code{NULL} (default) infer the paper size from the aspect ratio of \code{x} alone.}
 }
 \value{
-A character vector with one paper size per bitmap.
+A character vector with one paper size per bitmap
+(or per frame of a multi-frame \code{magick-image}).
 If \code{dpi} is \code{NULL} one of \code{"letter"}, \code{"a4"}, \code{"legal"}, \code{"executive"}, or \code{"special"}
 else one of the paper sizes inferred by \code{\link[=pdf_paper]{pdf_paper()}}.
 }
@@ -30,8 +31,9 @@ If \code{dpi} is \code{NULL} the paper size is inferred from the aspect ratio of
 (which doesn't depend on its orientation or resolution):
 \itemize{
 \item The ISO A series paper sizes all share the same aspect ratio so they are all reported as \code{"a4"}.
-\item The card sizes \code{"poker"} and \code{"bridge"} have aspect ratios too close to the page sizes
-to tell apart reliably so they are never inferred.
+\item The card sizes \code{"poker"} and \code{"bridge"} are never inferred from the aspect ratio alone
+(pass \code{dpi} to infer them).  Since a poker card's aspect ratio is within 1\% of A4's
+a low resolution bitmap of a poker card may even be reported as \code{"a4"}.
 \item Bitmaps whose aspect ratio doesn't match a supported page size are reported as \code{"special"}.
 }
 

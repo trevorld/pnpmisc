@@ -7,7 +7,7 @@ Breaking changes
 * The first argument of `layout_preset()` is now `preset` instead of `name` (so we can now pass `layout_grid()`'s new `name` argument in the `...`).
 * The default argument for `paper` is now `getOption("papersize", "letter")` instead of (depending on the function) "letter" or "special".
 * `bm_create_pdf()` and `pdf_create_blank()` now follow the convention that paper size will be determined by `height` and `width` if either are non-missing (and/or `paper = "special"`) otherwise paper size will be determined by both `paper` and `orientation`.
-* `layout_grid()` now requires the arguments after `bleed` (i.e. `paper`, `orientation`, `angle`, `name`, and `direction`) to be named.
+* `layout_grid()` now requires the arguments after `bleed` (i.e. `paper`, `orientation`, `angle`, `name`, and `direction`) to be named (#70).
 * `ls_temp_pdfs()` and `rm_temp_pdfs()` now only list/remove the temporary pdf files created by this package (which now use a `___pnpmisc.pdf` file extension) instead of every pdf file in `tempdir()`.  Pass `fileext = ".pdf"` for the previous behaviour (#67).
 * By default `pdf_rm_crosshairs()` now removes crosshairs from all pages.  You'll need to explicitly pass `pages = "odd"` to get the previous behaviour.
 * The original pdf contents are now rasterized in fewer cases.  In such cases if you want to explicitly rasterize the pdf contents you'll need to pass `rasterize = TRUE`.
@@ -94,6 +94,7 @@ New features
 Bug fixes
 ---------
 
+* `pdf_apply()` now draws `grid_fn` in the coordinates of the input page when it rasterizes the pdf contents and `paper` is passed (so the graphics stay aligned with the original contents just like when the pdf contents aren't rasterized).  This also affected the functions that call it internally such as `pdf_add_crosshairs()` and `pdf_add_origami()`.
 * `pdf_width()` and `pdf_height()` no longer leave an `Rplots.pdf` file behind in the working directory when called with no graphics device open.  This also affected the functions that call them internally such as `pdf_append_blank()`, `pdf_change_paper()`, and `pdf_scale()` (#67).
 
 pnpmisc v0.1.1
