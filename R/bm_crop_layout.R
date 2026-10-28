@@ -7,7 +7,7 @@
 #' @param layout Either a layout preset name in [layout_names()] or a data frame
 #'               with layout data (as returned by [layout_grid()]).
 #'               A preset name is centered on the paper size inferred from the
-#'               aspect ratio of `page` by [bm_paper()]; it is an error if no
+#'               aspect ratio of the bitmap by [bm_paper()]; it is an error if no
 #'               supported paper size can be inferred.
 #' @param row,col The `row` and `col` of the component in the layout (integers).
 #' @param name Instead of `row` and `col` can instead use the name of the component in the layout (string).

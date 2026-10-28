@@ -28,7 +28,7 @@ pdf_add_rects <- function(
 	r = unit(0, "in"),
 	gp = gpar(col = "black", fill = NA, lwd = 1)
 ) {
-	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
+	layout <- layout_from_pdf(layout, input, ...)
 	pdf_add_overlay(
 		input,
 		output,

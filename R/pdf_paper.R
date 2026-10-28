@@ -14,22 +14,36 @@ pdf_paper <- function(input) {
 	paper_from_size(pagesize$width / 72, pagesize$height / 72)
 }
 
-# Classify page `width` and `height` (in inches) as a supported paper size
+# Classify page `width` and `height` (in inches) as a supported paper size:
+# the nearest paper size wins if both its dimensions are within `tol`.
+# PDFs store dimensions as integer bigpts, so the inch round-trip introduces
+# quantization error (~0.007 in for A4). 5e-2 is the tightest value that
+# passes tests for all supported paper sizes.
 paper_from_size <- function(width, height) {
+	tol <- 5e-2
+	sizes <- paper_sizes()
 	short <- pmin(width, height)
 	long <- pmax(width, height)
-	paper <- rep_len("special", length(height))
-	# PDFs store dimensions as integer bigpts, so the inch round-trip introduces
-	# quantization error (~0.007 in for A4). 5e-2 is the tightest value that
-	# passes tests for all supported paper sizes.
-	tol <- 5e-2
-	paper <- ifelse(abs(short - 2.25) < tol & abs(long - 3.5) < tol, "bridge", paper)
-	paper <- ifelse(abs(short - 2.5) < tol & abs(long - 3.5) < tol, "poker", paper)
-	paper <- ifelse(abs(short - 8.5) < tol & abs(long - 14) < tol, "legal", paper)
-	paper <- ifelse(abs(short - 7.25) < tol & abs(long - 10.5) < tol, "executive", paper)
-	paper <- ifelse(abs(short - 8.5) < tol & abs(long - 11) < tol, "letter", paper)
-	paper <- ifelse(abs(short - 11.69) < tol & abs(long - 16.54) < tol, "a3", paper)
-	paper <- ifelse(abs(short - 8.27) < tol & abs(long - 11.69) < tol, "a4", paper)
-	paper <- ifelse(abs(short - 5.83) < tol & abs(long - 8.27) < tol, "a5", paper)
-	paper
+	vapply(
+		seq_along(short),
+		function(i) {
+			d <- pmax(abs(sizes$short - short[i]), abs(sizes$long - long[i]))
+			nearest_paper(d, sizes$paper, tol)
+		},
+		character(1L)
+	)
+}
+
+# The (portrait) short and long sides in inches of the fixed paper sizes
+paper_sizes <- function(papers = setdiff(SUPPORTED_PAPER, "special")) {
+	data.frame(
+		paper = papers,
+		short = vapply(papers, paper_width, numeric(1L), USE.NAMES = FALSE),
+		long = vapply(papers, paper_height, numeric(1L), USE.NAMES = FALSE)
+	)
+}
+
+# The paper whose distance `d` is smallest if that distance is within `tol` else "special"
+nearest_paper <- function(d, papers, tol) {
+	if (isTRUE(min(d) < tol)) papers[which.min(d)] else "special"
 }

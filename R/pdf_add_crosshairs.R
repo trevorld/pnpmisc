@@ -32,7 +32,7 @@ pdf_add_crosshairs <- function(
 	ch_width = unit(1 / 6, "in"),
 	ch_grob = NULL
 ) {
-	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
+	layout <- layout_from_pdf(layout, input, ...)
 	pdf_add_overlay(
 		input,
 		output,

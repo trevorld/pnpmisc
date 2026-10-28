@@ -21,7 +21,7 @@ pdf_add_lines <- function(
 	layout = "poker_3x3",
 	gp = gpar()
 ) {
-	layout <- layout_from_pdf(layout, input, pages = list(...)[["pages"]])
+	layout <- layout_from_pdf(layout, input, ...)
 	pdf_add_overlay(
 		input,
 		output,

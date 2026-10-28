@@ -1,15 +1,7 @@
 #' Extract components from a print-and-play layout
 #'
 #' `bm_split_layout()` extracts print-and-play components from a layout.
-#' @param page A [bittermelon::bm_pixmap()] object representing a print-and-play layout page.
-#'             Often the output from [pdf_render_bm_pixmap()].
-#' @param ... Ignored for now.
-#' @param layout Either a layout preset name in [layout_names()] or a data frame
-#'               with layout data (as returned by [layout_grid()]).
-#'               A preset name is centered on the paper size inferred from the
-#'               aspect ratio of `page` by [bm_paper()]; it is an error if no
-#'               supported paper size can be inferred.
-#' @param bleed Include the bleed (if available).
+#' @inheritParams bm_crop_layout
 #' @return A [bittermelon::bm_list()] of [bittermelon::bm_pixmap()] objects.
 #' @seealso [bm_crop_layout()] to just crop a single component
 #' @examples

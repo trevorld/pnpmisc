@@ -28,7 +28,7 @@ test_that("`pdf_rm_crosshairs()` centers a preset name on the input pdf's paper"
 	f4 <- suppressMessages(
 		pdf_rm_crosshairs(f2, layout = layout_preset("poker_3x2_bleed", paper = "a4"), dpi = 75)
 	)
-	render <- \(f) pdftools::pdf_render_page(f, page = 1L, dpi = 50, numeric = TRUE)
+	render <- \(f) pdf_render_array_pdftools(f, page = 1L, dpi = 50)
 	expect_equal(render(f3), render(f4))
 })
 

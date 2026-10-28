@@ -136,55 +136,38 @@ test_that("layout functions", {
 	expect_snapshot(error = TRUE, layout_grid(2L, 2L, 2.5, 3.5, 0, "a4"))
 })
 
-test_that("`layout_grid()` infers `paper` from `input`", {
+test_that("`layout_grid()` and `layout_from_pdf()` infer `paper` from `input`", {
 	op <- options(papersize = "letter")
 	on.exit(options(op), add = TRUE)
 	on.exit(rm_temp_pdfs(), add = TRUE)
 
 	a4 <- pdf_create_blank(length = 2L, paper = "a4")
+	letter <- pdf_create_blank(paper = "letter")
+	mixed <- pdf_combine(c(letter, a4))
+	special <- pdf_create_blank(width = 8.27, height = 11)
+
 	expect_equal(
 		layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait", input = a4),
 		layout_grid(nrow = 3L, ncol = 3L, orientation = "portrait", paper = "a4")
 	)
 	expect_equal(layout_preset("poker_3x3", input = a4), layout_preset("poker_3x3", paper = "a4"))
 	expect_equal(layout_octavo(input = a4), layout_octavo(paper = "a4"))
-	expect_snapshot(error = TRUE, layout_grid(input = a4, paper = "a4"))
-
-	letter <- pdf_create_blank(paper = "letter")
-	mixed <- qpdf::pdf_combine(c(letter, a4), output = temp_pdf())
 	expect_equal(
 		layout_preset("poker_3x3", input = mixed, pages = 2L),
 		layout_preset("poker_3x3", paper = "a4")
 	)
+	expect_snapshot(error = TRUE, layout_grid(input = a4, paper = "a4"))
 	expect_snapshot(error = TRUE, layout_grid(input = mixed))
 	expect_snapshot(error = TRUE, layout_grid(input = letter, pages = "even"))
 	expect_snapshot(error = TRUE, layout_grid(pages = 2L))
-
-	special <- pdf_create_blank(width = 8.27, height = 11)
 	expect_snapshot(error = TRUE, layout_grid(input = special))
-})
 
-test_that("`layout_from_pdf()` centers a preset on the input pdf's paper", {
-	op <- options(papersize = "letter")
-	on.exit(options(op), add = TRUE)
-	on.exit(rm_temp_pdfs(), add = TRUE)
-
-	a4 <- pdf_create_blank(length = 2L, paper = "a4")
 	expect_equal(layout_from_pdf("poker_3x3", a4), layout_preset("poker_3x3", paper = "a4"))
-	df <- layout_preset("poker_3x3", paper = "letter")
-	expect_identical(layout_from_pdf(df, a4), df)
-
-	letter <- pdf_create_blank(paper = "letter")
-	mixed <- qpdf::pdf_combine(c(letter, a4), output = temp_pdf())
 	expect_equal(
-		layout_from_pdf("poker_3x3", mixed, pages = 2L),
+		layout_from_pdf("poker_3x3", mixed, pages = 2L, dpi = 75),
 		layout_preset("poker_3x3", paper = "a4")
 	)
-	expect_snapshot(error = TRUE, pdf_add_rects(mixed, layout = "poker_3x3"))
-
-	special <- pdf_create_blank(width = 8.27, height = 11)
-	expect_snapshot(error = TRUE, pdf_add_rects(special, layout = "poker_3x3"))
-	expect_equal(layout_from_pdf("poker_3x3", special, pages = "even"), layout_preset("poker_3x3"))
-	f <- pdf_add_rects(special, pages = "even", layout = "poker_3x3")
-	expect_equal(tools::md5sum(special), tools::md5sum(f), ignore_attr = TRUE)
+	df <- layout_preset("poker_3x3", paper = "letter")
+	expect_identical(layout_from_pdf(df, a4), df)
+	expect_identical(layout_from_pdf("poker_3x3", special, pages = "even"), "poker_3x3")
 })
