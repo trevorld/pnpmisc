@@ -49,6 +49,7 @@ New features
 * `{bittermelon}` pixmap object functions:
 
   + `bm_create_pdf()` creates pdf documents from a list of (raster) images (#36).
+  + `bm_paper()` infers the paper size of a bitmap (or each bitmap in a `bittermelon::bm_list()`) from its aspect ratio or, if `dpi` is passed, from its size (#70).
   + `bm_rm_crosshairs()` removes crosshairs from a raster object.
   + `bm_split_layout()` extracts all the components in a page of a print-and-play layout into a `bittermelon::bm_list()` of `bittermelon::bm_pixmap()` objects.
   + `pdf_render_bm_list()` renders all the pages in a pdf into bittermelon pixmap objects (#35).
