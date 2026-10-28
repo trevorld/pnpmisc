@@ -423,3 +423,29 @@ layout_from_pdf <- function(layout, input, pages = NULL, call = caller_env()) {
 	paper <- paper_from_pdf(input, pages %||% "all", alternative = alternative, call = call)
 	layout_preset(layout, paper = paper)
 }
+
+# Resolve a layout preset name against the paper size inferred from the aspect
+# ratio of the bitmap `x` (whose argument name is `arg`) by `bm_paper()`.
+# Data frame layouts are returned as is.
+layout_from_bm <- function(layout, x, arg = "page", call = caller_env()) {
+	if (!is.character(layout)) {
+		return(layout)
+	}
+	paper <- bm_paper(x)
+	if (paper == "special") {
+		abort(
+			c(
+				sprintf(
+					"Couldn't infer a supported paper size from the aspect ratio of `%s`.",
+					arg
+				),
+				i = sprintf(
+					"To choose the paper size explicitly, pass a layout data frame e.g. `layout_preset(%s, paper = \"a4\")`.",
+					dQuote(layout, FALSE)
+				)
+			),
+			call = call
+		)
+	}
+	layout_preset(layout, paper = paper)
+}

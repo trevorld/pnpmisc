@@ -21,7 +21,10 @@ Often the output from \code{\link[=pdf_render_bm_pixmap]{pdf_render_bm_pixmap()}
 \item{...}{Ignored for now.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
-with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
+with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).
+A preset name is centered on the paper size inferred from the
+aspect ratio of \code{page} by \code{\link[=bm_paper]{bm_paper()}}; it is an error if no
+supported paper size can be inferred.}
 
 \item{row, col}{The \code{row} and \code{col} of the component in the layout (integers).}
 

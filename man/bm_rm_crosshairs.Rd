@@ -12,7 +12,10 @@ bm_rm_crosshairs(x, ..., layout = "poker_3x2_bleed")
 \item{...}{Ignored for now.}
 
 \item{layout}{Either a layout preset name in \code{\link[=layout_names]{layout_names()}} or a data frame
-with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).}
+with layout data (as returned by \code{\link[=layout_grid]{layout_grid()}}).
+A preset name is centered on the paper size inferred from the
+aspect ratio of \code{x} by \code{\link[=bm_paper]{bm_paper()}}; it is an error if no
+supported paper size can be inferred.}
 }
 \value{
 A \code{\link[bittermelon:bm_pixmap]{bittermelon::bm_pixmap()}} object.

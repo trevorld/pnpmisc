@@ -6,6 +6,9 @@
 #' @param ... Ignored for now.
 #' @param layout Either a layout preset name in [layout_names()] or a data frame
 #'               with layout data (as returned by [layout_grid()]).
+#'               A preset name is centered on the paper size inferred from the
+#'               aspect ratio of `page` by [bm_paper()]; it is an error if no
+#'               supported paper size can be inferred.
 #' @param bleed Include the bleed (if available).
 #' @return A [bittermelon::bm_list()] of [bittermelon::bm_pixmap()] objects.
 #' @seealso [bm_crop_layout()] to just crop a single component
@@ -38,13 +41,11 @@ bm_split_layout <- function(
 	bleed = FALSE
 ) {
 	check_dots_empty()
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	stopifnot(
 		requireNamespace("bittermelon", quietly = TRUE),
 		"`page` must be a bm_pixmap object" = bittermelon::is_bm_pixmap(page)
 	)
+	layout <- layout_from_bm(layout, page)
 	# Sort by name so components are returned in reading order rather than
 	# physical layout order (e.g. zine booklet pages become page_1, page_2, ...).
 	if (hasName(layout, "name")) {

@@ -45,7 +45,7 @@ draw_vline <- function(x = unit(0.5, "npc"), ...) {
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
-#' @inheritParams bm_crop_layout
+#' @inheritParams grid_add_layout
 #' @inheritParams pdf_add_crosshairs
 #' @param gp Passed to [grid::grid.segments()].
 #' @param ... Ignored for now.

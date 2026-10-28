@@ -3,6 +3,8 @@
 #' `grid_add_layout()` draws images to a layout in grid.
 #'
 #' @param images A named list of images with all the names in the `name` column of the `layout` argument.  Currently supports raster objects supported by `bittermelon` and grid grob objects.
+#' @param layout Either a layout preset name in [layout_names()] or a data frame
+#'               with layout data (as returned by [layout_grid()]).
 #' @inheritParams bm_crop_layout
 #' @seealso [piecepackr::pmap_piece()] to draw pieces to a layout represented by a [piecepackr::pp_cfg()] object.
 #' @return `NULL` invisibly.
