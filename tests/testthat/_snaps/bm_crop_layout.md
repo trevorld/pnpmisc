@@ -22,3 +22,12 @@
       Error in `bm_crop_layout()`:
       ! `name` not found in `layout`
 
+# `bm_crop_layout()` centers a preset name on the page's paper
+
+    Code
+      bm_crop_layout(special, layout = "poker_3x3")
+    Condition
+      Error in `bm_crop_layout()`:
+      ! Couldn't infer a supported paper size from the aspect ratio of `page`.
+      i To choose the paper size explicitly, pass a layout data frame e.g. `layout_preset("poker_3x3", paper = "a4")`.
+

@@ -16,6 +16,7 @@ New features
 ------------
 
 * The "executive" paper size (7.25 by 10.5 inches) is now supported wherever a `paper` argument is accepted and is now inferred by `pdf_paper()`.
+* `bm_crop_layout()`, `bm_rm_crosshairs()`, and `bm_split_layout()` now center a layout preset name passed to `layout` on the paper size inferred from the aspect ratio of the bitmap by `bm_paper()` instead of on `getOption("papersize")` and throw an error if no supported paper size can be inferred (#70).
 * `layout_grid()` gains `input` and `pages` arguments to center the layout on the paper size of the input pdf's (selected) pages as inferred by `pdf_paper()` instead of on `getOption("papersize")`.  Since `layout_preset()` and `layout_octavo()` forward `...` to `layout_grid()` they can also be passed `input` and `pages` (#70).
 * The following PDF creation functions:
 

@@ -43,7 +43,7 @@ pdf_add_cropmarks <- function(
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
-#' @inheritParams bm_crop_layout
+#' @inheritParams grid_add_layout
 #' @param gp,cm_width,cm_length Passed to [piecepackr::grid.cropmark()].
 #' @param bleed Passed to [piecepackr::grid.cropmark()].
 #'              If `NULL` defaults to `max(max(layout$bleed), 0.125)`.

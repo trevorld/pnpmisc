@@ -49,7 +49,7 @@ pdf_add_crosshairs <- function(
 #'
 #' * This function draws in **inches** so make sure your graphics device is "big" enough.
 #'
-#' @inheritParams bm_crop_layout
+#' @inheritParams grid_add_layout
 #' @param gp,ch_width,ch_grob Passed to [piecepackr::grid.crosshair()].
 #'   `ch_grob` defaults to [piecepackr::squaresCrosshairGrob()].
 #' @param ... Passed to [piecepackr::grid.crosshair()].

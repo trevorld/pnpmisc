@@ -47,7 +47,7 @@ pdf_add_rects <- function(
 #' * Sometimes if you use the same color as a solid background color
 #'   this can be used to effectively "remove" unwanted card outlines.
 #'
-#' @inheritParams bm_crop_layout
+#' @inheritParams grid_add_layout
 #' @inheritParams pdf_add_crosshairs
 #' @param r,gp Passed to [grid::grid.roundrect()].
 #' @param ... Ignored for now.

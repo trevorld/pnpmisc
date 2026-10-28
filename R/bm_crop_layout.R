@@ -6,6 +6,9 @@
 #' @param ... Ignored for now.
 #' @param layout Either a layout preset name in [layout_names()] or a data frame
 #'               with layout data (as returned by [layout_grid()]).
+#'               A preset name is centered on the paper size inferred from the
+#'               aspect ratio of `page` by [bm_paper()]; it is an error if no
+#'               supported paper size can be inferred.
 #' @param row,col The `row` and `col` of the component in the layout (integers).
 #' @param name Instead of `row` and `col` can instead use the name of the component in the layout (string).
 #' @param bleed Include the bleed (if available).
@@ -48,9 +51,7 @@ bm_crop_layout <- function(
 		"`page` must be a bm_pixmap object" = bittermelon::is_bm_pixmap(page),
 		is.null(name) || (missing(row) && missing(col))
 	)
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
+	layout <- layout_from_bm(layout, page)
 	if (is.null(name) || !hasName(layout, "name")) {
 		index <- which(layout$row == row & layout$col == col)
 		stopifnot("`row`/`col` not found in `layout`" = length(index) > 0L)

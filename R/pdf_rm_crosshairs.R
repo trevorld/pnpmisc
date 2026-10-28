@@ -53,6 +53,11 @@ pdf_rm_crosshairs <- function(
 #' * The default layout supports [Galdor's Grip](https://greggjewell.itch.io/galdors-grip) (PnP letter size v1).
 #'
 #' @param x A raster object coercible to a [bittermelon::bm_pixmap()] object.
+#' @param layout Either a layout preset name in [layout_names()] or a data frame
+#'               with layout data (as returned by [layout_grid()]).
+#'               A preset name is centered on the paper size inferred from the
+#'               aspect ratio of `x` by [bm_paper()]; it is an error if no
+#'               supported paper size can be inferred.
 #' @inheritParams bm_crop_layout
 #' @return A [bittermelon::bm_pixmap()] object.
 #' @seealso [pdf_rm_crosshairs()] to remove crosshairs from a pdf.
@@ -72,10 +77,8 @@ pdf_rm_crosshairs <- function(
 bm_rm_crosshairs <- function(x, ..., layout = "poker_3x2_bleed") {
 	check_dots_empty()
 	stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-	if (is.character(layout)) {
-		layout <- layout_preset(layout)
-	}
 	pixmap <- bittermelon::as_bm_pixmap(x)
+	layout <- layout_from_bm(layout, pixmap, arg = "x")
 	dpi <- get_dpi(pixmap, layout$paper[1L], layout$orientation[1L])
 	for (i in seq_len(nrow(layout))) {
 		x <- layout$x[i]
