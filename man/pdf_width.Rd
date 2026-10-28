@@ -23,6 +23,11 @@ If \code{numeric = TRUE} a numeric vector else a \code{\link[grid:unit]{grid::un
 }
 \description{
 \code{\link[=pdf_width]{pdf_width()}} and \code{\link[=pdf_height]{pdf_height()}} get the dimensions of the pdf file pages.
+The page size is read before any \verb{/Rotate} page attribute is applied
+so pages a pdf viewer displays rotated by 90 or 270 degrees are reported
+with their unrotated width and height.
+Processing the pdf with \code{\link[=pdf_gs]{pdf_gs()}} first bakes any such rotation into the
+page size so the displayed dimensions are reported.
 }
 \examples{
 f <- pdf_create_blank(width = 8.5, height = 11)

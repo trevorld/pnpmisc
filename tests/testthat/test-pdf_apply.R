@@ -25,6 +25,26 @@ test_that("`grid_fn` plus scaling", {
 	expect_equal(qpdf::pdf_length(f4), 1L)
 })
 
+test_that("`pdf_apply()` draws `grid_fn` in the input page's coordinates when rasterizing", {
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	f1 <- pdf_create_blank(width = 5, height = 5)
+	grid_fn <- function() {
+		grid::grid.rect(
+			x = grid::unit(1, "in"),
+			y = grid::unit(1, "in"),
+			width = grid::unit(1, "in"),
+			height = grid::unit(1, "in"),
+			just = c("left", "bottom"),
+			gp = grid::gpar(fill = "black", col = NA)
+		)
+	}
+	f2 <- pdf_apply(f1, paper = "letter", grid_fn = grid_fn, rasterize = TRUE, dpi = 75)
+	px <- pdftools::pdf_render_page(f2, dpi = 25, numeric = TRUE)[,, 1L]
+	centroid <- (colMeans(which(px < 0.5, arr.ind = TRUE)) - 0.5) / 25
+	# the 5" by 5" page is centered on letter paper so the square's center is at (3.25", 4.5")
+	expect_equal(unname(centroid), c(11 - 4.5, 3.25), tolerance = 0.02)
+})
+
 test_that("Backgrounds", {
 	skip_if_not(nzchar(find_gs_cmd()))
 	skip_if_not_installed("png")

@@ -157,6 +157,8 @@ test_that("`layout_grid()` infers `paper` from `input`", {
 		layout_preset("poker_3x3", paper = "a4")
 	)
 	expect_snapshot(error = TRUE, layout_grid(input = mixed))
+	expect_snapshot(error = TRUE, layout_grid(input = letter, pages = "even"))
+	expect_snapshot(error = TRUE, layout_grid(pages = 2L))
 
 	special <- pdf_create_blank(width = 8.27, height = 11)
 	expect_snapshot(error = TRUE, layout_grid(input = special))
@@ -182,4 +184,7 @@ test_that("`layout_from_pdf()` centers a preset on the input pdf's paper", {
 
 	special <- pdf_create_blank(width = 8.27, height = 11)
 	expect_snapshot(error = TRUE, pdf_add_rects(special, layout = "poker_3x3"))
+	expect_equal(layout_from_pdf("poker_3x3", special, pages = "even"), layout_preset("poker_3x3"))
+	f <- pdf_add_rects(special, pages = "even", layout = "poker_3x3")
+	expect_equal(tools::md5sum(special), tools::md5sum(f), ignore_attr = TRUE)
 })

@@ -38,14 +38,16 @@ layout_grid(
 Also supports aliases "ltr", "lr", "rtl", and "rl".}
 
 \item{input}{If not \code{NULL} then an input pdf filename whose (selected) pages'
-paper size as inferred by \code{\link[=pdf_paper]{pdf_paper()}} is used as \code{paper}
-(so the layout is centered on the actual page).
-It is an error to pass both \code{input} and \code{paper}
+paper size as inferred by \code{\link[=pdf_paper]{pdf_paper()}} is used as \code{paper}.
+Only \code{paper} is inferred from \code{input}: for the layout to be centered on the actual pages
+\code{orientation} must also match them.
+It is an error to pass both \code{input} and \code{paper}, to pass \code{pages} without \code{input},
 or if the selected pages don't all share a supported paper size.}
 
 \item{pages}{Which pages of \code{input} to infer the paper size from.
 Supports the same values as the \code{pages} argument of \code{\link[=pdf_apply]{pdf_apply()}}
-e.g. \code{"all"}, \code{"even"}, \code{"odd"}, or a numeric vector.}
+e.g. \code{"all"}, \code{"even"}, \code{"odd"}, or a numeric vector.
+It is an error if no pages are selected.}
 }
 \value{
 A data frame with columns "row", "col", "x", "y", "angle", "width", "height", "bleed", "paper", "orientation", and "name".

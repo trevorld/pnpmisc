@@ -23,5 +23,11 @@ test_that("`bm_paper()`", {
 	expect_equal(bm_paper(card, dpi = 50), "poker")
 	expect_equal(bm_paper(render(width = 8.27, height = 11)), "special")
 
+	expect_equal(bm_paper(as.raster(matrix(character(0L), 0L, 0L))), "special")
 	expect_snapshot(error = TRUE, bm_paper("not a bitmap"))
+	expect_snapshot(error = TRUE, bm_paper(letter, dpi = c(50, 75)))
+})
+
+test_that("`paper_from_ratio()` is vectorized (e.g. for multi-frame magick images)", {
+	expect_equal(paper_from_ratio(c(85, 297), c(110, 420)), c("letter", "a4"))
 })

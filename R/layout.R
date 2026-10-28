@@ -12,13 +12,15 @@
 #' @param direction Should `name` and `angle` be assigned "left-to-right" or "right-to-left".
 #'    Also supports aliases "ltr", "lr", "rtl", and "rl".
 #' @param input If not `NULL` then an input pdf filename whose (selected) pages'
-#'    paper size as inferred by [pdf_paper()] is used as `paper`
-#'    (so the layout is centered on the actual page).
-#'    It is an error to pass both `input` and `paper`
+#'    paper size as inferred by [pdf_paper()] is used as `paper`.
+#'    Only `paper` is inferred from `input`: for the layout to be centered on the actual pages
+#'    `orientation` must also match them.
+#'    It is an error to pass both `input` and `paper`, to pass `pages` without `input`,
 #'    or if the selected pages don't all share a supported paper size.
 #' @param pages Which pages of `input` to infer the paper size from.
 #'    Supports the same values as the `pages` argument of [pdf_apply()]
 #'    e.g. `"all"`, `"even"`, `"odd"`, or a numeric vector.
+#'    It is an error if no pages are selected.
 #' @examples
 #' # Button Shy card layout
 #' layout_grid(nrow = 2L, ncol = 3L, height = 3.447, width = 2.469, bleed = 0.125)
@@ -52,7 +54,14 @@ layout_grid <- function(
 	}
 	angle <- angle %% 360
 	orientation <- match.arg(orientation)
-	if (!is.null(input)) {
+	if (is.null(input)) {
+		if (!missing(pages)) {
+			abort(c(
+				"Can't pass `pages` without `input`.",
+				i = "`pages` selects which pages of `input` to infer `paper` from."
+			))
+		}
+	} else {
 		if (!missing(paper)) {
 			abort(c(
 				"Can't pass both `input` and `paper`.",
@@ -60,6 +69,9 @@ layout_grid <- function(
 			))
 		}
 		paper <- paper_from_pdf(input, pages, alternative = "pass `paper` instead of `input`")
+		if (length(paper) == 0L) {
+			abort("`pages` doesn't select any pages of `input`.")
+		}
 	}
 	paper <- normalize_paper(paper)
 
@@ -381,10 +393,11 @@ paper_from_pdf <- function(input, pages = "all", ..., alternative, call = caller
 	check_dots_empty()
 	paper <- pdf_paper(input)
 	index <- pages_from_n(length(paper), pages, call = call)
-	if (length(index) == 0L) {
-		index <- seq_along(paper)
-	}
 	paper <- unique(paper[index])
+	# An empty page selection is the caller's to handle (e.g. nothing to draw on)
+	if (length(paper) == 0L) {
+		return(paper)
+	}
 	if (length(paper) > 1L) {
 		abort(
 			c(
@@ -416,12 +429,25 @@ layout_from_pdf <- function(layout, input, pages = NULL, call = caller_env()) {
 	if (!is.character(layout)) {
 		return(layout)
 	}
-	alternative <- sprintf(
+	paper <- paper_from_pdf(
+		input,
+		pages %||% "all",
+		alternative = preset_alternative(layout),
+		call = call
+	)
+	if (length(paper) == 0L) {
+		# Nothing is drawn on an empty page selection so any paper size will do
+		return(layout_preset(layout))
+	}
+	layout_preset(layout, paper = paper)
+}
+
+# Hint on how to choose the paper size explicitly instead of inferring it
+preset_alternative <- function(layout) {
+	sprintf(
 		"pass a layout data frame e.g. `layout_preset(%s, paper = \"a4\")`",
 		dQuote(layout, FALSE)
 	)
-	paper <- paper_from_pdf(input, pages %||% "all", alternative = alternative, call = call)
-	layout_preset(layout, paper = paper)
 }
 
 # Resolve a layout preset name against the paper size inferred from the aspect
@@ -439,10 +465,7 @@ layout_from_bm <- function(layout, x, arg = "page", call = caller_env()) {
 					"Couldn't infer a supported paper size from the aspect ratio of `%s`.",
 					arg
 				),
-				i = sprintf(
-					"To choose the paper size explicitly, pass a layout data frame e.g. `layout_preset(%s, paper = \"a4\")`.",
-					dQuote(layout, FALSE)
-				)
+				i = sprintf("To choose the paper size explicitly, %s.", preset_alternative(layout))
 			),
 			call = call
 		)

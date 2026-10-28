@@ -10,12 +10,8 @@
 #' unlink(f)
 #' @export
 pdf_paper <- function(input) {
-	pagesize <- pdftools::pdf_pagesize(input) # in "bigpts" units
-	with_null_device({
-		height <- convertHeight(unit(pagesize$height, "bigpts"), "in", valueOnly = TRUE)
-		width <- convertWidth(unit(pagesize$width, "bigpts"), "in", valueOnly = TRUE)
-	})
-	paper_from_size(width, height)
+	pagesize <- pdftools::pdf_pagesize(input) # in "bigpts" units where 72 bigpts = 1"
+	paper_from_size(pagesize$width / 72, pagesize$height / 72)
 }
 
 # Classify page `width` and `height` (in inches) as a supported paper size

@@ -112,6 +112,23 @@
 ---
 
     Code
+      layout_grid(input = letter, pages = "even")
+    Condition
+      Error in `layout_grid()`:
+      ! `pages` doesn't select any pages of `input`.
+
+---
+
+    Code
+      layout_grid(pages = 2L)
+    Condition
+      Error in `layout_grid()`:
+      ! Can't pass `pages` without `input`.
+      i `pages` selects which pages of `input` to infer `paper` from.
+
+---
+
+    Code
       layout_grid(input = special)
     Condition
       Error in `layout_grid()`:
