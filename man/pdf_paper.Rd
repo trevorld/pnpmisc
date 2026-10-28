@@ -20,3 +20,6 @@ f <- pdf_create_blank(width = 8.5, height = 11)
 pdf_paper(f)
 unlink(f)
 }
+\seealso{
+\code{\link[=bm_paper]{bm_paper()}} to infer the paper size of a bitmap.
+}

@@ -3,6 +3,7 @@
 #' `pdf_paper()` infers the paper size of a PDF document
 #' @return A character vector.
 #' @inheritParams pdf_apply
+#' @seealso [bm_paper()] to infer the paper size of a bitmap.
 #' @examples
 #' f <- pdf_create_blank(width = 8.5, height = 11)
 #' pdf_paper(f)
@@ -14,6 +15,11 @@ pdf_paper <- function(input) {
 		height <- convertHeight(unit(pagesize$height, "bigpts"), "in", valueOnly = TRUE)
 		width <- convertWidth(unit(pagesize$width, "bigpts"), "in", valueOnly = TRUE)
 	})
+	paper_from_size(width, height)
+}
+
+# Classify page `width` and `height` (in inches) as a supported paper size
+paper_from_size <- function(width, height) {
 	short <- pmin(width, height)
 	long <- pmax(width, height)
 	paper <- rep_len("special", length(height))
