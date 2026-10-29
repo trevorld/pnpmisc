@@ -79,17 +79,24 @@ pdf_render_raster <- function(
 	}
 }
 
-# Convert the raw RGBA array (with dimensions channel x width x height) rendered by
-# `pdf_render_array_pdftools()` to a `raster` object (`as.raster()` has no method for it)
+# The pixels of the raw RGBA array (channel x width x height) are already in the
+# row-first order that `raster` and `nativeRaster` objects are stored in (see `?as.raster`)
+# so we build them directly.  `as.raster(aperm(bitmap))` gives the same `raster` but
+# takes twice as long and twice the memory for a 300 dpi page.
 raster_from_bitmap <- function(bitmap) {
-	x <- array(as.integer(bitmap), dim = dim(bitmap))
-	colors <- grDevices::rgb(x[1L, , ], x[2L, , ], x[3L, , ], x[4L, , ], maxColorValue = 255L)
-	as.raster(t(matrix(colors, nrow = dim(x)[2L], ncol = dim(x)[3L])))
+	channel <- \(k) as.integer(bitmap[k, , ])
+	colors <- grDevices::rgb(
+		channel(1L),
+		channel(2L),
+		channel(3L),
+		channel(4L),
+		maxColorValue = 255L
+	)
+	structure(colors, dim = dim(bitmap)[3:2], class = "raster")
 }
 
-# The four RGBA bytes of each pixel are already the little-endian bytes of the
-# integer R uses for colors in a `nativeRaster` and the pixels are already in
-# its row-major order so we only need to reinterpret the bytes and set the dimensions
+# Each pixel's four RGBA bytes are already the little-endian bytes of the integer
+# R uses for colors in a `nativeRaster` so we only need to reinterpret them
 native_raster_from_bitmap <- function(bitmap) {
 	x <- readBin(bitmap, "integer", n = length(bitmap) %/% 4L, size = 4L, endian = "little")
 	structure(x, dim = dim(bitmap)[3:2], class = "nativeRaster")
@@ -97,38 +104,11 @@ native_raster_from_bitmap <- function(bitmap) {
 
 pdf_render_array_pdftools <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
 	check_dots_empty()
-	# Strip the "bitmap" class so `{bittermelon}` dispatches on the raw array itself:
-	# when `{magick}` is loaded its `as.double.bitmap()` method intercepts an internal
-	# `as.numeric()` call in bittermelon (<= 2.3.1) and scrambles the pixels (#74).
+	# Strip the "bitmap" class so downstream coercions (ours and bittermelon's) dispatch
+	# on the raw array itself: when `{magick}` is loaded its `as.integer.bitmap()` and
+	# `as.double.bitmap()` methods intercept them, e.g. scrambling the pixels in
+	# bittermelon (<= 2.3.1) (#74).
 	# bittermelon (>= 2.4.0) handles the classed array but since R doesn't enforce
 	# version floors in `Suggests` we can't rely on users having it.
 	unclass(pdftools::pdf_render_page(input, page = page, dpi = dpi))
-}
-
-pdf_render_array_gs <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
-	check_dots_empty()
-	stopifnot(requireNamespace("png", quietly = TRUE))
-	if (is.raw(input)) {
-		tmp_pdf <- temp_pdf()
-		on.exit(unlink(tmp_pdf), add = TRUE)
-		writeBin(input, tmp_pdf)
-		input <- tmp_pdf
-	}
-	tmp <- tempfile(fileext = ".png")
-	on.exit(unlink(tmp), add = TRUE)
-	system2(
-		find_gs_cmd(),
-		c(
-			"-dBATCH",
-			"-dNOPAUSE",
-			"-sDEVICE=pngalpha",
-			paste0("-dFirstPage=", page),
-			paste0("-dLastPage=", page),
-			paste0("-r", dpi),
-			paste0("-sOutputFile=", shQuote(tmp)),
-			shQuote(normalizePath(input))
-		),
-		stdout = TRUE
-	)
-	png::readPNG(tmp)
 }
