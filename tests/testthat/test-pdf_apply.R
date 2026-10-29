@@ -1,6 +1,6 @@
 # top-left corner alpha (0 = transparent, 1 = opaque)
 pdf_bg_opacity <- function(pdf, dpi = 72L) {
-	px <- pnpmisc:::pdf_render_array_gs(pdf, page = 1L, dpi = dpi)
+	px <- pdf_render_array_gs(pdf, page = 1L, dpi = dpi)
 	px[1L, 1L, 4L]
 }
 
@@ -119,7 +119,7 @@ test_that("`pdf_apply()` overlays a subset of pages without rasterizing when `qp
 test_that("`pdf_apply()` draws the pages it doesn't edit the same as the pages it does", {
 	on.exit(rm_temp_pdfs(), add = TRUE)
 	f1 <- pdf_rep(pdf_create_wallet(), pages = 1L, times = 2L)
-	f2 <- pdf_apply(f1, pages = 1L, rasterize = TRUE, dpi = 75)
+	f2 <- pdf_apply(f1, pages = 1L, rasterize = TRUE, dpi = 75, bm_fn = \(r) r)
 	render <- \(page) pdf_render_array_pdftools(f2, page = page, dpi = 50)
 	expect_equal(render(1L), render(2L))
 })

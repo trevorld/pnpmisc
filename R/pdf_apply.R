@@ -314,6 +314,7 @@ pdf_apply_raster <- function(
 			vp = viewport(width = unit(old_w, "bigpts"), height = unit(old_h, "bigpts"))
 		)
 	}
+	must_bm <- !identical(bm_fn, identity)
 	for (i in seq_len(nrow(df_size_orig))) {
 		grid.newpage()
 
@@ -321,25 +322,27 @@ pdf_apply_raster <- function(
 		height <- unit(scale * df_size_orig$height[i], "bigpts")
 		vp <- viewport(width = width, height = height)
 
-		if (i %in% pages) {
-			r <- bm_fn(pdf_render_raster(input, page = i, dpi = dpi))
-			grid.raster(r, interpolate = FALSE, vp = vp)
-			if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
-				grid.define(overlay_grob, name = "pnpmisc_overlay")
-				pushViewport(vp)
-				grid.use("pnpmisc_overlay", transform = viewportTransform)
-				popViewport()
-			} else {
-				# Draw in the input page's coordinates (as the vector path does)
-				# since `vp` is centered on the (possibly resized) output paper
-				pushViewport(vp)
-				grid_fn()
-				popViewport()
-			}
+		edit <- i %in% pages
+		# Pages `bm_fn` won't edit are drawn from a `nativeRaster` which uses much less memory
+		r <- pdf_render_raster(input, page = i, dpi = dpi, native = !(edit && must_bm))
+		if (edit && must_bm) {
+			r <- bm_fn(r)
+		}
+		grid.raster(r, interpolate = FALSE, vp = vp)
+		if (!edit) {
+			next
+		}
+		if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
+			grid.define(overlay_grob, name = "pnpmisc_overlay")
+			pushViewport(vp)
+			grid.use("pnpmisc_overlay", transform = viewportTransform)
+			popViewport()
 		} else {
-			# A `nativeRaster` uses much less memory than the "raster" `bm_fn` expects
-			r <- pdf_render_raster(input, page = i, dpi = dpi, native = TRUE)
-			grid.raster(r, interpolate = FALSE, vp = vp)
+			# Draw in the input page's coordinates (as the vector path does)
+			# since `vp` is centered on the (possibly resized) output paper
+			pushViewport(vp)
+			grid_fn()
+			popViewport()
 		}
 	}
 	invisible(dev.off())
