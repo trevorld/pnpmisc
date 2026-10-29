@@ -321,9 +321,8 @@ pdf_apply_raster <- function(
 		height <- unit(scale * df_size_orig$height[i], "bigpts")
 		vp <- viewport(width = width, height = height)
 
-		r <- pdf_render_raster(input, page = i, dpi = dpi)
 		if (i %in% pages) {
-			r <- bm_fn(r)
+			r <- bm_fn(pdf_render_raster(input, page = i, dpi = dpi))
 			grid.raster(r, interpolate = FALSE, vp = vp)
 			if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
 				grid.define(overlay_grob, name = "pnpmisc_overlay")
@@ -338,6 +337,8 @@ pdf_apply_raster <- function(
 				popViewport()
 			}
 		} else {
+			# A `nativeRaster` uses much less memory than the "raster" `bm_fn` expects
+			r <- pdf_render_raster(input, page = i, dpi = dpi, native = TRUE)
 			grid.raster(r, interpolate = FALSE, vp = vp)
 		}
 	}

@@ -92,6 +92,7 @@ Bug fixes and minor improvements
 * The "executive" paper size (7.25 by 10.5 inches) is now supported.
 * `bm_crop_layout()`, `bm_rm_crosshairs()`, and `bm_split_layout()` now center a layout preset name passed to `layout` on the paper size inferred from the aspect ratio of the bitmap by `bm_paper()` instead of on `getOption("papersize")` and throw an error if no supported paper size can be inferred (#70).
 * `pdf_add_cropmarks()`, `pdf_add_crosshairs()`, `pdf_add_lines()`, `pdf_add_rects()`, and `pdf_rm_crosshairs()` now center a layout preset name passed to `layout` on the paper size of the input pdf's pages (as inferred by `pdf_paper()`) instead of on `getOption("papersize")` and throw an error if those pages don't share a supported paper size (#70).
+* `pdf_render_raster()` now converts the raw bitmap rendered by `pdftools::pdf_render_page()` directly instead of converting it to a numeric array first which uses less memory (much less when `native = TRUE`).  `pdf_render_raster(native = TRUE)` also no longer requires `{bittermelon}` (#74).
 
 pnpmisc v0.1.1
 ==============

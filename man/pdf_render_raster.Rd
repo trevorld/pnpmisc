@@ -4,7 +4,13 @@
 \alias{pdf_render_raster}
 \title{Render a pdf page into a raster object}
 \usage{
-pdf_render_raster(input, ..., page = 1L, dpi = 300, native = FALSE)
+pdf_render_raster(
+  input,
+  ...,
+  page = 1L,
+  dpi = getOption("pnpmisc.dpi", 300),
+  native = FALSE
+)
 }
 \arguments{
 \item{input}{Input pdf filename.}
@@ -26,12 +32,10 @@ If \code{native = TRUE} returns a \code{nativeRaster} object else a \code{raster
 \code{pdf_render_raster()} renders a pdf page into a raster object.
 }
 \examples{
-if (requireNamespace("bittermelon", quietly = TRUE)) {
-  f <- pdf_create_wallet()
-  r <- pdf_render_raster(f, page = 1L, dpi = 75)
-  grid::grid.raster(r)
-  unlink(f)
-}
+f <- pdf_create_wallet()
+r <- pdf_render_raster(f, page = 1L, dpi = 75)
+grid::grid.raster(r)
+unlink(f)
 }
 \seealso{
 \code{\link[pdftools:pdf_render_page]{pdftools::pdf_render_page()}}, \code{\link[=pdf_render_bm_pixmap]{pdf_render_bm_pixmap()}}

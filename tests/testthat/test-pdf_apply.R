@@ -115,3 +115,11 @@ test_that("`pdf_apply()` overlays a subset of pages without rasterizing when `qp
 	expect_no_message(f2 <- pdf_apply(f1, pages = "even", grid_fn = \() grid::grid.rect()))
 	expect_equal(qpdf::pdf_length(f2), 4L)
 })
+
+test_that("`pdf_apply()` draws the pages it doesn't edit the same as the pages it does", {
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	f1 <- pdf_rep(pdf_create_wallet(), pages = 1L, times = 2L)
+	f2 <- pdf_apply(f1, pages = 1L, rasterize = TRUE, dpi = 75)
+	render <- \(page) pdf_render_array_pdftools(f2, page = page, dpi = 50)
+	expect_equal(render(1L), render(2L))
+})
