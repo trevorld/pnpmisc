@@ -58,36 +58,51 @@ pdf_render_bm_list <- function(input, ..., dpi = getOption("pnpmisc.dpi", 300)) 
 #' @param native If `TRUE` return a `nativeRaster` object else a `raster` object.
 #' @seealso [pdftools::pdf_render_page()], [pdf_render_bm_pixmap()]
 #' @examples
-#' if (requireNamespace("bittermelon", quietly = TRUE)) {
-#'   f <- pdf_create_wallet()
-#'   r <- pdf_render_raster(f, page = 1L, dpi = 75)
-#'   grid::grid.raster(r)
-#'   unlink(f)
-#' }
+#' f <- pdf_create_wallet()
+#' r <- pdf_render_raster(f, page = 1L, dpi = 75)
+#' grid::grid.raster(r)
+#' unlink(f)
 #' @export
-pdf_render_raster <- function(input, ..., page = 1L, dpi = 300, native = FALSE) {
+pdf_render_raster <- function(
+	input,
+	...,
+	page = 1L,
+	dpi = getOption("pnpmisc.dpi", 300),
+	native = FALSE
+) {
 	check_dots_empty()
 	bitmap <- pdf_render_array_pdftools(input, page = page, dpi = dpi)
 	if (native) {
-		stopifnot(requireNamespace("bittermelon", quietly = TRUE))
-		as.raster(bittermelon::as_bm_pixmap(bitmap), native = TRUE)
+		native_raster_from_bitmap(bitmap)
 	} else {
-		as.raster(bitmap)
+		raster_from_bitmap(bitmap)
 	}
 }
 
-pdf_render_array <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
-	check_dots_empty()
-	if (nzchar(find_gs_cmd()) && requireNamespace("png", quietly = TRUE)) {
-		pdf_render_array_gs(input, page = page, dpi = dpi)
-	} else {
-		pdf_render_array_pdftools(input, page = page, dpi = dpi)
-	}
+# Convert the raw RGBA array (with dimensions channel x width x height) rendered by
+# `pdf_render_array_pdftools()` to a `raster` object (`as.raster()` has no method for it)
+raster_from_bitmap <- function(bitmap) {
+	x <- array(as.integer(bitmap), dim = dim(bitmap))
+	colors <- grDevices::rgb(x[1L, , ], x[2L, , ], x[3L, , ], x[4L, , ], maxColorValue = 255L)
+	as.raster(t(matrix(colors, nrow = dim(x)[2L], ncol = dim(x)[3L])))
+}
+
+# The four RGBA bytes of each pixel are already the little-endian bytes of the
+# integer R uses for colors in a `nativeRaster` and the pixels are already in
+# its row-major order so we only need to reinterpret the bytes and set the dimensions
+native_raster_from_bitmap <- function(bitmap) {
+	x <- readBin(bitmap, "integer", n = length(bitmap) %/% 4L, size = 4L, endian = "little")
+	structure(x, dim = dim(bitmap)[3:2], class = "nativeRaster")
 }
 
 pdf_render_array_pdftools <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {
 	check_dots_empty()
-	pdftools::pdf_render_page(input, page = page, dpi = dpi, numeric = TRUE)
+	# Strip the "bitmap" class so `{bittermelon}` dispatches on the raw array itself:
+	# when `{magick}` is loaded its `as.double.bitmap()` method intercepts an internal
+	# `as.numeric()` call in bittermelon (<= 2.3.1) and scrambles the pixels (#74).
+	# bittermelon (>= 2.4.0) handles the classed array but since R doesn't enforce
+	# version floors in `Suggests` we can't rely on users having it.
+	unclass(pdftools::pdf_render_page(input, page = page, dpi = dpi))
 }
 
 pdf_render_array_gs <- function(input, ..., page = 1L, dpi = getOption("pnpmisc.dpi", 300)) {

@@ -25,7 +25,7 @@ test_that("`pdf_add_rects()` centers a preset name on the input pdf's paper", {
 	f4 <- pdf_add_rects(f1, layout = layout_preset("poker_3x3", paper = "letter"))
 	render <- \(f) pdf_render_array_pdftools(f, page = 1L, dpi = 50)
 	expect_equal(render(f2), render(f3))
-	expect_gt(sum(abs(render(f2) - render(f4))), 0)
+	expect_gt(sum(render(f2) != render(f4)), 0)
 
 	mixed <- pdf_combine(c(pdf_create_blank(paper = "letter"), f1))
 	expect_snapshot(error = TRUE, pdf_add_rects(mixed, layout = "poker_3x3"))
