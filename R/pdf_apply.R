@@ -79,10 +79,6 @@ pdf_apply <- function(
 	rasterise = NULL
 ) {
 	chkDots(...)
-	current_dev <- dev.cur()
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	}
 	output <- normalize_output(output, input)
 	if (!is.null(paper)) {
 		paper <- normalize_paper(paper)
@@ -206,10 +202,10 @@ pdf_apply_vector <- function(
 	height_in <- df_size$height[1L] / 72
 	stamp <- temp_pdf()
 	on.exit(unlink(stamp), add = TRUE)
-	pnp_pdf(stamp, width = width_in, height = height_in, bg = "transparent")
-	grid.newpage()
-	grid_fn()
-	invisible(dev.off())
+	with_temp_dev(\() pnp_pdf(stamp, width = width_in, height = height_in, bg = "transparent"), {
+		grid.newpage()
+		grid_fn()
+	})
 	if (resize) {
 		overlaid <- temp_pdf()
 		on.exit(unlink(overlaid), add = TRUE)
@@ -299,53 +295,55 @@ pdf_apply_raster <- function(
 		# size is in "bigpts" units where 72pts = 1"
 		width_in <- df_size_orig$width[1L] / 72
 		height_in <- df_size_orig$height[1L] / 72
-		pnp_pdf(output, width = width_in, height = height_in, bg = bg)
+		open <- \() pnp_pdf(output, width = width_in, height = height_in, bg = bg)
 	} else {
-		pnp_pdf(output, paper = paper, orientation = pdf_orientation(input)[1L], bg = bg)
+		orientation <- pdf_orientation(input)[1L]
+		open <- \() pnp_pdf(output, paper = paper, orientation = orientation, bg = bg)
 	}
-	if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
-		old_w <- df_size_orig$width[1L]
-		old_h <- df_size_orig$height[1L]
-		# Record the grob in the original (pre-scale) viewport so that when
-		# grid.use() applies the affine viewportTransform below it scales correctly.
-		overlay_grob <- recordGrob(
-			grid_fn(),
-			list(grid_fn = grid_fn),
-			vp = viewport(width = unit(old_w, "bigpts"), height = unit(old_h, "bigpts"))
-		)
-	}
-	must_bm <- !identical(bm_fn, identity)
-	for (i in seq_len(nrow(df_size_orig))) {
-		grid.newpage()
-
-		width <- unit(scale * df_size_orig$width[i], "bigpts")
-		height <- unit(scale * df_size_orig$height[i], "bigpts")
-		vp <- viewport(width = width, height = height)
-
-		edit <- i %in% pages
-		# Pages `bm_fn` won't edit are drawn from a `nativeRaster` which uses much less memory
-		r <- pdf_render_raster(input, page = i, dpi = dpi, native = !(edit && must_bm))
-		if (edit && must_bm) {
-			r <- bm_fn(r)
-		}
-		grid.raster(r, interpolate = FALSE, vp = vp)
-		if (!edit) {
-			next
-		}
+	with_temp_dev(open, {
 		if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
-			grid.define(overlay_grob, name = "pnpmisc_overlay")
-			pushViewport(vp)
-			grid.use("pnpmisc_overlay", transform = viewportTransform)
-			popViewport()
-		} else {
-			# Draw in the input page's coordinates (as the vector path does)
-			# since `vp` is centered on the (possibly resized) output paper
-			pushViewport(vp)
-			grid_fn()
-			popViewport()
+			old_w <- df_size_orig$width[1L]
+			old_h <- df_size_orig$height[1L]
+			# Record the grob in the original (pre-scale) viewport so that when
+			# grid.use() applies the affine viewportTransform below it scales correctly.
+			overlay_grob <- recordGrob(
+				grid_fn(),
+				list(grid_fn = grid_fn),
+				vp = viewport(width = unit(old_w, "bigpts"), height = unit(old_h, "bigpts"))
+			)
 		}
-	}
-	invisible(dev.off())
+		must_bm <- !identical(bm_fn, identity)
+		for (i in seq_len(nrow(df_size_orig))) {
+			grid.newpage()
+
+			width <- unit(scale * df_size_orig$width[i], "bigpts")
+			height <- unit(scale * df_size_orig$height[i], "bigpts")
+			vp <- viewport(width = width, height = height)
+
+			edit <- i %in% pages
+			# Pages `bm_fn` won't edit are drawn from a `nativeRaster` which uses much less memory
+			r <- pdf_render_raster(input, page = i, dpi = dpi, native = !(edit && must_bm))
+			if (edit && must_bm) {
+				r <- bm_fn(r)
+			}
+			grid.raster(r, interpolate = FALSE, vp = vp)
+			if (!edit) {
+				next
+			}
+			if (scale != 1 && !identical(grid_fn, grid::grid.null)) {
+				grid.define(overlay_grob, name = "pnpmisc_overlay")
+				pushViewport(vp)
+				grid.use("pnpmisc_overlay", transform = viewportTransform)
+				popViewport()
+			} else {
+				# Draw in the input page's coordinates (as the vector path does)
+				# since `vp` is centered on the (possibly resized) output paper
+				pushViewport(vp)
+				grid_fn()
+				popViewport()
+			}
+		}
+	})
 	invisible(output)
 }
 

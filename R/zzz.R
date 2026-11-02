@@ -1,4 +1,4 @@
-#' @importFrom grDevices as.raster dev.cur dev.off dev.set
+#' @importFrom grDevices as.raster dev.cur
 #' @import grid
 #' @importFrom rlang abort arg_match0 caller_env check_dots_empty inform warn
 #' @importFrom stats median quantile
@@ -106,10 +106,10 @@ paper_height <- function(paper, orientation = "portrait") {
 # friends need) without creating an `Rplots.pdf` file if no device is open
 with_null_device <- function(expr) {
 	if (dev.cur() == 1L) {
-		grDevices::pdf(NULL)
-		on.exit(invisible(dev.off()), add = TRUE)
+		with_temp_dev(\() grDevices::pdf(NULL), expr)
+	} else {
+		expr
 	}
-	force(expr)
 }
 
 #' Create a pdf device

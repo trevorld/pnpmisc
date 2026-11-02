@@ -6,3 +6,8 @@ test_that("`pdf_create_blank()`", {
 
 	expect_snapshot(error = TRUE, pdf_create_blank(paper = "a6"))
 })
+
+test_that("`pdf_create_blank()` restores the active graphics device", {
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	expect_devices_restored(pdf_create_blank())
+})

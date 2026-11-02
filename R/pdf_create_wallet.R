@@ -84,28 +84,22 @@ pdf_create_wallet <- function(
 
 	stopifnot(requireNamespace("piecepackr", quietly = TRUE))
 
-	current_dev <- dev.cur()
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	}
+	with_temp_dev(\() pnp_pdf(output, paper = paper), {
+		# Put after `pnp_pdf()` since `convertWidth()` needs graphics device
+		if (isTRUE(bleed)) {
+			bleed <- 0.125
+		}
+		if (isFALSE(bleed)) {
+			bleed <- 0
+		}
+		if (grid::is.unit(bleed)) {
+			bleed <- grid::convertWidth(bleed, "in", valueOnly = TRUE)
+		}
 
-	pnp_pdf(output, paper = paper)
-
-	# Put after `pnp_pdf()` since `convertWidth()` needs graphics device
-	if (isTRUE(bleed)) {
-		bleed <- 0.125
-	}
-	if (isFALSE(bleed)) {
-		bleed <- 0
-	}
-	if (grid::is.unit(bleed)) {
-		bleed <- grid::convertWidth(bleed, "in", valueOnly = TRUE)
-	}
-
-	draw_wallet_spine(b = bleed, spine = spine)
-	grid.newpage()
-	draw_wallet_cover(b = bleed, front = front, back = back)
-	invisible(dev.off())
+		draw_wallet_spine(b = bleed, spine = spine)
+		grid.newpage()
+		draw_wallet_cover(b = bleed, front = front, back = back)
+	})
 
 	invisible(output)
 }

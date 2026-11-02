@@ -61,26 +61,25 @@ pdf_create_jacket_instructions <- function(
 
 	stopifnot(requireNamespace("marquee", quietly = TRUE))
 
-	pnp_pdf(output, paper = paper, orientation = orientation)
+	with_temp_dev(\() pnp_pdf(output, paper = paper, orientation = orientation), {
+		width <- unit(paper_width(paper, orientation), "in")
+		height <- unit(paper_height(paper, orientation), "in")
 
-	width <- unit(paper_width(paper, orientation), "in")
-	height <- unit(paper_height(paper, orientation), "in")
-
-	vp <- viewport(width = width, height = height)
-	pushViewport(vp)
-	text <- paste0(
-		'# Storage Box Jacket Setup\n',
-		jacket_instructions_md(orientation = orientation)
-	)
-	mg <- marquee::marquee_grob(
-		text,
-		style = style,
-		x = unit(2 / 8, "in"),
-		width = width - unit(4 / 8, "in"),
-		y = unit(1, "npc") - unit(2 / 8, "in")
-	)
-	grid.draw(mg)
-	upViewport()
-	invisible(dev.off())
+		vp <- viewport(width = width, height = height)
+		pushViewport(vp)
+		text <- paste0(
+			'# Storage Box Jacket Setup\n',
+			jacket_instructions_md(orientation = orientation)
+		)
+		mg <- marquee::marquee_grob(
+			text,
+			style = style,
+			x = unit(2 / 8, "in"),
+			width = width - unit(4 / 8, "in"),
+			y = unit(1, "npc") - unit(2 / 8, "in")
+		)
+		grid.draw(mg)
+		upViewport()
+	})
 	invisible(output)
 }
