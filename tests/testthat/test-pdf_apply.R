@@ -123,3 +123,17 @@ test_that("`pdf_apply()` draws the pages it doesn't edit the same as the pages i
 	render <- \(page) pdf_render_array_pdftools(f2, page = page, dpi = 50)
 	expect_equal(render(1L), render(2L))
 })
+
+test_that("`pdf_apply()` restores the active graphics device", {
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	f <- pdf_create_blank(width = 5, height = 5)
+	grid_fn <- \() grid::grid.rect()
+	expect_devices_restored(pdf_apply(f, grid_fn = grid_fn, rasterize = FALSE))
+	expect_devices_restored(pdf_apply(f, grid_fn = grid_fn, rasterize = TRUE, dpi = 18))
+	bad_fn <- \() stop("boom")
+	expect_devices_restored(try(pdf_apply(f, grid_fn = bad_fn, rasterize = FALSE), silent = TRUE))
+	expect_devices_restored(try(
+		pdf_apply(f, grid_fn = bad_fn, rasterize = TRUE, dpi = 18),
+		silent = TRUE
+	))
+})

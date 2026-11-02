@@ -98,31 +98,24 @@ pdf_create_jacket <- function(
 		is.unit(depth)
 	)
 
-	current_dev <- dev.cur()
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	}
+	with_temp_dev(\() pnp_pdf(output, paper = paper, orientation = orientation), {
+		grid_add_origami(width = width, height = height, depth = depth)
 
-	pnp_pdf(output, paper = paper, orientation = orientation)
+		grid_add_jacket_outer(
+			front = front,
+			back = back,
+			spine = spine,
+			width = width,
+			height = height,
+			depth = depth,
+			bg = bg
+		)
 
-	grid_add_origami(width = width, height = height, depth = depth)
-
-	grid_add_jacket_outer(
-		front = front,
-		back = back,
-		spine = spine,
-		width = width,
-		height = height,
-		depth = depth,
-		bg = bg
-	)
-
-	if (!is.null(inner)) {
-		grid.newpage()
-		grid_add_jacket_inner(inner, width, height, depth)
-	}
-
-	invisible(dev.off())
+		if (!is.null(inner)) {
+			grid.newpage()
+			grid_add_jacket_inner(inner, width, height, depth)
+		}
+	})
 
 	invisible(output)
 }
@@ -293,47 +286,40 @@ pdf_create_poker_jacket <- function(
 
 		stopifnot(length(front) == 2L, length(back) == 2L, length(spine) == 2L, length(inner) == 2L)
 
-		current_dev <- dev.cur()
-		if (current_dev > 1) {
-			on.exit(dev.set(current_dev), add = TRUE)
-		}
-
 		width <- unit(JACKET_POKER_FRONT_WIDTH, "in")
 		height <- unit(JACKET_POKER_HEIGHT, "in")
-
-		pnp_pdf(output, paper = paper, orientation = "portrait")
 
 		yt <- unit(0.5, "npc") + unit(0.5 * JACKET_POKER_HEIGHT + JACKET_POKER_INNER_MARGIN, "in")
 		yb <- unit(0.5, "npc") - unit(0.5 * JACKET_POKER_HEIGHT + JACKET_POKER_INNER_MARGIN, "in")
 
 		vp <- list(viewport(y = yt), viewport(y = yb))
 
-		for (i in 1:2) {
-			pushViewport(vp[[i]])
-			grid_add_origami(width = width, height = height, depth = depth)
-
-			grid_add_jacket_outer(
-				front = front[[i]],
-				back = back[[i]],
-				spine = spine[[i]],
-				width = width,
-				height = height,
-				depth = depth,
-				bg = bg
-			)
-			upViewport()
-		}
-
-		if (!is.null(inner[[1L]]) || !is.null(inner[[2L]])) {
-			grid.newpage()
+		with_temp_dev(\() pnp_pdf(output, paper = paper, orientation = "portrait"), {
 			for (i in 1:2) {
 				pushViewport(vp[[i]])
-				grid_add_jacket_inner(inner[[i]], width, height, depth)
+				grid_add_origami(width = width, height = height, depth = depth)
+
+				grid_add_jacket_outer(
+					front = front[[i]],
+					back = back[[i]],
+					spine = spine[[i]],
+					width = width,
+					height = height,
+					depth = depth,
+					bg = bg
+				)
 				upViewport()
 			}
-		}
 
-		invisible(dev.off())
+			if (!is.null(inner[[1L]]) || !is.null(inner[[2L]])) {
+				grid.newpage()
+				for (i in 1:2) {
+					pushViewport(vp[[i]])
+					grid_add_jacket_inner(inner[[i]], width, height, depth)
+					upViewport()
+				}
+			}
+		})
 
 		invisible(output)
 	} else {
@@ -355,28 +341,27 @@ pdf_create_poker_jacket <- function(
 
 pdf_create_mock_sbgj <- function(output = NULL) {
 	output <- normalize_output(output)
-	current_dev <- dev.cur()
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
-	}
-
-	pnp_pdf(output, width = 11, height = 8.5)
-
 	width_fb <- unit(JACKET_4x6_FRONT_WIDTH, "inches")
 	width_s <- unit(JACKET_4x6_SPINE_WIDTH, "inches")
 	height <- unit(JACKET_4x6_HEIGHT, "inches")
 	xc <- unit(0.5, "npc") - unit(0.7, "mm")
 	yc <- unit(0.5, "npc") - unit(1.45, "mm")
-	grid.rect(
-		x = xc,
-		y = yc,
-		width = 2 * width_fb + width_s,
-		height = height,
-		gp = gpar(col = NA, fill = "grey")
-	)
-	grid.rect(x = xc, y = yc, width = width_s, height = height, gp = gpar(col = NA, fill = "black"))
-
-	invisible(dev.off())
+	with_temp_dev(\() pnp_pdf(output, width = 11, height = 8.5), {
+		grid.rect(
+			x = xc,
+			y = yc,
+			width = 2 * width_fb + width_s,
+			height = height,
+			gp = gpar(col = NA, fill = "grey")
+		)
+		grid.rect(
+			x = xc,
+			y = yc,
+			width = width_s,
+			height = height,
+			gp = gpar(col = NA, fill = "black")
+		)
+	})
 
 	invisible(output)
 }

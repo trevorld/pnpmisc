@@ -14,3 +14,10 @@ test_that("`bm_create_pdf()`", {
 	expect_equal(ps$width[1L], 2.5 * 72, tolerance = 0.5)
 	expect_equal(ps$height[1L], 3.5 * 72, tolerance = 0.5)
 })
+
+test_that("`bm_create_pdf()` restores the active graphics device", {
+	skip_if_not_installed("bittermelon")
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	bml <- bittermelon::bm_list(as.raster(matrix("blue", nrow = 4L, ncol = 1L)))
+	expect_devices_restored(bm_create_pdf(bml))
+})

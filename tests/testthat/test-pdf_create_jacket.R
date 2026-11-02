@@ -31,3 +31,13 @@ test_that("`pdf_create_jacket()`", {
 	f5 <- pdf_create_jacket_instructions()
 	expect_equal(qpdf::pdf_length(f5), 1L)
 })
+
+test_that("jacket functions restore the active graphics device", {
+	skip_if_not_installed("piecepackr")
+	skip_if_not_installed("marquee")
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	expect_devices_restored(pdf_create_4x6_jacket(inner = "grey"))
+	expect_devices_restored(pdf_create_poker_jacket(inner = list(nullGrob(), nullGrob())))
+	expect_devices_restored(pdf_create_jacket_instructions())
+	expect_devices_restored(pdf_create_mock_sbgj())
+})

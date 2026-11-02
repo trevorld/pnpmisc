@@ -12,3 +12,10 @@ test_that("`pdf_create_wallet()`", {
 	f3 <- pdf_create_wallet(front = nullGrob(), back = nullGrob(), spine = nullGrob(), bleed = TRUE)
 	expect_equal(qpdf::pdf_length(f3), 2L)
 })
+
+test_that("`pdf_create_wallet()` restores the active graphics device", {
+	skip_if_not_installed("piecepackr")
+	skip_if_not(getRversion() >= "4.1")
+	on.exit(rm_temp_pdfs(), add = TRUE)
+	expect_devices_restored(pdf_create_wallet(bleed = grid::unit(0.125, "in")))
+})

@@ -33,31 +33,20 @@ pdf_create_blank <- function(
 	orientation <- match.arg(orientation)
 	output <- normalize_output(output)
 
-	current_dev <- dev.cur()
-	if (current_dev > 1) {
-		on.exit(dev.set(current_dev), add = TRUE)
+	use_paper <- missing(width) && missing(height) && paper != "special"
+	open <- function() {
+		if (use_paper) {
+			pnp_pdf(output, paper = paper, orientation = orientation, bg = bg)
+		} else {
+			pnp_pdf(output, width = width, height = height, bg = bg)
+		}
 	}
-
-	if (missing(width) && missing(height) && paper != "special") {
-		pnp_pdf(
-			output,
-			paper = paper,
-			orientation = orientation,
-			bg = bg
-		)
-	} else {
-		pnp_pdf(
-			output,
-			width = width,
-			height = height,
-			bg = bg
-		)
-	}
-	for (page in seq.int(length)) {
-		grid.newpage()
-		grid.draw(grob)
-	}
-	invisible(dev.off())
+	with_temp_dev(open, {
+		for (page in seq.int(length)) {
+			grid.newpage()
+			grid.draw(grob)
+		}
+	})
 
 	invisible(output)
 }
